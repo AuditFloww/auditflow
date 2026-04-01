@@ -1549,7 +1549,23 @@ const pages = {
   'reporting': { title: 'Reporting & Analyse', sub: 'Mission Exercice 2024' },
   'settings': { title: 'Configuration', sub: 'Dataverse · Power Pages · SharePoint' },
 };
+const API_URL = "https://2e98c96c5745ec04ba9044dc2bc1d9.51.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c32e6e7a16334c52a12cca0e7a2ab6f4/triggers/manual/paths/invoke?api-version=1";
 
+async function loadDemandes() {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const data = await response.json();
+    console.log("Demandes Dataverse:", data);
+    return data.value || [];
+  } catch(err) {
+    console.error("Erreur API:", err);
+    return [];
+  }
+}
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
