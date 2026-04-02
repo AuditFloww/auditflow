@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AuditFlow — Connexion</title>
+<title>AuditFlow — Dépôt de documents</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -16,86 +16,79 @@
   --red: #E53E3E; --red-light: #FFF5F5;
   --green: #276749; --green-light: #F0FFF4; --green-mid: #9AE6B4;
   --orange: #C05621; --orange-light: #FFFAF0; --orange-mid: #FBD38D;
-  --blue: #2B6CB0; --blue-light: #EBF8FF; --blue-mid: #90CDF4;
   --radius: 8px; --radius-lg: 12px; --radius-xl: 16px;
   --shadow-sm: 0 1px 3px rgba(13,27,42,0.06);
   --shadow-md: 0 4px 12px rgba(13,27,42,0.08);
   --shadow-lg: 0 8px 24px rgba(13,27,42,0.12);
-  --sidebar-w: 240px;
   --font: 'DM Sans', -apple-system, sans-serif;
   --mono: 'DM Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
+html, body { min-height: 100vh; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
 
-/* ── LOGIN PAGE ── */
+/* LOGIN */
 .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 24px; }
-.login-card { background: #fff; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; padding: 40px; }
-.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-.login-logo-mark { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.login-logo-mark svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
-.login-logo-text { font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; }
-.login-logo-text span { color: var(--accent); }
-.login-title { font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-.login-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+.login-card { background: #fff; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); width: 100%; max-width: 400px; padding: 40px; }
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.logo-mark { width: 38px; height: 38px; background: var(--accent); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.logo-mark svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+.logo-text { font-size: 18px; font-weight: 700; color: var(--navy); }
+.logo-text span { color: var(--accent); }
+.login-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
 .form-group { margin-bottom: 16px; }
 .form-label { display: block; font-size: 12.5px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
 .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font); color: var(--text-primary); background: var(--bg); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
 .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,126,224,0.1); background: #fff; }
-.btn-login { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: background 0.15s; margin-top: 8px; }
-.btn-login:hover { background: var(--accent-hover); }
-.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
-.login-error { background: var(--red-light); border: 1px solid #FEB2B2; color: var(--red); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-top: 12px; display: none; }
-.login-error.show { display: block; }
-.login-footer { text-align: center; margin-top: 24px; font-size: 12px; color: var(--text-muted); }
-.login-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-.login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.login-divider span { font-size: 12px; color: var(--text-muted); }
-.role-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.role-btn { padding: 12px; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; text-align: center; transition: all 0.15s; background: var(--bg); }
-.role-btn:hover { border-color: var(--accent); }
-.role-btn.active { border-color: var(--accent); background: var(--accent-light); }
-.role-btn-icon { font-size: 20px; margin-bottom: 4px; }
-.role-btn-label { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
-.role-btn-sub { font-size: 11px; color: var(--text-muted); }
+.btn-full { width: 100%; padding: 12px; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+.btn-primary-full { background: var(--accent); color: #fff; }
+.btn-primary-full:hover { background: var(--accent-hover); }
+.btn-primary-full:disabled { opacity: 0.6; cursor: not-allowed; }
+.error-box { background: var(--red-light); border: 1px solid #FEB2B2; color: var(--red); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-top: 12px; display: none; }
+.error-box.show { display: block; }
 
-/* ── APP ── */
-.app { display: none; flex; height: 100vh; overflow: hidden; }
+/* APP */
+.app { display: none; min-height: 100vh; flex-direction: column; }
 .app.visible { display: flex; }
-.sidebar { width: var(--sidebar-w); background: var(--navy); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
-.main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
-.topbar { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.content { flex: 1; padding: 32px 28px; }
-.sidebar-logo { padding: 24px 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-.logo-mark { width: 32px; height: 32px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
-.logo-mark svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
-.logo-text { font-size: 15px; font-weight: 600; color: #fff; }
-.logo-text span { color: rgba(255,255,255,0.4); font-weight: 300; }
-.sidebar-section { padding: 20px 12px 8px; }
-.sidebar-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; padding: 0 8px 8px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 7px; color: rgba(255,255,255,0.55); font-size: 13.5px; cursor: pointer; transition: all 0.15s; margin-bottom: 1px; border: none; background: none; width: 100%; text-align: left; }
-.nav-item:hover { color: rgba(255,255,255,0.88); background: rgba(255,255,255,0.06); }
-.nav-item.active { color: #fff; background: var(--accent); font-weight: 500; }
-.nav-item svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-.nav-badge { margin-left: auto; background: #E53E3E; color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 20px; font-family: var(--mono); }
-.sidebar-footer { margin-top: auto; padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.07); }
-.user-pill { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; }
-.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
-.user-info .name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); }
-.user-info .role { font-size: 11px; color: rgba(255,255,255,0.35); }
-.topbar-title { font-size: 16px; font-weight: 600; }
-.topbar-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-.topbar-actions { display: flex; align-items: center; gap: 10px; }
-.btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; font-family: var(--font); white-space: nowrap; }
-.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-secondary { background: var(--bg-card); color: var(--text-primary); border-color: var(--border); }
-.btn-secondary:hover { background: var(--bg); }
-.btn-danger { background: var(--red-light); color: var(--red); border-color: #FED7D7; }
-.btn-sm { padding: 5px 11px; font-size: 12.5px; }
-.btn-xs { padding: 4px 9px; font-size: 12px; }
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.header { background: var(--navy); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.header-logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.header-logo-mark svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+.header-logo-text { font-size: 15px; font-weight: 600; color: #fff; }
+.header-logo-text span { color: rgba(255,255,255,0.4); font-weight: 300; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-user { font-size: 13px; color: rgba(255,255,255,0.6); }
+.btn-logout { padding: 6px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: rgba(255,255,255,0.7); font-size: 12.5px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+.btn-logout:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.main { flex: 1; padding: 32px 28px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+/* HERO */
+.hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius-xl); padding: 28px 32px; color: #fff; margin-bottom: 28px; position: relative; overflow: hidden; }
+.hero::after { content: ''; position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(30,126,224,0.15); }
+.hero-title { font-size: 20px; font-weight: 600; position: relative; z-index: 1; }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; position: relative; z-index: 1; }
+
+/* CARDS */
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+.card-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
+.card-body { padding: 20px 24px 24px; }
+.card-title { font-size: 15px; font-weight: 600; }
+.card-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* DEMANDES */
+.demande-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+.demande-item:last-child { border-bottom: none; }
+.demande-item:hover { opacity: 0.85; }
+.demande-item.selected { background: var(--accent-light); margin: 0 -24px; padding: 14px 24px; border-radius: var(--radius); border-bottom: none; }
+.demande-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.demande-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.demande-icon.retard { background: var(--red-light); color: var(--red); }
+.demande-icon.attente { background: var(--orange-light); color: var(--orange); }
+.demande-icon.recu { background: var(--green-light); color: var(--green); }
+.demande-nom { font-weight: 600; font-size: 14px; }
+.demande-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
 .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .badge-red { background: var(--red-light); color: var(--red); border: 1px solid #FEB2B2; }
 .badge-red::before { background: var(--red); }
@@ -103,404 +96,190 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .badge-green::before { background: var(--green); }
 .badge-orange { background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange-mid); }
 .badge-orange::before { background: var(--orange); }
-.badge-blue { background: var(--blue-light); color: var(--blue); border: 1px solid var(--blue-mid); }
-.badge-blue::before { background: var(--blue); }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-.stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; position: relative; overflow: hidden; }
-.stat-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.stat-card.blue::after { background: var(--accent); }
-.stat-card.green::after { background: #38A169; }
-.stat-card.orange::after { background: #DD6B20; }
-.stat-card.red::after { background: var(--red); }
-.stat-label { font-size: 11.5px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 10px; }
-.stat-value { font-size: 28px; font-weight: 600; font-family: var(--mono); }
-.stat-icon { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
-.stat-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.stat-icon.blue { background: var(--accent-light); color: var(--accent); }
-.stat-icon.green { background: var(--green-light); color: #38A169; }
-.stat-icon.orange { background: var(--orange-light); color: #DD6B20; }
-.stat-icon.red { background: var(--red-light); color: var(--red); }
-.table-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-.table-toolbar { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-.search-input { padding: 7px 12px 7px 34px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13.5px; font-family: var(--font); background: var(--bg); color: var(--text-primary); outline: none; width: 240px; }
-.search-input:focus { border-color: var(--accent); background: #fff; }
-.filter-select { padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); background: var(--bg); color: var(--text-secondary); cursor: pointer; outline: none; }
-table { width: 100%; border-collapse: collapse; }
-thead th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; background: #FAFBFC; border-bottom: 1px solid var(--border); }
-thead th:first-child { padding-left: 20px; }
-thead th:last-child { padding-right: 20px; text-align: right; }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: #FAFBFC; }
-tbody td { padding: 13px 16px; font-size: 13.5px; vertical-align: middle; }
-tbody td:first-child { padding-left: 20px; }
-tbody td:last-child { padding-right: 20px; text-align: right; }
-.td-primary { font-weight: 500; }
-.td-mono { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); }
-.table-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
-.page { display: none; }
-.page.active { display: block; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.section-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
-.section-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-.page-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius-xl); padding: 28px 32px; color: #fff; margin-bottom: 28px; position: relative; overflow: hidden; }
-.page-hero::after { content: ''; position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; border-radius: 50%; background: rgba(30,126,224,0.15); }
-.hero-title { font-size: 22px; font-weight: 600; position: relative; z-index: 1; }
-.hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; position: relative; z-index: 1; }
-.hero-meta { display: flex; gap: 20px; margin-top: 16px; position: relative; z-index: 1; }
-.hero-meta-item { font-size: 13px; color: rgba(255,255,255,0.5); }
-.hero-meta-item strong { color: #fff; font-weight: 600; }
-.client-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all 0.2s; cursor: pointer; }
-.client-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
-.client-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.client-avatar { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--accent); }
-.client-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); }
-.card-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
-.card-body { padding: 20px 24px 24px; }
-.card-title { font-size: 14px; font-weight: 600; }
-.modal-backdrop { position: fixed; inset: 0; background: rgba(13,27,42,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
-.modal-backdrop.open { opacity: 1; pointer-events: all; }
-.modal { background: var(--bg-card); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; transform: translateY(8px); transition: transform 0.2s; }
-.modal-backdrop.open .modal { transform: translateY(0); }
-.modal-header { padding: 24px 24px 0; display: flex; align-items: flex-start; justify-content: space-between; }
-.modal-title { font-size: 16px; font-weight: 600; }
-.modal-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-.modal-body { padding: 20px 24px; }
-.modal-footer { padding: 0 24px 20px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 16px; }
-.form-select { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13.5px; font-family: var(--font); color: var(--text-primary); background: var(--bg-card); outline: none; cursor: pointer; }
-textarea.form-input { resize: vertical; min-height: 90px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: #fff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 200; font-size: 13.5px; display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 340px; }
+
+/* UPLOAD ZONE */
+.upload-zone { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 40px 24px; text-align: center; background: var(--bg); transition: all 0.2s; cursor: pointer; }
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-light); }
+.upload-zone.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.upload-icon { width: 56px; height: 56px; background: var(--accent-light); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.upload-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.upload-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.upload-sub { font-size: 13px; color: var(--text-muted); }
+.upload-formats { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+
+/* FILE LIST */
+.file-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 8px; }
+.file-ext { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.file-ext.pdf { background: var(--red-light); color: var(--red); }
+.file-ext.xlsx, .file-ext.xls { background: var(--green-light); color: var(--green); }
+.file-ext.docx, .file-ext.doc { background: var(--accent-light); color: var(--accent); }
+.file-ext.other { background: #FAF5FF; color: #6B46C1; }
+.file-name { font-size: 13.5px; font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-size { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.file-remove { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: #fff; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; transition: all 0.15s; }
+.file-remove:hover { background: var(--red-light); color: var(--red); border-color: #FEB2B2; }
+
+/* UPLOADED FILES */
+.uploaded-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.uploaded-item:last-child { border-bottom: none; }
+.uploaded-ext { width: 32px; height: 32px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+
+/* PROGRESS */
+.progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+
+/* BTN */
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; font-family: var(--font); }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { background: var(--bg-card); color: var(--text-primary); border-color: var(--border); }
+.btn-secondary:hover { background: var(--bg); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: #fff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 200; font-size: 13.5px; display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 360px; }
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast-icon { width: 22px; height: 22px; border-radius: 50%; background: #38A169; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toast-icon.error { background: var(--red); }
 .toast-icon svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.priority-high { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--red); }
-.priority-normal { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
-.priority-high::before { content: '▲'; font-size: 9px; }
-.priority-normal::before { content: '—'; }
-.loading { text-align: center; padding: 40px; color: var(--text-muted); }
+
+.loading { text-align: center; padding: 32px; color: var(--text-muted); }
 .loading-spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.page.active { animation: fadeIn 0.2s ease; }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-.role-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.role-auditeur { background: var(--accent-light); color: var(--accent); }
-.role-client { background: var(--green-light); color: var(--green); }
-@media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+.empty { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; }
+
+@media (max-width: 600px) {
+  .main { padding: 20px 16px; }
+  .hero { padding: 20px; }
+  .card-body { padding: 16px 20px 20px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ PAGE DE CONNEXION ═══ -->
+<!-- LOGIN -->
 <div class="login-page" id="login-page">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-mark">
-        <svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><path d="M11 14.5h7M14.5 11v7"/></svg>
-      </div>
-      <div class="login-logo-text">Audit<span>Flow</span></div>
+      <div class="logo-mark"><svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><path d="M11 14.5h7M14.5 11v7"/></svg></div>
+      <div class="logo-text">Audit<span>Flow</span></div>
     </div>
-
-    <div class="login-title">Bienvenue</div>
-    <div class="login-subtitle">Connectez-vous à votre espace AuditFlow</div>
-
-    <div class="login-divider"><span>Vous êtes</span></div>
-    <div class="role-selector">
-      <div class="role-btn active" id="role-auditeur" onclick="selectRole('auditeur')">
-        <div class="role-btn-icon">🔍</div>
-        <div class="role-btn-label">Auditeur</div>
-        <div class="role-btn-sub">Accès complet</div>
-      </div>
-      <div class="role-btn" id="role-client" onclick="selectRole('client')">
-        <div class="role-btn-icon">🏢</div>
-        <div class="role-btn-label">Client</div>
-        <div class="role-btn-sub">Mes demandes</div>
-      </div>
-    </div>
-
+    <div class="login-title">Espace client</div>
+    <div class="login-sub">Connectez-vous pour déposer vos documents</div>
     <div class="form-group">
-      <label class="form-label">Adresse email</label>
+      <label class="form-label">Email</label>
       <input class="form-input" id="login-email" type="email" placeholder="votre@email.com" onkeydown="if(event.key==='Enter')login()">
     </div>
     <div class="form-group">
       <label class="form-label">Mot de passe</label>
       <input class="form-input" id="login-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
     </div>
-
-    <button class="btn-login" id="btn-login" onclick="login()">Se connecter</button>
-    <button class="btn-login" id="btn-signup" onclick="signup()" style="background:transparent;color:var(--accent);border:1px solid var(--accent);margin-top:8px;display:none;">Créer mon compte</button>
-
-    <div class="login-error" id="login-error"></div>
-
-    <div class="login-footer">
-      <span id="toggle-text">Pas encore de compte ? </span>
-      <a href="#" onclick="toggleMode()" style="color:var(--accent);" id="toggle-link">Créer un compte</a>
-    </div>
-
+    <button class="btn-full btn-primary-full" id="btn-login" onclick="login()">Se connecter</button>
+    <div class="error-box" id="login-error"></div>
     <div style="margin-top:20px;padding:12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-      <div style="font-size:11.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">COMPTES DE DÉMONSTRATION</div>
+      <div style="font-size:11.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">COMPTE DÉMO</div>
       <div style="font-size:12px;color:var(--text-secondary);">
-        <div style="margin-bottom:4px;">🔍 <strong>Auditeur :</strong> auditeur@fidaexpert.ci</div>
-        <div>🏢 <strong>Client :</strong> client@acmeci.com</div>
-        <div style="margin-top:4px;color:var(--text-muted);">Mot de passe : <strong>AuditFlow2024!</strong></div>
+        <div>📧 client@acmeci.com</div>
+        <div style="margin-top:2px;color:var(--text-muted);">Mot de passe : <strong>AuditFlow2024!</strong></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ APPLICATION PRINCIPALE ═══ -->
+<!-- APP -->
 <div class="app" id="app">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><path d="M11 14.5h7M14.5 11v7"/></svg>
-      </div>
-      <div><div class="logo-text">Audit<span>Flow</span></div></div>
+  <div class="header">
+    <div class="header-logo">
+      <div class="header-logo-mark"><svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><path d="M11 14.5h7M14.5 11v7"/></svg></div>
+      <div class="header-logo-text">Audit<span>Flow</span></div>
     </div>
-
-    <!-- Menu Auditeur -->
-    <div id="menu-auditeur" style="display:none;">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Principal</div>
-        <button class="nav-item active" onclick="showPage('dashboard')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Vue d'ensemble
-        </button>
-        <button class="nav-item" onclick="showPage('requests')">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
-          Demandes
-          <span class="nav-badge" id="badge-retard">0</span>
-        </button>
-        <button class="nav-item" onclick="showPage('clients')">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          Clients
-        </button>
-        <button class="nav-item" onclick="showPage('users')">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Utilisateurs
-        </button>
-      </div>
+    <div class="header-right">
+      <div class="header-user" id="header-user">—</div>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
     </div>
-
-    <!-- Menu Client -->
-    <div id="menu-client" style="display:none;">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Mon espace</div>
-        <button class="nav-item active" onclick="showPage('client-dashboard')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Mes demandes
-        </button>
-      </div>
-    </div>
-
-    <div class="sidebar-footer">
-      <div class="user-pill">
-        <div class="avatar" id="user-avatar">?</div>
-        <div class="user-info">
-          <div class="name" id="user-name">—</div>
-          <div class="role" id="user-role-label">—</div>
-        </div>
-      </div>
-      <button onclick="logout()" style="width:100%;margin-top:8px;padding:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:rgba(255,255,255,0.5);font-size:12px;cursor:pointer;font-family:var(--font);">
-        Déconnexion
-      </button>
-    </div>
-  </aside>
+  </div>
 
   <div class="main">
-    <div class="topbar">
-      <div>
-        <div class="topbar-title" id="topbar-title">Vue d'ensemble</div>
-        <div class="topbar-subtitle" id="topbar-subtitle">Mission Exercice 2024</div>
+    <div class="hero">
+      <div class="hero-title" id="hero-title">Bonjour 👋</div>
+      <div class="hero-sub">Déposez vos documents directement depuis cette page sécurisée</div>
+    </div>
+
+    <!-- Demandes -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Mes demandes en cours</div>
+          <div class="card-sub">Sélectionnez une demande pour déposer vos fichiers</div>
+        </div>
       </div>
-      <div class="topbar-actions">
-        <span class="role-tag" id="role-tag"></span>
-        <button class="btn btn-primary" id="btn-new-request" onclick="openModal('modal-new-request')" style="display:none;">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Nouvelle demande
-        </button>
+      <div class="card-body">
+        <div id="demandes-list"><div class="loading"><div class="loading-spinner"></div>Chargement...</div></div>
       </div>
     </div>
 
-    <div class="content">
+    <!-- Upload -->
+    <div class="card" id="upload-card" style="display:none;">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="upload-title">Déposer un fichier</div>
+          <div class="card-sub" id="upload-sub">—</div>
+        </div>
+        <button class="btn btn-secondary" onclick="deselectDemande()" style="font-size:12px;">✕ Annuler</button>
+      </div>
+      <div class="card-body">
 
-      <!-- DASHBOARD AUDITEUR -->
-      <div class="page active" id="page-dashboard">
-        <div class="page-hero">
-          <div class="hero-title" id="dash-hello">Bonjour 👋 — Mission exercice 2024</div>
-          <div class="hero-subtitle" id="dash-sub">Chargement...</div>
-          <div class="hero-meta">
-            <div class="hero-meta-item"><strong id="kpi-total">—</strong> demandes</div>
-            <div class="hero-meta-item"><strong id="kpi-clients">—</strong> clients actifs</div>
-            <div class="hero-meta-item"><strong id="kpi-retard">—</strong> en retard</div>
+        <div class="upload-zone" id="upload-zone"
+          ondragover="handleDragOver(event)"
+          ondragleave="handleDragLeave(event)"
+          ondrop="handleDrop(event)"
+          onclick="document.getElementById('file-input').click()">
+          <input type="file" id="file-input" style="display:none;" multiple onchange="handleFileSelect(event)">
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="upload-title">Glisser-déposer vos fichiers ici</div>
+          <div class="upload-sub">ou <span style="color:var(--accent);font-weight:500;">cliquez pour sélectionner</span></div>
+          <div class="upload-formats">PDF, Excel (.xlsx), Word (.docx) · Max 50 Mo par fichier</div>
+        </div>
+
+        <div id="file-list" style="margin-top:16px;display:none;">
+          <div style="font-size:12.5px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;">Fichiers sélectionnés</div>
+          <div id="file-items"></div>
+          <div id="progress-container" style="display:none;margin-top:12px;">
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;" id="progress-text">Upload en cours...</div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" id="btn-upload" onclick="uploadFiles()">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Déposer les fichiers
+            </button>
+            <button class="btn btn-secondary" onclick="clearFiles()">Effacer</button>
           </div>
         </div>
-        <div class="stats-grid">
-          <div class="stat-card blue">
-            <div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
-            <div class="stat-label">Total demandes</div>
-            <div class="stat-value" id="s-total">—</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-icon green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="stat-label">En attente</div>
-            <div class="stat-value" id="s-attente">—</div>
-          </div>
-          <div class="stat-card orange">
-            <div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-            <div class="stat-label">Clients actifs</div>
-            <div class="stat-value" id="s-clients">—</div>
-          </div>
-          <div class="stat-card red">
-            <div class="stat-icon red"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
-            <div class="stat-label">En retard</div>
-            <div class="stat-value" id="s-retard">—</div>
-          </div>
-        </div>
-        <div class="section-header">
-          <div><div class="section-title">Demandes récentes</div></div>
-          <button class="btn btn-secondary btn-sm" onclick="showPage('requests')">Voir tout</button>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead><tr><th>Demande</th><th>Client</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
-            <tbody id="dash-table"><tr><td colspan="5"><div class="loading"><div class="loading-spinner"></div>Chargement...</div></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- DEMANDES AUDITEUR -->
-      <div class="page" id="page-requests">
-        <div class="section-header">
-          <div><div class="section-title">Demandes de documents</div><div class="section-sub" id="req-sub">—</div></div>
-          <button class="btn btn-primary" onclick="openModal('modal-new-request')">+ Nouvelle demande</button>
-        </div>
-        <div class="table-container">
-          <div class="table-toolbar">
-            <input class="search-input" placeholder="Rechercher…" oninput="filterReq(this.value)" style="padding-left:12px;">
-            <select class="filter-select" onchange="filterReqStatus(this.value)">
-              <option value="">Tous les statuts</option>
-              <option>En retard</option>
-              <option>En attente</option>
-            </select>
-            <div style="margin-left:auto;font-size:13px;color:var(--text-muted);" id="req-count">—</div>
-          </div>
-          <table>
-            <thead><tr><th>Demande</th><th>Client</th><th>Société</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
-            <tbody id="req-table"><tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- CLIENTS -->
-      <div class="page" id="page-clients">
-        <div class="section-header">
-          <div><div class="section-title">Clients</div><div class="section-sub" id="cli-sub">—</div></div>
-        </div>
-        <div id="cli-grid" class="client-grid"><div class="loading"><div class="loading-spinner"></div></div></div>
-      </div>
-
-      <!-- UTILISATEURS -->
-      <div class="page" id="page-users">
-        <div class="section-header">
-          <div><div class="section-title">Gestion des utilisateurs</div><div class="section-sub">Auditeurs et clients connectés</div></div>
-          <button class="btn btn-primary" onclick="openModal('modal-invite')">+ Inviter un utilisateur</button>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead><tr><th>Email</th><th>Rôle</th><th>Statut</th><th>Créé le</th></tr></thead>
-            <tbody id="users-table"><tr><td colspan="4"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- DASHBOARD CLIENT -->
-      <div class="page" id="page-client-dashboard">
-        <div class="page-hero">
-          <div class="hero-title" id="client-hello">Bonjour 👋</div>
-          <div class="hero-subtitle">Voici vos demandes de documents en cours</div>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead><tr><th>Demande</th><th>Société</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
-            <tbody id="client-table"><tr><td colspan="5"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- MODALS -->
-<div class="modal-backdrop" id="modal-new-request" onclick="closeModalOnBg(event,'modal-new-request')">
-  <div class="modal">
-    <div class="modal-header">
-      <div><div class="modal-title">Nouvelle demande</div><div class="modal-subtitle">Le JSON sera généré pour data.json</div></div>
-      <button style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);" onclick="closeModal('modal-new-request')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Nom de la demande *</label><input class="form-input" id="n-nom" placeholder="ex : Bilan comptable 2023" type="text"></div>
-      <div class="form-group"><label class="form-label">Client *</label><input class="form-input" id="n-client" placeholder="Nom du client" type="text"></div>
-      <div class="form-group"><label class="form-label">Société</label><input class="form-input" id="n-societe" placeholder="Nom de la société" type="text"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Date limite *</label><input class="form-input" id="n-date" type="date"></div>
-        <div class="form-group"><label class="form-label">Priorité</label><select class="form-select" id="n-priorite"><option>Normale</option><option>Haute</option></select></div>
-      </div>
-      <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="n-desc" placeholder="Décrivez les documents attendus…"></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-new-request')">Annuler</button>
-      <button class="btn btn-primary" onclick="generateJSON()">Générer JSON</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="modal-json" onclick="closeModalOnBg(event,'modal-json')">
-  <div class="modal">
-    <div class="modal-header">
-      <div><div class="modal-title">JSON à ajouter dans data.json</div><div class="modal-subtitle">Copiez et ajoutez dans le tableau "demandes" sur GitHub</div></div>
-      <button style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);" onclick="closeModal('modal-json')">✕</button>
-    </div>
-    <div class="modal-body">
-      <textarea class="form-input" id="json-out" rows="10" style="font-family:monospace;font-size:12px;"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-json')">Fermer</button>
-      <button class="btn btn-primary" onclick="copyJSON()">📋 Copier</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="modal-invite" onclick="closeModalOnBg(event,'modal-invite')">
-  <div class="modal">
-    <div class="modal-header">
-      <div><div class="modal-title">Inviter un utilisateur</div><div class="modal-subtitle">Un email de création de compte sera envoyé</div></div>
-      <button style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);" onclick="closeModal('modal-invite')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="inv-email" type="email" placeholder="client@entreprise.ci"></div>
-      <div class="form-group">
-        <label class="form-label">Rôle</label>
-        <select class="form-select" id="inv-role">
-          <option value="client">Client</option>
-          <option value="auditeur">Auditeur</option>
-        </select>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-invite')">Annuler</button>
-      <button class="btn btn-primary" onclick="inviteUser()">Envoyer l'invitation</button>
+
+    <!-- Fichiers déposés -->
+    <div class="card" id="uploaded-card" style="display:none;">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Fichiers déposés</div>
+          <div class="card-sub" id="uploaded-sub">—</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="uploaded-list"><div class="empty">Aucun fichier déposé pour cette demande.</div></div>
+      </div>
     </div>
+
   </div>
 </div>
 
 <div class="toast" id="toast">
-  <div class="toast-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="toast-icon" id="toast-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
   <span id="toast-msg">Action réalisée.</span>
 </div>
 
@@ -508,114 +287,59 @@ textarea.form-input { resize: vertical; min-height: 90px; }
 const SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
 const DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
+const BUCKET = 'documents';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-let currentRole = 'auditeur';
+let selectedDemande = null;
+let selectedFiles = [];
 let appData = { demandes: [], clients: [] };
-let isSignup = false;
 
-function selectRole(r) {
-  currentRole = r;
-  document.getElementById('role-auditeur').classList.toggle('active', r === 'auditeur');
-  document.getElementById('role-client').classList.toggle('active', r === 'client');
-}
-
-function toggleMode() {
-  isSignup = !isSignup;
-  document.getElementById('btn-login').style.display = isSignup ? 'none' : 'block';
-  document.getElementById('btn-signup').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('toggle-text').textContent = isSignup ? 'Déjà un compte ? ' : 'Pas encore de compte ? ';
-  document.getElementById('toggle-link').textContent = isSignup ? 'Se connecter' : 'Créer un compte';
-}
-
+// AUTH
 async function login() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const err = document.getElementById('login-error');
   const btn = document.getElementById('btn-login');
-  if (!email || !password) { showError('Veuillez remplir tous les champs.'); return; }
-  btn.disabled = true;
-  btn.textContent = 'Connexion...';
+  if (!email || !password) { showError('Remplissez tous les champs.'); return; }
+  btn.disabled = true; btn.textContent = 'Connexion...';
   try {
     const { data, error } = await sb.auth.signInWithPassword({ email, password });
     if (error) {
-      if (error.message.includes('Invalid login')) showError('Email ou mot de passe incorrect.');
-      else if (error.message.includes('Email not confirmed')) showError('Veuillez confirmer votre email.');
-      else showError(error.message);
-      btn.disabled = false;
-      btn.textContent = 'Se connecter';
+      showError('Email ou mot de passe incorrect.');
+      btn.disabled = false; btn.textContent = 'Se connecter';
       return;
     }
     currentUser = data.user;
-    await loadUserMeta();
     showApp();
   } catch(e) {
-    showError('Erreur de connexion. Vérifiez votre connexion internet.');
-    btn.disabled = false;
-    btn.textContent = 'Se connecter';
+    showError('Erreur de connexion.');
+    btn.disabled = false; btn.textContent = 'Se connecter';
   }
-}
-
-async function signup() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!email || !password) { showError('Veuillez remplir tous les champs.'); return; }
-  if (password.length < 6) { showError('Le mot de passe doit faire au moins 6 caractères.'); return; }
-  const btn = document.getElementById('btn-signup');
-  btn.disabled = true;
-  btn.textContent = 'Création...';
-  try {
-    const { data, error } = await sb.auth.signUp({
-      email, password,
-      options: { data: { role: currentRole } }
-    });
-    if (error) { showError(error.message); btn.disabled = false; btn.textContent = 'Créer mon compte'; return; }
-    showToast('Compte créé ! Vous pouvez maintenant vous connecter.');
-    toggleMode();
-    btn.disabled = false;
-    btn.textContent = 'Créer mon compte';
-  } catch(e) {
-    showError('Erreur lors de la création du compte.');
-    btn.disabled = false;
-    btn.textContent = 'Créer mon compte';
-  }
-}
-
-async function loadUserMeta() {
-  const meta = currentUser.user_metadata || {};
-  currentRole = meta.role || currentRole;
 }
 
 function showError(msg) {
   const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-page').style.display = 'flex';
+  currentUser = null; selectedDemande = null; selectedFiles = [];
+  document.getElementById('btn-login').disabled = false;
+  document.getElementById('btn-login').textContent = 'Se connecter';
 }
 
 async function showApp() {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').classList.add('visible');
-  const email = currentUser.email;
-  const initiales = email.substring(0,2).toUpperCase();
-  document.getElementById('user-avatar').textContent = initiales;
-  document.getElementById('user-name').textContent = email;
-  document.getElementById('user-role-label').textContent = currentRole === 'auditeur' ? 'Auditeur' : 'Client';
-  if (currentRole === 'auditeur') {
-    document.getElementById('menu-auditeur').style.display = 'block';
-    document.getElementById('btn-new-request').style.display = 'flex';
-    document.getElementById('role-tag').textContent = '🔍 Auditeur';
-    document.getElementById('role-tag').className = 'role-tag role-auditeur';
-    showPage('dashboard');
-  } else {
-    document.getElementById('menu-client').style.display = 'block';
-    document.getElementById('role-tag').textContent = '🏢 Client';
-    document.getElementById('role-tag').className = 'role-tag role-client';
-    document.getElementById('client-hello').textContent = `Bonjour ${email.split('@')[0]} 👋`;
-    showPage('client-dashboard');
-  }
+  const name = currentUser.email.split('@')[0];
+  document.getElementById('hero-title').textContent = `Bonjour ${name} 👋`;
+  document.getElementById('header-user').textContent = currentUser.email;
   await loadData();
 }
 
@@ -623,18 +347,164 @@ async function loadData() {
   try {
     const r = await fetch(DATA_URL + '?t=' + Date.now());
     appData = await r.json();
-    renderAll();
+    renderDemandes();
   } catch(e) {
-    showToast('Erreur de chargement des données.');
+    showToast('Erreur de chargement.', true);
   }
 }
 
-function badgeHTML(s) {
-  const map = { 'En retard': 'badge-red', 'Reçu': 'badge-green', 'En attente': 'badge-orange', 'Envoyé': 'badge-blue' };
-  return `<span class="badge ${map[s]||'badge-gray'}">${s}</span>`;
+// DEMANDES
+function renderDemandes() {
+  const dem = appData.demandes || [];
+  const list = document.getElementById('demandes-list');
+  if (dem.length === 0) {
+    list.innerHTML = '<div class="empty">Aucune demande en cours.</div>';
+    return;
+  }
+  list.innerHTML = dem.map(d => {
+    const iconClass = d.statut === 'En retard' ? 'retard' : d.statut === 'Reçu' ? 'recu' : 'attente';
+    const badgeClass = d.statut === 'En retard' ? 'badge-red' : d.statut === 'Reçu' ? 'badge-green' : 'badge-orange';
+    const selected = selectedDemande && selectedDemande.id === d.id;
+    return `<div class="demande-item ${selected ? 'selected' : ''}" onclick="selectDemande(${JSON.stringify(d).replace(/"/g,'&quot;')})">
+      <div class="demande-icon ${iconClass}">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div class="demande-nom">${d.nom}</div>
+        <div class="demande-meta">${d.id} · Date limite : ${fmtDate(d.datelimite)}</div>
+      </div>
+      <span class="badge ${badgeClass}">${d.statut}</span>
+      <svg width="16" height="16" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>`;
+  }).join('');
 }
-function prioHTML(p) {
-  return p === 'Haute' ? '<span class="priority-high">Haute</span>' : '<span class="priority-normal">Normale</span>';
+
+async function selectDemande(d) {
+  selectedDemande = d;
+  renderDemandes();
+  document.getElementById('upload-card').style.display = 'block';
+  document.getElementById('upload-title').textContent = `Déposer pour : ${d.nom}`;
+  document.getElementById('upload-sub').textContent = `${d.id} · ${d.client} — ${d.societe || ''}`;
+  document.getElementById('uploaded-card').style.display = 'block';
+  document.getElementById('uploaded-sub').textContent = `Fichiers pour ${d.nom}`;
+  clearFiles();
+  await loadUploadedFiles(d.id);
+  document.getElementById('upload-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deselectDemande() {
+  selectedDemande = null;
+  renderDemandes();
+  document.getElementById('upload-card').style.display = 'none';
+  document.getElementById('uploaded-card').style.display = 'none';
+  clearFiles();
+}
+
+// UPLOADED FILES
+async function loadUploadedFiles(demandeId) {
+  const list = document.getElementById('uploaded-list');
+  list.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+  try {
+    const { data, error } = await sb.storage.from(BUCKET).list(demandeId, { limit: 50 });
+    if (error || !data || data.length === 0) {
+      list.innerHTML = '<div class="empty">Aucun fichier déposé pour cette demande.</div>';
+      return;
+    }
+    list.innerHTML = data.map(f => {
+      const ext = f.name.split('.').pop().toLowerCase();
+      const extColors = { pdf: 'pdf', xlsx: 'xlsx', xls: 'xlsx', docx: 'docx', doc: 'docx' };
+      const extClass = extColors[ext] || 'other';
+      const size = f.metadata?.size ? formatSize(f.metadata.size) : '—';
+      const date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR') : '—';
+      const url = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${demandeId}/${f.name}`;
+      return `<div class="uploaded-item">
+        <div class="uploaded-ext ${extClass}" style="background:${extClass==='pdf'?'var(--red-light)':extClass==='xlsx'?'var(--green-light)':extClass==='docx'?'var(--accent-light)':'#FAF5FF'};color:${extClass==='pdf'?'var(--red)':extClass==='xlsx'?'var(--green)':extClass==='docx'?'var(--accent)':'#6B46C1'};">
+          ${ext.toUpperCase().substring(0,4)}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</div>
+          <div style="font-size:12px;color:var(--text-muted);">${size} · Déposé le ${date}</div>
+        </div>
+        <a href="${url}" target="_blank" style="padding:5px 11px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-primary);text-decoration:none;white-space:nowrap;">
+          Télécharger
+        </a>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="empty">Erreur de chargement des fichiers.</div>';
+  }
+}
+
+// FILE SELECTION
+function handleDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('dragover'); }
+function handleDragLeave() { document.getElementById('upload-zone').classList.remove('dragover'); }
+function handleDrop(e) { e.preventDefault(); document.getElementById('upload-zone').classList.remove('dragover'); addFiles(e.dataTransfer.files); }
+function handleFileSelect(e) { addFiles(e.target.files); }
+
+function addFiles(files) {
+  Array.from(files).forEach(f => {
+    if (f.size > 50 * 1024 * 1024) { showToast(`${f.name} dépasse 50 Mo.`, true); return; }
+    if (!selectedFiles.find(x => x.name === f.name)) selectedFiles.push(f);
+  });
+  renderFileList();
+}
+
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  const items = document.getElementById('file-items');
+  if (selectedFiles.length === 0) { list.style.display = 'none'; return; }
+  list.style.display = 'block';
+  items.innerHTML = selectedFiles.map((f, i) => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    const extColors = { pdf: ['var(--red-light)', 'var(--red)'], xlsx: ['var(--green-light)', 'var(--green)'], xls: ['var(--green-light)', 'var(--green)'], docx: ['var(--accent-light)', 'var(--accent)'], doc: ['var(--accent-light)', 'var(--accent)'] };
+    const [bg, color] = extColors[ext] || ['#FAF5FF', '#6B46C1'];
+    return `<div class="file-item">
+      <div class="file-ext" style="background:${bg};color:${color};">${ext.toUpperCase().substring(0,4)}</div>
+      <div class="file-name">${f.name}</div>
+      <div class="file-size">${formatSize(f.size)}</div>
+      <button class="file-remove" onclick="removeFile(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function removeFile(i) { selectedFiles.splice(i, 1); renderFileList(); }
+function clearFiles() { selectedFiles = []; renderFileList(); document.getElementById('file-input').value = ''; document.getElementById('progress-container').style.display = 'none'; }
+
+// UPLOAD
+async function uploadFiles() {
+  if (!selectedDemande) { showToast('Sélectionnez une demande.', true); return; }
+  if (selectedFiles.length === 0) { showToast('Ajoutez au moins un fichier.', true); return; }
+  const btn = document.getElementById('btn-upload');
+  const progress = document.getElementById('progress-container');
+  const progressFill = document.getElementById('progress-fill');
+  const progressText = document.getElementById('progress-text');
+  btn.disabled = true;
+  progress.style.display = 'block';
+  let uploaded = 0;
+  for (const file of selectedFiles) {
+    progressText.textContent = `Upload de ${file.name}...`;
+    progressFill.style.width = `${Math.round((uploaded / selectedFiles.length) * 100)}%`;
+    const path = `${selectedDemande.id}/${Date.now()}_${file.name}`;
+    const { error } = await sb.storage.from(BUCKET).upload(path, file, { upsert: true });
+    if (error) { showToast(`Erreur pour ${file.name} : ${error.message}`, true); }
+    else { uploaded++; }
+  }
+  progressFill.style.width = '100%';
+  progressText.textContent = `${uploaded} fichier(s) déposé(s) avec succès !`;
+  showToast(`✅ ${uploaded} fichier(s) déposé(s) avec succès !`);
+  btn.disabled = false;
+  selectedFiles = [];
+  renderFileList();
+  document.getElementById('file-input').value = '';
+  await loadUploadedFiles(selectedDemande.id);
+  setTimeout(() => { progress.style.display = 'none'; progressFill.style.width = '0%'; }, 3000);
+}
+
+// UTILS
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' o';
+  if (bytes < 1048576) return Math.round(bytes / 1024) + ' Ko';
+  return (bytes / 1048576).toFixed(1) + ' Mo';
 }
 function fmtDate(d) {
   if (!d) return '—';
@@ -643,199 +513,20 @@ function fmtDate(d) {
   return `${parseInt(j)} ${mois[parseInt(m)-1]} ${y}`;
 }
 
-function renderAll() {
-  const dem = appData.demandes || [];
-  const cli = appData.clients || [];
-  const retard = dem.filter(x => x.statut === 'En retard').length;
-  const attente = dem.filter(x => x.statut === 'En attente').length;
-
-  if (currentRole === 'auditeur') {
-    document.getElementById('dash-hello').textContent = `Bonjour ${currentUser.email.split('@')[0]} 👋 — Mission exercice 2024`;
-    document.getElementById('dash-sub').textContent = retard > 0 ? `${retard} demande(s) en retard nécessitent votre attention` : 'Toutes les demandes sont à jour ✓';
-    document.getElementById('kpi-total').textContent = dem.length;
-    document.getElementById('kpi-clients').textContent = cli.filter(x=>x.statut==='Actif').length;
-    document.getElementById('kpi-retard').textContent = retard;
-    document.getElementById('s-total').textContent = dem.length;
-    document.getElementById('s-attente').textContent = attente;
-    document.getElementById('s-clients').textContent = cli.length;
-    document.getElementById('s-retard').textContent = retard;
-    document.getElementById('badge-retard').textContent = retard;
-    document.getElementById('req-sub').textContent = `${dem.length} demandes — Mission exercice 2024`;
-    document.getElementById('req-count').textContent = `${dem.length} résultats`;
-    renderReqTable(dem);
-    document.getElementById('cli-sub').textContent = `${cli.length} clients actifs`;
-    document.getElementById('cli-grid').innerHTML = cli.map(c => {
-      const init = c.nom.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
-      const dCli = dem.filter(x=>x.client===c.nom);
-      const ret = dCli.filter(x=>x.statut==='En retard').length;
-      return `<div class="client-card">
-        <div class="client-header">
-          <div class="client-avatar">${init}</div>
-          <div><div style="font-weight:600;">${c.nom}</div><div style="font-size:12px;color:var(--text-muted);">${c.email}</div></div>
-          <div style="margin-left:auto;"><span class="badge ${c.statut==='Actif'?'badge-green':'badge-orange'}">${c.statut}</span></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-          <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Société</div><div style="font-size:13px;font-weight:600;">${c.societe}</div></div>
-          <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">${dCli.length}</div></div>
-          <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:${ret>0?'var(--red)':'var(--text-muted)'};">${ret}</div></div>
-        </div>
-      </div>`;
-    }).join('');
-    document.getElementById('dash-table').innerHTML = dem.slice(0,5).map(x=>`<tr>
-      <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
-      <td>${x.client}</td>
-      <td>${badgeHTML(x.statut)}</td>
-      <td>${prioHTML(x.priorite)}</td>
-      <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
-    </tr>`).join('');
-    loadUsers();
-  } else {
-    const email = currentUser.email;
-    const myDem = dem;
-    document.getElementById('client-table').innerHTML = myDem.length === 0
-      ? '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">Aucune demande pour le moment.</td></tr>'
-      : myDem.map(x=>`<tr>
-          <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
-          <td>${x.societe||x.client}</td>
-          <td>${badgeHTML(x.statut)}</td>
-          <td>${prioHTML(x.priorite)}</td>
-          <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
-        </tr>`).join('');
-  }
-}
-
-function renderReqTable(data) {
-  document.getElementById('req-table').innerHTML = data.length === 0
-    ? '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Aucune demande.</td></tr>'
-    : data.map(x=>`<tr>
-        <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
-        <td>${x.client}</td>
-        <td>${x.societe||'—'}</td>
-        <td>${badgeHTML(x.statut)}</td>
-        <td>${prioHTML(x.priorite)}</td>
-        <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
-      </tr>`).join('');
-}
-
-function filterReq(v) {
-  const f = appData.demandes.filter(x=>x.nom.toLowerCase().includes(v.toLowerCase())||x.client.toLowerCase().includes(v.toLowerCase()));
-  renderReqTable(f);
-  document.getElementById('req-count').textContent = `${f.length} résultats`;
-}
-function filterReqStatus(v) {
-  const f = v ? appData.demandes.filter(x=>x.statut===v) : appData.demandes;
-  renderReqTable(f);
-  document.getElementById('req-count').textContent = `${f.length} résultats`;
-}
-
-async function loadUsers() {
-  try {
-    const { data, error } = await sb.auth.admin.listUsers();
-    if (error || !data) {
-      document.getElementById('users-table').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted);">Accès admin requis pour voir les utilisateurs.</td></tr>';
-      return;
-    }
-    document.getElementById('users-table').innerHTML = data.users.map(u=>{
-      const role = u.user_metadata?.role || 'client';
-      return `<tr>
-        <td>${u.email}</td>
-        <td><span class="badge ${role==='auditeur'?'badge-blue':'badge-green'}">${role}</span></td>
-        <td><span class="badge badge-green">Actif</span></td>
-        <td style="font-size:12px;color:var(--text-muted);">${new Date(u.created_at).toLocaleDateString('fr-FR')}</td>
-      </tr>`;
-    }).join('');
-  } catch(e) {
-    document.getElementById('users-table').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted);">Liste disponible avec clé service_role.</td></tr>';
-  }
-}
-
-async function inviteUser() {
-  const email = document.getElementById('inv-email').value.trim();
-  const role = document.getElementById('inv-role').value;
-  if (!email) { showToast('Entrez un email.'); return; }
-  closeModal('modal-invite');
-  showToast(`Invitation envoyée à ${email} (rôle: ${role})`);
-}
-
-async function logout() {
-  await sb.auth.signOut();
-  document.getElementById('app').classList.remove('visible');
-  document.getElementById('login-page').style.display = 'flex';
-  document.getElementById('menu-auditeur').style.display = 'none';
-  document.getElementById('menu-client').style.display = 'none';
-  document.getElementById('btn-login').disabled = false;
-  document.getElementById('btn-login').textContent = 'Se connecter';
-  document.getElementById('login-error').classList.remove('show');
-  currentUser = null;
-}
-
-const pagesMeta = {
-  'dashboard': { title: 'Vue d\'ensemble', sub: 'Mission Exercice 2024 — Synthèse globale' },
-  'requests': { title: 'Demandes de documents', sub: '' },
-  'clients': { title: 'Clients', sub: '' },
-  'users': { title: 'Utilisateurs', sub: 'Gestion des accès' },
-  'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir' },
-};
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const p = document.getElementById('page-'+id);
-  if (p) p.classList.add('active');
-  const navMap = { dashboard:0, requests:1, clients:2, users:3, 'client-dashboard':0 };
-  const menu = currentRole === 'auditeur' ? '#menu-auditeur' : '#menu-client';
-  const items = document.querySelectorAll(menu+' .nav-item');
-  if (navMap[id] !== undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
-  if (pagesMeta[id]) {
-    document.getElementById('topbar-title').textContent = pagesMeta[id].title;
-    document.getElementById('topbar-subtitle').textContent = pagesMeta[id].sub;
-  }
-}
-
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function closeModalOnBg(e, id) { if (e.target===document.getElementById(id)) closeModal(id); }
-
 let toastTimer;
-function showToast(msg) {
+function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
+  const icon = document.getElementById('toast-icon');
   document.getElementById('toast-msg').textContent = msg;
+  icon.className = `toast-icon ${isError ? 'error' : ''}`;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 4000);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-function generateJSON() {
-  const nom = document.getElementById('n-nom').value;
-  const client = document.getElementById('n-client').value;
-  const date = document.getElementById('n-date').value;
-  if (!nom||!client||!date) { showToast('Remplissez les champs obligatoires.'); return; }
-  const obj = {
-    id: 'DEM-'+String(Math.floor(Math.random()*9000)+1000),
-    nom, client,
-    societe: document.getElementById('n-societe').value,
-    description: document.getElementById('n-desc').value,
-    datelimite: date,
-    statut: 'En attente',
-    priorite: document.getElementById('n-priorite').value
-  };
-  document.getElementById('json-out').value = JSON.stringify(obj, null, 2);
-  closeModal('modal-new-request');
-  openModal('modal-json');
-}
-
-function copyJSON() {
-  const t = document.getElementById('json-out');
-  t.select();
-  document.execCommand('copy');
-  showToast('JSON copié ! Ajoutez-le dans data.json sur GitHub.');
-}
-
-// Vérifier session existante
+// SESSION
 sb.auth.getSession().then(({ data }) => {
-  if (data.session) {
-    currentUser = data.session.user;
-    loadUserMeta().then(showApp);
-  }
+  if (data.session) { currentUser = data.session.user; showApp(); }
 });
 </script>
 </body>
