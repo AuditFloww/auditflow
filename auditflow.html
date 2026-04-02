@@ -47,18 +47,13 @@
   --font: 'DM Sans', -apple-system, sans-serif;
   --mono: 'DM Mono', monospace;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
-
-/* ── LAYOUT ── */
 .app { display: flex; height: 100vh; overflow: hidden; }
 .sidebar { width: var(--sidebar-w); background: var(--bg-sidebar); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
 .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 .topbar { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .content { flex: 1; padding: 32px 28px; }
-
-/* ── SIDEBAR ── */
 .sidebar-logo { padding: 24px 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
 .logo-mark { width: 32px; height: 32px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .logo-mark svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
@@ -78,8 +73,6 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .avatar-sm { width: 26px; height: 26px; font-size: 10px; }
 .user-info .name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); }
 .user-info .role { font-size: 11px; color: rgba(255,255,255,0.35); }
-
-/* ── TOPBAR ── */
 .topbar-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
 .topbar-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
@@ -99,8 +92,6 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .icon-btn { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
 .icon-btn:hover { border-color: var(--border-strong); color: var(--text-primary); background: var(--bg); }
 .icon-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-
-/* ── STATUS BADGES ── */
 .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
 .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .badge-red { background: var(--red-light); color: var(--red); border: 1px solid #FEB2B2; }
@@ -113,21 +104,15 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .badge-blue::before { background: var(--blue); }
 .badge-gray { background: #F7FAFC; color: #4A5568; border: 1px solid #E2E8F0; }
 .badge-gray::before { background: #A0AEC0; }
-
-/* Priority */
 .priority-high { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--red); }
 .priority-normal { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
 .priority-high::before { content: '▲'; font-size: 9px; }
 .priority-normal::before { content: '—'; }
-
-/* ── CARDS ── */
 .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 .card-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
 .card-body { padding: 20px 24px 24px; }
 .card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
 .card-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-/* ── STAT CARDS ── */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
 .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; position: relative; overflow: hidden; transition: box-shadow 0.2s; }
 .stat-card:hover { box-shadow: var(--shadow-md); }
@@ -148,8 +133,6 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .stat-icon.green { background: var(--green-light); color: #38A169; }
 .stat-icon.orange { background: var(--orange-light); color: #DD6B20; }
 .stat-icon.red { background: var(--red-light); color: var(--red); }
-
-/* ── TABLE ── */
 .table-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
 .table-toolbar { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 .search-box { position: relative; }
@@ -172,20 +155,14 @@ tbody td:last-child { padding-right: 20px; text-align: right; }
 .td-secondary { color: var(--text-secondary); font-size: 12.5px; margin-top: 1px; }
 .td-mono { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); }
 .table-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
-
-/* ── PROGRESS BAR ── */
 .progress-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
 .progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
-
-/* ── TIMELINE ── */
 .timeline { display: flex; flex-direction: column; gap: 0; }
 .timeline-item { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
 .timeline-item:last-child { padding-bottom: 0; }
 .timeline-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; border: 2px solid var(--bg-card); box-shadow: 0 0 0 2px currentColor; }
 .timeline-line { position: absolute; left: 4.5px; top: 14px; bottom: 0; width: 1px; background: var(--border); }
 .timeline-item:last-child .timeline-line { display: none; }
-
-/* ── MODAL ── */
 .modal-backdrop { position: fixed; inset: 0; background: rgba(13,27,42,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
 .modal-backdrop.open { opacity: 1; pointer-events: all; }
 .modal { background: var(--bg-card); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; transform: translateY(8px); transition: transform 0.2s; }
@@ -195,8 +172,6 @@ tbody td:last-child { padding-right: 20px; text-align: right; }
 .modal-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 .modal-body { padding: 20px 24px; }
 .modal-footer { padding: 0 24px 20px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 16px; }
-
-/* ── FORM ── */
 .form-group { margin-bottom: 18px; }
 .form-label { display: block; font-size: 12.5px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
 .form-label span { color: var(--red); margin-left: 2px; }
@@ -207,8 +182,6 @@ tbody td:last-child { padding-right: 20px; text-align: right; }
 textarea.form-input { resize: vertical; min-height: 90px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-
-/* ── UPLOAD ZONE ── */
 .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; background: var(--bg); transition: all 0.2s; cursor: pointer; }
 .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-light); }
 .upload-icon { width: 48px; height: 48px; background: var(--accent-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
@@ -216,57 +189,48 @@ textarea.form-input { resize: vertical; min-height: 90px; }
 .upload-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .upload-subtitle { font-size: 13px; color: var(--text-muted); }
 .upload-formats { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; }
-
-/* ── PAGES ── */
 .page { display: none; }
 .page.active { display: block; }
-
-/* ── SECTION HEADER ── */
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .section-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
 .section-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
 .breadcrumb a { color: var(--accent); cursor: pointer; text-decoration: none; }
 .breadcrumb a:hover { text-decoration: underline; }
-
-/* ── DOCUMENT ITEM ── */
-.doc-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.doc-item:last-child { border-bottom: none; }
 .doc-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .doc-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .doc-icon.pdf { background: #FFF5F5; color: var(--red); }
 .doc-icon.xlsx { background: #F0FFF4; color: #38A169; }
 .doc-icon.docx { background: var(--blue-light); color: var(--blue); }
-.doc-icon.img { background: #FAF5FF; color: #6B46C1; }
-.doc-name { font-weight: 500; font-size: 13.5px; }
-.doc-meta { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-
-/* ── NOTIFICATION TOAST ── */
 .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: #fff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 200; font-size: 13.5px; display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 340px; }
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast-icon { width: 22px; height: 22px; border-radius: 50%; background: #38A169; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .toast-icon svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-
-/* ── CHIP FILTERS ── */
-.chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip { padding: 5px 12px; border-radius: 20px; font-size: 12.5px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); transition: all 0.15s; }
-.chip:hover { border-color: var(--accent); color: var(--accent); }
-.chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-/* ── DETAIL CARD ── */
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.detail-item { }
-.detail-label { font-size: 11.5px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-.detail-value { font-size: 14px; color: var(--text-primary); font-weight: 500; }
-
-/* ── CLIENT CARD ── */
 .client-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all 0.2s; cursor: pointer; }
 .client-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
 .client-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .client-avatar { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--accent); }
 .client-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-
-/* ── RESPONSIVE ── */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.detail-label { font-size: 11.5px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.detail-value { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+.page-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius-xl); padding: 28px 32px; color: #fff; margin-bottom: 28px; position: relative; overflow: hidden; }
+.page-hero::after { content: ''; position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; border-radius: 50%; background: rgba(30,126,224,0.15); }
+.page-hero::before { content: ''; position: absolute; bottom: -60px; right: 60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(30,126,224,0.08); }
+.hero-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; position: relative; z-index: 1; }
+.hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; position: relative; z-index: 1; }
+.hero-meta { display: flex; gap: 20px; margin-top: 16px; position: relative; z-index: 1; }
+.hero-meta-item { font-size: 13px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
+.hero-meta-item strong { color: #fff; font-weight: 600; }
+.loading { text-align: center; padding: 40px; color: var(--text-muted); font-size: 13px; }
+.loading-spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.page.active { animation: fadeIn 0.2s ease; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .form-row { grid-template-columns: 1fr; }
@@ -276,110 +240,40 @@ textarea.form-input { resize: vertical; min-height: 90px; }
   :root { --sidebar-w: 200px; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
-
-/* ── HEADER ACCENT ── */
-.page-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius-xl); padding: 28px 32px; color: #fff; margin-bottom: 28px; position: relative; overflow: hidden; }
-.page-hero::after { content: ''; position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; border-radius: 50%; background: rgba(30,126,224,0.15); }
-.page-hero::before { content: ''; position: absolute; bottom: -60px; right: 60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(30,126,224,0.08); }
-.hero-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; position: relative; z-index: 1; }
-.hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; position: relative; z-index: 1; }
-.hero-meta { display: flex; gap: 20px; margin-top: 16px; position: relative; z-index: 1; }
-.hero-meta-item { font-size: 13px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
-.hero-meta-item strong { color: #fff; font-weight: 600; }
-
-/* ── EMPTY STATE ── */
-.empty-state { text-align: center; padding: 60px 24px; }
-.empty-icon { width: 60px; height: 60px; background: var(--bg); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-.empty-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--text-muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.empty-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-.empty-sub { font-size: 13px; color: var(--text-muted); }
-
-/* ── TABS ── */
-.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
-.tab { padding: 10px 18px; font-size: 13.5px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
-.tab:hover { color: var(--text-primary); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* ── POWER AUTOMATE FLOW ── */
-.flow-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; }
-.flow-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-.flow-header:hover { background: #FAFBFC; }
-.flow-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.flow-name { font-size: 14px; font-weight: 500; }
-.flow-trigger { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-.flow-status { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.page.active { animation: fadeIn 0.2s ease; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.spinner { animation: spin 0.8s linear infinite; }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 </style>
 </head>
 <body>
-
 <div class="app">
-
-<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-mark">
       <svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><path d="M11 14.5h7M14.5 11v7"/></svg>
     </div>
-    <div>
-      <div class="logo-text">Audit<span>Flow</span></div>
-    </div>
+    <div><div class="logo-text">Audit<span>Flow</span></div></div>
   </div>
-
-  <!-- Auditeur view -->
-  <div id="sidebar-auditor">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Principal</div>
-      <button class="nav-item active" onclick="showPage('dashboard-auditor')">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Vue d'ensemble
-      </button>
-      <button class="nav-item" onclick="showPage('requests')">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-        Demandes
-        <span class="nav-badge alert">3</span>
-      </button>
-      <button class="nav-item" onclick="showPage('clients')">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Clients
-      </button>
-      <button class="nav-item" onclick="showPage('documents')">
-        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-        Documents reçus
-        <span class="nav-badge">12</span>
-      </button>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Automatisations</div>
-      <button class="nav-item" onclick="showPage('automate')">
-        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Power Automate
-      </button>
-      <button class="nav-item" onclick="showPage('reporting')">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Reporting
-      </button>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Paramètres</div>
-      <button class="nav-item" onclick="showPage('settings')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        Configuration
-      </button>
-    </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Principal</div>
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Vue d'ensemble
+    </button>
+    <button class="nav-item" onclick="showPage('requests')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      Demandes
+      <span class="nav-badge alert" id="badge-retard">0</span>
+    </button>
+    <button class="nav-item" onclick="showPage('clients')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Clients
+    </button>
   </div>
-
+  <div class="sidebar-section">
+    <div class="sidebar-label">Paramètres</div>
+    <button class="nav-item" onclick="showPage('settings')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configuration
+    </button>
+  </div>
   <div class="sidebar-footer">
     <div class="user-pill">
       <div class="avatar">MA</div>
@@ -391,11 +285,8 @@ textarea.form-input { resize: vertical; min-height: 90px; }
   </div>
 </aside>
 
-<!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
 <div class="main">
-
-  <!-- ── TOPBAR ── -->
-  <div class="topbar" id="topbar">
+  <div class="topbar">
     <div>
       <div class="topbar-title" id="topbar-title">Vue d'ensemble</div>
       <div class="topbar-subtitle" id="topbar-subtitle">Mission Exercice 2024 — Synthèse globale</div>
@@ -412,245 +303,50 @@ textarea.form-input { resize: vertical; min-height: 90px; }
     </div>
   </div>
 
-  <!-- ═══ CONTENT AREA ═══ -->
   <div class="content">
 
-    <!-- ════════════════════════════════════
-         PAGE 1 : DASHBOARD AUDITEUR
-         ════════════════════════════════════ -->
-    <div class="page active" id="page-dashboard-auditor">
-
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
       <div class="page-hero">
         <div class="hero-title">Bonjour, Marie 👋 — Mission exercice 2024</div>
-        <div class="hero-subtitle">3 demandes en retard nécessitent votre attention</div>
+        <div class="hero-subtitle" id="hero-subtitle">Chargement des données...</div>
         <div class="hero-meta">
-          <div class="hero-meta-item"><strong>5</strong> clients actifs</div>
-          <div class="hero-meta-item"><strong>24</strong> demandes en cours</div>
-          <div class="hero-meta-item">Mis à jour <strong>il y a 2 min</strong></div>
+          <div class="hero-meta-item"><strong id="kpi-clients">—</strong> clients actifs</div>
+          <div class="hero-meta-item"><strong id="kpi-total">—</strong> demandes</div>
+          <div class="hero-meta-item">Données depuis <strong>data.json</strong></div>
         </div>
       </div>
-
       <div class="stats-grid">
         <div class="stat-card blue">
-          <div class="stat-icon blue">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-          </div>
+          <div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
           <div class="stat-label">Total demandes</div>
-          <div class="stat-value">42</div>
-          <div class="stat-change up">↑ 8 cette semaine</div>
+          <div class="stat-value" id="stat-total">—</div>
         </div>
         <div class="stat-card green">
-          <div class="stat-icon green">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="stat-label">Documents reçus</div>
-          <div class="stat-value">28</div>
-          <div class="stat-sub">66.7% de taux de réponse</div>
+          <div class="stat-icon green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="stat-label">En attente</div>
+          <div class="stat-value" id="stat-attente">—</div>
         </div>
         <div class="stat-card orange">
-          <div class="stat-icon orange">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div class="stat-label">En attente</div>
-          <div class="stat-value">11</div>
-          <div class="stat-sub">Délai moyen : 4.2 jours</div>
+          <div class="stat-icon orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="stat-label">Clients actifs</div>
+          <div class="stat-value" id="stat-clients">—</div>
         </div>
         <div class="stat-card red">
-          <div class="stat-icon red">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-          </div>
+          <div class="stat-icon red"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
           <div class="stat-label">En retard</div>
-          <div class="stat-value">3</div>
-          <div class="stat-sub">Relances automatiques envoyées</div>
+          <div class="stat-value" id="stat-retard">—</div>
         </div>
       </div>
-
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;">
-        <!-- Recent requests -->
-        <div>
-          <div class="section-header">
-            <div>
-              <div class="section-title">Demandes récentes</div>
-              <div class="section-sub">Activité des 7 derniers jours</div>
-            </div>
-            <button class="btn btn-secondary btn-sm" onclick="showPage('requests')">Voir tout</button>
-          </div>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Demande</th>
-                  <th>Client</th>
-                  <th>Statut</th>
-                  <th>Priorité</th>
-                  <th>Date limite</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr onclick="showPage('detail')">
-                  <td><div class="td-primary">Bilan comptable 2023</div><div class="td-mono">DEM-0024</div></td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar avatar-sm" style="background:#EBF8FF;color:#2B6CB0;font-size:10px;width:26px;height:26px;">AC</div>ACME Corp</div></td>
-                  <td><span class="badge badge-red">En retard</span></td>
-                  <td><span class="priority-high">Haute</span></td>
-                  <td><span style="color:var(--red);font-size:13px;font-weight:500;">15 mars 2024</span></td>
-                  <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
-                </tr>
-                <tr onclick="showPage('detail')">
-                  <td><div class="td-primary">Grand Livre détaillé</div><div class="td-mono">DEM-0023</div></td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar avatar-sm" style="background:#F0FFF4;color:#276749;font-size:10px;width:26px;height:26px;">TF</div>TechFrance SA</div></td>
-                  <td><span class="badge badge-green">Reçu</span></td>
-                  <td><span class="priority-normal">Normale</span></td>
-                  <td>20 mars 2024</td>
-                  <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
-                </tr>
-                <tr onclick="showPage('detail')">
-                  <td><div class="td-primary">Contrats fournisseurs</div><div class="td-mono">DEM-0022</div></td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar avatar-sm" style="background:#FFF5F5;color:#E53E3E;font-size:10px;width:26px;height:26px;">LG</div>LuxGroup SARL</div></td>
-                  <td><span class="badge badge-orange">En attente</span></td>
-                  <td><span class="priority-high">Haute</span></td>
-                  <td>22 mars 2024</td>
-                  <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
-                </tr>
-                <tr onclick="showPage('detail')">
-                  <td><div class="td-primary">Relevés bancaires Q4</div><div class="td-mono">DEM-0021</div></td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar avatar-sm" style="background:#FAF5FF;color:#6B46C1;font-size:10px;width:26px;height:26px;">BP</div>BioPharm Labs</div></td>
-                  <td><span class="badge badge-green">Reçu</span></td>
-                  <td><span class="priority-normal">Normale</span></td>
-                  <td>18 mars 2024</td>
-                  <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
-                </tr>
-                <tr onclick="showPage('detail')">
-                  <td><div class="td-primary">Tableau des amortissements</div><div class="td-mono">DEM-0020</div></td>
-                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar avatar-sm" style="background:#FFFAF0;color:#C05621;font-size:10px;width:26px;height:26px;">NI</div>NordImmo SAS</div></td>
-                  <td><span class="badge badge-red">En retard</span></td>
-                  <td><span class="priority-high">Haute</span></td>
-                  <td><span style="color:var(--red);font-size:13px;font-weight:500;">10 mars 2024</span></td>
-                  <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Side panel -->
-        <div>
-          <div class="section-header"><div class="section-title">Progression</div></div>
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-body">
-              <div style="font-size:13px;font-weight:500;margin-bottom:14px;">Taux de complétion global</div>
-              <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:10px;">
-                <div style="font-size:32px;font-weight:700;font-family:var(--mono);letter-spacing:-0.03em;color:var(--accent);">66.7<span style="font-size:18px;color:var(--text-muted);font-weight:400;">%</span></div>
-              </div>
-              <div class="progress-bar" style="margin-bottom:16px;">
-                <div class="progress-fill" style="width:66.7%;background:var(--accent);"></div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <div style="display:flex;align-items:center;gap:7px;"><div style="width:8px;height:8px;border-radius:50%;background:#38A169;"></div><span style="font-size:13px;">Reçus</span></div>
-                  <span style="font-family:var(--mono);font-size:13px;font-weight:500;">28</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <div style="display:flex;align-items:center;gap:7px;"><div style="width:8px;height:8px;border-radius:50%;background:#DD6B20;"></div><span style="font-size:13px;">En attente</span></div>
-                  <span style="font-family:var(--mono);font-size:13px;font-weight:500;">11</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <div style="display:flex;align-items:center;gap:7px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);"></div><span style="font-size:13px;">En retard</span></div>
-                  <span style="font-family:var(--mono);font-size:13px;font-weight:500;">3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">Activité récente</div></div>
-            <div class="card-body" style="padding-top:16px;">
-              <div class="timeline">
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:#38A169;"></div>
-                  <div>
-                    <div style="font-size:13px;font-weight:500;">Fichier reçu — TechFrance</div>
-                    <div style="font-size:12px;color:var(--text-muted);">Grand livre Q4 2023.xlsx</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Il y a 12 min</div>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:var(--accent);"></div>
-                  <div>
-                    <div style="font-size:13px;font-weight:500;">Demande créée — LuxGroup</div>
-                    <div style="font-size:12px;color:var(--text-muted);">Contrats fournisseurs 2024</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Il y a 1h</div>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:#DD6B20;"></div>
-                  <div>
-                    <div style="font-size:13px;font-weight:500;">Relance envoyée — ACME Corp</div>
-                    <div style="font-size:12px;color:var(--text-muted);">Bilan comptable 2023</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Il y a 3h</div>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot" style="color:#38A169;"></div>
-                  <div>
-                    <div style="font-size:13px;font-weight:500;">Fichier reçu — BioPharm</div>
-                    <div style="font-size:12px;color:var(--text-muted);">Relevés BNP Oct-Déc 2023.pdf</div>
-                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Hier, 16:24</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════
-         PAGE 2 : LISTE DES DEMANDES
-         ════════════════════════════════════ -->
-    <div class="page" id="page-requests">
       <div class="section-header">
         <div>
-          <div class="section-title">Demandes de documents</div>
-          <div class="section-sub">42 demandes — Mission exercice 2024</div>
+          <div class="section-title">Demandes récentes</div>
+          <div class="section-sub">Toutes les demandes actives</div>
         </div>
-        <button class="btn btn-primary" onclick="openModal('modal-new-request')">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Nouvelle demande
-        </button>
+        <button class="btn btn-secondary btn-sm" onclick="showPage('requests')">Voir tout</button>
       </div>
-
       <div class="table-container">
-        <div class="table-toolbar">
-          <div class="search-box">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <input class="search-input" placeholder="Rechercher une demande…" oninput="filterTable(this.value)">
-          </div>
-          <select class="filter-select" onchange="filterStatus(this.value)">
-            <option value="">Tous les statuts</option>
-            <option>En retard</option>
-            <option>Reçu</option>
-            <option>En attente</option>
-            <option>À envoyer</option>
-          </select>
-          <select class="filter-select">
-            <option value="">Tous les clients</option>
-            <option>ACME Corp</option>
-            <option>TechFrance SA</option>
-            <option>LuxGroup SARL</option>
-            <option>BioPharm Labs</option>
-            <option>NordImmo SAS</option>
-          </select>
-          <select class="filter-select">
-            <option value="">Toute priorité</option>
-            <option>Haute</option>
-            <option>Normale</option>
-          </select>
-          <div style="margin-left:auto;font-size:13px;color:var(--text-muted);">42 résultats</div>
-        </div>
-        <table id="requests-table">
+        <table>
           <thead>
             <tr>
               <th>Demande</th>
@@ -658,732 +354,109 @@ textarea.form-input { resize: vertical; min-height: 90px; }
               <th>Statut</th>
               <th>Priorité</th>
               <th>Date limite</th>
-              <th>Documents</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Bilan comptable 2023</div><div class="td-mono">DEM-0024</div></td>
-              <td>ACME Corp</td>
-              <td><span class="badge badge-red">En retard</span></td>
-              <td><span class="priority-high">Haute</span></td>
-              <td style="color:var(--red);font-weight:500;">15 mars 2024</td>
-              <td><span class="td-mono">0 / 2</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-                <button class="btn btn-xs btn-danger" onclick="event.stopPropagation();">Relancer</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Grand Livre détaillé</div><div class="td-mono">DEM-0023</div></td>
-              <td>TechFrance SA</td>
-              <td><span class="badge badge-green">Reçu</span></td>
-              <td><span class="priority-normal">Normale</span></td>
-              <td>20 mars 2024</td>
-              <td><span class="td-mono">2 / 2</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Contrats fournisseurs 2024</div><div class="td-mono">DEM-0022</div></td>
-              <td>LuxGroup SARL</td>
-              <td><span class="badge badge-orange">En attente</span></td>
-              <td><span class="priority-high">Haute</span></td>
-              <td>22 mars 2024</td>
-              <td><span class="td-mono">1 / 3</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-                <button class="btn btn-xs btn-danger" onclick="event.stopPropagation();">Relancer</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Relevés bancaires Q4 2023</div><div class="td-mono">DEM-0021</div></td>
-              <td>BioPharm Labs</td>
-              <td><span class="badge badge-green">Reçu</span></td>
-              <td><span class="priority-normal">Normale</span></td>
-              <td>18 mars 2024</td>
-              <td><span class="td-mono">3 / 3</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Tableau des amortissements</div><div class="td-mono">DEM-0020</div></td>
-              <td>NordImmo SAS</td>
-              <td><span class="badge badge-red">En retard</span></td>
-              <td><span class="priority-high">Haute</span></td>
-              <td style="color:var(--red);font-weight:500;">10 mars 2024</td>
-              <td><span class="td-mono">0 / 1</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-                <button class="btn btn-xs btn-danger" onclick="event.stopPropagation();">Relancer</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Détail des stocks 31/12</div><div class="td-mono">DEM-0019</div></td>
-              <td>ACME Corp</td>
-              <td><span class="badge badge-orange">En attente</span></td>
-              <td><span class="priority-normal">Normale</span></td>
-              <td>25 mars 2024</td>
-              <td><span class="td-mono">0 / 1</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-              </div></td>
-            </tr>
-            <tr onclick="showPage('detail')">
-              <td><div class="td-primary">Procès-verbaux AG 2023</div><div class="td-mono">DEM-0018</div></td>
-              <td>TechFrance SA</td>
-              <td><span class="badge badge-blue">Envoyé</span></td>
-              <td><span class="priority-normal">Normale</span></td>
-              <td>28 mars 2024</td>
-              <td><span class="td-mono">0 / 1</span></td>
-              <td><div class="table-actions">
-                <button class="btn btn-xs btn-secondary" onclick="event.stopPropagation();showPage('detail')">Détail</button>
-              </div></td>
-            </tr>
+          <tbody id="dashboard-table">
+            <tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div>Chargement...</div></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- ════════════════════════════════════
-         PAGE 3 : DETAIL DEMANDE
-         ════════════════════════════════════ -->
-    <div class="page" id="page-detail">
-      <div class="breadcrumb">
-        <a onclick="showPage('requests')">Demandes</a>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        <span>DEM-0024 — Bilan comptable 2023</span>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;">
-        <div>
-          <!-- Hero -->
-          <div class="page-hero" style="margin-bottom:20px;">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;">
-              <div>
-                <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">DEM-0024</div>
-                <div class="hero-title">Bilan comptable 2023</div>
-                <div class="hero-subtitle">ACME Corp · Exercice fiscal 2023</div>
-              </div>
-              <div style="display:flex;gap:8px;">
-                <span class="badge badge-red">En retard</span>
-                <span class="priority-high" style="background:rgba(255,255,255,0.1);padding:3px 10px;border-radius:20px;color:#FEB2B2;">Haute</span>
-              </div>
-            </div>
-            <div class="hero-meta" style="margin-top:18px;">
-              <div class="hero-meta-item">Date limite <strong>15 mars 2024</strong></div>
-              <div class="hero-meta-item">Créée le <strong>1er mars 2024</strong></div>
-              <div class="hero-meta-item">Docs reçus <strong>0 / 2</strong></div>
-            </div>
-          </div>
-
-          <!-- Info + Documents -->
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-header">
-              <div class="card-title">Informations de la demande</div>
-              <button class="btn btn-secondary btn-sm">
-                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Modifier
-              </button>
-            </div>
-            <div class="card-body">
-              <div class="detail-grid" style="margin-bottom:16px;">
-                <div class="detail-item"><div class="detail-label">Client</div><div class="detail-value">ACME Corp</div></div>
-                <div class="detail-item"><div class="detail-label">Auditeur responsable</div><div class="detail-value">Marie Aubert</div></div>
-                <div class="detail-item"><div class="detail-label">Date de création</div><div class="detail-value">01 mars 2024</div></div>
-                <div class="detail-item"><div class="detail-label">Date limite</div><div class="detail-value" style="color:var(--red);">15 mars 2024 ⚠</div></div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-label">Description</div>
-                <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;line-height:1.7;">Merci de bien vouloir nous fournir le bilan comptable complet au 31 décembre 2023, incluant le bilan actif/passif et le compte de résultat certifiés. Ces documents sont nécessaires pour la clôture de notre mission d'audit légal.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-header">
-              <div class="card-title">Documents attendus</div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn btn-primary btn-sm" onclick="openModal('modal-upload')">
-                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  Uploader un fichier
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div style="display:flex;gap:24px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);">
-                <div style="font-size:13px;"><span style="color:var(--text-muted);">Attendu : </span><span style="font-weight:600;">2 fichiers</span></div>
-                <div style="font-size:13px;"><span style="color:var(--text-muted);">Reçu : </span><span style="font-weight:600;color:var(--red);">0 fichier</span></div>
-              </div>
-              <div>
-                <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);">
-                  <div style="width:36px;height:36px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-                  </div>
-                  <div style="flex:1;"><div style="font-size:13.5px;font-weight:500;color:var(--text-muted);">Bilan actif/passif 31/12/2023</div><div style="font-size:12px;color:var(--text-muted);">En attente de dépôt</div></div>
-                  <span class="badge badge-orange">En attente</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;padding:12px 0;">
-                  <div style="width:36px;height:36px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-                  </div>
-                  <div style="flex:1;"><div style="font-size:13.5px;font-weight:500;color:var(--text-muted);">Compte de résultat 2023</div><div style="font-size:12px;color:var(--text-muted);">En attente de dépôt</div></div>
-                  <span class="badge badge-orange">En attente</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Auditeur actions -->
-          <div style="display:flex;gap:10px;">
-            <button class="btn btn-primary" onclick="markReceived()">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Marquer comme reçu
-            </button>
-            <button class="btn btn-secondary" onclick="">
-              <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-              Accéder au dossier SharePoint
-            </button>
-            <button class="btn btn-danger" onclick="showToast('Relance envoyée par email.')">
-              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              Relancer le client
-            </button>
-          </div>
-        </div>
-
-        <!-- Right panel -->
-        <div>
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-header"><div class="card-title">Client</div></div>
-            <div class="card-body">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-                <div class="client-avatar" style="width:44px;height:44px;">AC</div>
-                <div>
-                  <div style="font-weight:600;">ACME Corp</div>
-                  <div style="font-size:12px;color:var(--text-muted);">client@acme-corp.fr</div>
-                </div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
-                <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Statut</span><span class="badge badge-green" style="padding:2px 8px;">Actif</span></div>
-                <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Demandes ouvertes</span><span style="font-weight:500;">4</span></div>
-                <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Taux de réponse</span><span style="font-weight:500;color:var(--orange);">42%</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom:16px;">
-            <div class="card-header"><div class="card-title">Historique</div></div>
-            <div class="card-body" style="padding-top:16px;">
-              <div class="timeline">
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:var(--red);"></div>
-                  <div><div style="font-size:13px;font-weight:500;">Relance automatique</div><div style="font-size:11.5px;color:var(--text-muted);">Aujourd'hui 09:00</div></div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:#DD6B20;"></div>
-                  <div><div style="font-size:13px;font-weight:500;">Date limite dépassée</div><div style="font-size:11.5px;color:var(--text-muted);">15 mars 2024</div></div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-line"></div>
-                  <div class="timeline-dot" style="color:var(--accent);"></div>
-                  <div><div style="font-size:13px;font-weight:500;">Notification envoyée</div><div style="font-size:11.5px;color:var(--text-muted);">01 mars 2024</div></div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot" style="color:var(--accent);"></div>
-                  <div><div style="font-size:13px;font-weight:500;">Demande créée</div><div style="font-size:11.5px;color:var(--text-muted);">01 mars 2024</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><div class="card-title">Dossier SharePoint</div></div>
-            <div class="card-body">
-              <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-                <svg width="20" height="20" fill="none" stroke="#038387" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">ACME Corp / Bilan 2023</div><div style="font-size:11.5px;color:var(--text-muted);">SharePoint · 0 fichier</div></div>
-                <button class="btn btn-xs btn-secondary">Ouvrir</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════
-         PAGE 4 : CLIENTS
-         ════════════════════════════════════ -->
-    <div class="page" id="page-clients">
+    <!-- DEMANDES -->
+    <div class="page" id="page-requests">
       <div class="section-header">
         <div>
-          <div class="section-title">Clients</div>
-          <div class="section-sub">5 clients actifs — Mission exercice 2024</div>
+          <div class="section-title">Demandes de documents</div>
+          <div class="section-sub" id="requests-sub">Chargement...</div>
         </div>
-        <button class="btn btn-primary" onclick="openModal('modal-new-client')">
+        <button class="btn btn-primary" onclick="openModal('modal-new-request')">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Nouveau client
-        </button>
-      </div>
-      <div class="client-grid">
-        <div class="client-card" onclick="showPage('detail')">
-          <div class="client-header">
-            <div class="client-avatar">AC</div>
-            <div>
-              <div style="font-weight:600;">ACME Corp</div>
-              <div style="font-size:12px;color:var(--text-muted);">contact@acme-corp.fr</div>
-            </div>
-            <div style="margin-left:auto;"><span class="badge badge-green">Actif</span></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">8</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Reçus</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#38A169;">4</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--red);">2</div></div>
-          </div>
-        </div>
-        <div class="client-card" onclick="showPage('detail')">
-          <div class="client-header">
-            <div class="client-avatar" style="background:#F0FFF4;color:#276749;">TF</div>
-            <div>
-              <div style="font-weight:600;">TechFrance SA</div>
-              <div style="font-size:12px;color:var(--text-muted);">daf@techfrance.fr</div>
-            </div>
-            <div style="margin-left:auto;"><span class="badge badge-green">Actif</span></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">6</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Reçus</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#38A169;">6</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--text-muted);">0</div></div>
-          </div>
-        </div>
-        <div class="client-card" onclick="showPage('detail')">
-          <div class="client-header">
-            <div class="client-avatar" style="background:#FFF5F5;color:#E53E3E;">LG</div>
-            <div>
-              <div style="font-weight:600;">LuxGroup SARL</div>
-              <div style="font-size:12px;color:var(--text-muted);">comptabilite@luxgroup.fr</div>
-            </div>
-            <div style="margin-left:auto;"><span class="badge badge-green">Actif</span></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">5</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Reçus</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#38A169;">2</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--red);">1</div></div>
-          </div>
-        </div>
-        <div class="client-card" onclick="showPage('detail')">
-          <div class="client-header">
-            <div class="client-avatar" style="background:#FAF5FF;color:#6B46C1;">BP</div>
-            <div>
-              <div style="font-weight:600;">BioPharm Labs</div>
-              <div style="font-size:12px;color:var(--text-muted);">finance@biopharm.fr</div>
-            </div>
-            <div style="margin-left:auto;"><span class="badge badge-green">Actif</span></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">9</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Reçus</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#38A169;">9</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--text-muted);">0</div></div>
-          </div>
-        </div>
-        <div class="client-card" onclick="showPage('detail')">
-          <div class="client-header">
-            <div class="client-avatar" style="background:#FFFAF0;color:#C05621;">NI</div>
-            <div>
-              <div style="font-weight:600;">NordImmo SAS</div>
-              <div style="font-size:12px;color:var(--text-muted);">direction@nordimmo.fr</div>
-            </div>
-            <div style="margin-left:auto;"><span class="badge badge-orange">Inactif</span></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">4</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Reçus</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#38A169;">2</div></div>
-            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--red);">2</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════
-         PAGE 5 : DOCUMENTS REÇUS
-         ════════════════════════════════════ -->
-    <div class="page" id="page-documents">
-      <div class="section-header">
-        <div><div class="section-title">Documents reçus</div><div class="section-sub">12 fichiers · Triés par date de dépôt</div></div>
-        <button class="btn btn-secondary">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Exporter liste
+          Nouvelle demande
         </button>
       </div>
       <div class="table-container">
         <div class="table-toolbar">
           <div class="search-box">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <input class="search-input" placeholder="Rechercher un fichier…">
+            <input class="search-input" placeholder="Rechercher une demande…" oninput="filterRequests(this.value)">
           </div>
-          <select class="filter-select"><option>Tous les types</option><option>PDF</option><option>Excel</option><option>Word</option></select>
-          <select class="filter-select"><option>Tous les clients</option><option>ACME Corp</option><option>TechFrance SA</option></select>
-          <div style="margin-left:auto;font-size:13px;color:var(--text-muted);">12 fichiers</div>
+          <select class="filter-select" onchange="filterByStatus(this.value)">
+            <option value="">Tous les statuts</option>
+            <option>En retard</option>
+            <option>En attente</option>
+          </select>
+          <div style="margin-left:auto;font-size:13px;color:var(--text-muted);" id="requests-count">—</div>
         </div>
         <table>
           <thead>
             <tr>
-              <th>Fichier</th>
-              <th>Demande liée</th>
+              <th>Demande</th>
               <th>Client</th>
-              <th>Type</th>
-              <th>Date de dépôt</th>
-              <th>Déposé par</th>
-              <th>Actions</th>
+              <th>Société</th>
+              <th>Statut</th>
+              <th>Priorité</th>
+              <th>Date limite</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><div style="display:flex;align-items:center;gap:10px;"><div class="doc-icon xlsx"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div><div><div class="td-primary">Grand livre Q4 2023.xlsx</div><div style="font-size:12px;color:var(--text-muted);">1.24 Mo</div></div></div></td>
-              <td><span style="font-size:12.5px;color:var(--accent);">DEM-0023</span></td>
-              <td>TechFrance SA</td>
-              <td><span class="badge badge-green" style="padding:2px 8px;font-size:11.5px;">Excel</span></td>
-              <td style="font-size:13px;">22 mars 2024 · 14:30</td>
-              <td style="font-size:13px;">Client</td>
-              <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Télécharger</button><button class="btn btn-xs btn-secondary">SharePoint</button></div></td>
-            </tr>
-            <tr>
-              <td><div style="display:flex;align-items:center;gap:10px;"><div class="doc-icon pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div><div><div class="td-primary">Relevés BNP Oct-Déc 2023.pdf</div><div style="font-size:12px;color:var(--text-muted);">3.82 Mo</div></div></div></td>
-              <td><span style="font-size:12.5px;color:var(--accent);">DEM-0021</span></td>
-              <td>BioPharm Labs</td>
-              <td><span class="badge badge-red" style="padding:2px 8px;font-size:11.5px;">PDF</span></td>
-              <td style="font-size:13px;">20 mars 2024 · 09:15</td>
-              <td style="font-size:13px;">Client</td>
-              <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Télécharger</button><button class="btn btn-xs btn-secondary">SharePoint</button></div></td>
-            </tr>
-            <tr>
-              <td><div style="display:flex;align-items:center;gap:10px;"><div class="doc-icon xlsx"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div><div><div class="td-primary">Tableau amortissements 2023.xlsx</div><div style="font-size:12px;color:var(--text-muted);">892 Ko</div></div></div></td>
-              <td><span style="font-size:12.5px;color:var(--accent);">DEM-0019</span></td>
-              <td>ACME Corp</td>
-              <td><span class="badge badge-green" style="padding:2px 8px;font-size:11.5px;">Excel</span></td>
-              <td style="font-size:13px;">19 mars 2024 · 11:42</td>
-              <td style="font-size:13px;">Client</td>
-              <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Télécharger</button><button class="btn btn-xs btn-secondary">SharePoint</button></div></td>
-            </tr>
-            <tr>
-              <td><div style="display:flex;align-items:center;gap:10px;"><div class="doc-icon docx"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div><div><div class="td-primary">PV Assemblée Générale 2023.docx</div><div style="font-size:12px;color:var(--text-muted);">245 Ko</div></div></div></td>
-              <td><span style="font-size:12.5px;color:var(--accent);">DEM-0018</span></td>
-              <td>TechFrance SA</td>
-              <td><span class="badge badge-blue" style="padding:2px 8px;font-size:11.5px;">Word</span></td>
-              <td style="font-size:13px;">17 mars 2024 · 16:08</td>
-              <td style="font-size:13px;">Client</td>
-              <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Télécharger</button><button class="btn btn-xs btn-secondary">SharePoint</button></div></td>
-            </tr>
+          <tbody id="requests-table">
+            <tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div>Chargement...</div></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- ════════════════════════════════════
-         PAGE 6 : POWER AUTOMATE
-         ════════════════════════════════════ -->
-    <div class="page" id="page-automate">
+    <!-- CLIENTS -->
+    <div class="page" id="page-clients">
       <div class="section-header">
-        <div><div class="section-title">Power Automate — Flux actifs</div><div class="section-sub">3 automatisations configurées</div></div>
-        <button class="btn btn-primary">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          Nouveau flux
+        <div>
+          <div class="section-title">Clients</div>
+          <div class="section-sub" id="clients-sub">Chargement...</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-new-client')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nouveau client
         </button>
       </div>
-      <div class="flow-card">
-        <div class="flow-header">
-          <div class="flow-dot" style="background:#38A169;"></div>
-          <div>
-            <div class="flow-name">📧 Notification création de demande</div>
-            <div class="flow-trigger">Déclencheur : Nouveau enregistrement dans la table <strong>Demandes</strong> (Dataverse)</div>
-          </div>
-          <div class="flow-status">
-            <span class="badge badge-green">Actif</span>
-            <button class="btn btn-xs btn-secondary">Configurer</button>
-          </div>
-        </div>
-        <div style="padding:0 18px 18px;border-top:1px solid var(--border);margin-top:0;padding-top:16px;">
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
-              </div>
-              <div><div style="font-size:12.5px;font-weight:600;">Déclencheur : Dataverse</div><div style="font-size:12px;color:var(--text-muted);">Quand une ligne est ajoutée dans la table "Demandes"</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:#EBF4FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="14" height="14" fill="none" stroke="#2B6CB0" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </div>
-              <div><div style="font-size:12.5px;font-weight:600;">Action : Envoyer un email (Outlook 365)</div><div style="font-size:12px;color:var(--text-muted);">À : client.email · Objet : Nouvelle demande — [NomDemande] · Lien vers le portail Power Pages</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="14" height="14" fill="none" stroke="#38A169" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              </div>
-              <div><div style="font-size:12.5px;font-weight:600;">Fin : Mise à jour statut → "Envoyé"</div><div style="font-size:12px;color:var(--text-muted);">Mettre à jour le champ Statut dans Dataverse</div></div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-            <div style="font-size:12px;color:var(--text-muted);">Déclenchements · <span style="font-weight:600;color:var(--text-primary);">24</span> ce mois</div>
-            <div style="font-size:12px;color:var(--text-muted);">Succès · <span style="font-weight:600;color:#38A169;">24 (100%)</span></div>
-            <div style="font-size:12px;color:var(--text-muted);">Dernière exec · <span style="font-weight:600;color:var(--text-primary);">Il y a 1h</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-card">
-        <div class="flow-header">
-          <div class="flow-dot" style="background:#38A169;"></div>
-          <div>
-            <div class="flow-name">📂 Notification dépôt de fichier</div>
-            <div class="flow-trigger">Déclencheur : Nouveau enregistrement dans la table <strong>Documents</strong> (Dataverse)</div>
-          </div>
-          <div class="flow-status">
-            <span class="badge badge-green">Actif</span>
-            <button class="btn btn-xs btn-secondary">Configurer</button>
-          </div>
-        </div>
-        <div style="padding:0 18px 18px;border-top:1px solid var(--border);margin-top:0;padding-top:16px;">
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Déclencheur : Dataverse — Table Documents</div><div style="font-size:12px;color:var(--text-muted);">Quand un document est déposé par un client</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="#38A169" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Action : Copier vers SharePoint</div><div style="font-size:12px;color:var(--text-muted);">Dossier : Clients / [NomClient] / [NomDemande] · Mise à jour de LienDepot</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:#EBF4FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="#2B6CB0" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Action : Alerte Teams / Email aux auditeurs</div><div style="font-size:12px;color:var(--text-muted);">Notification : "[Client] a déposé [Fichier] pour la demande [Demande]"</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="#38A169" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Fin : Statut Demande → "Reçu" (si tous docs reçus)</div><div style="font-size:12px;color:var(--text-muted);">Condition : Count(Documents liés) = NombreDocsAttendus → Mise à jour Statut</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-card">
-        <div class="flow-header">
-          <div class="flow-dot" style="background:#38A169;"></div>
-          <div>
-            <div class="flow-name">⏰ Relances automatiques — Documents en retard</div>
-            <div class="flow-trigger">Déclencheur : Planification quotidienne à 09:00 · Vérifie DateLimite &lt; Aujourd'hui et Statut ≠ "Reçu"</div>
-          </div>
-          <div class="flow-status">
-            <span class="badge badge-green">Actif</span>
-            <button class="btn btn-xs btn-secondary">Configurer</button>
-          </div>
-        </div>
-        <div style="padding:0 18px 18px;border-top:1px solid var(--border);margin-top:0;padding-top:16px;">
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="#C05621" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Planification : Chaque jour à 09:00</div><div style="font-size:12px;color:var(--text-muted);">Obtenir toutes les demandes en retard depuis Dataverse</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--red-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Email de relance → Client</div><div style="font-size:12px;color:var(--text-muted);">Pour chaque demande en retard : email personnalisé avec lien de dépôt direct</div></div>
-            </div>
-            <div style="margin-left:14px;width:1px;height:12px;background:var(--border);"></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="width:28px;height:28px;border-radius:6px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
-              <div><div style="font-size:12.5px;font-weight:600;">Mise à jour Dataverse → Statut "En retard"</div><div style="font-size:12px;color:var(--text-muted);">Journalisation de la relance dans l'historique Dataverse</div></div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-            <div style="font-size:12px;color:var(--text-muted);">Déclenchements · <span style="font-weight:600;color:var(--text-primary);">15</span> ce mois</div>
-            <div style="font-size:12px;color:var(--text-muted);">Emails envoyés · <span style="font-weight:600;color:var(--red);">8 relances</span></div>
-            <div style="font-size:12px;color:var(--text-muted);">Dernière exec · <span style="font-weight:600;color:var(--text-primary);">Aujourd'hui 09:00</span></div>
-          </div>
-        </div>
+      <div id="clients-grid" class="client-grid">
+        <div class="loading"><div class="loading-spinner"></div>Chargement...</div>
       </div>
     </div>
 
-    <!-- ════════════════════════════════════
-         PAGE 7 : REPORTING
-         ════════════════════════════════════ -->
-    <div class="page" id="page-reporting">
-      <div class="section-header">
-        <div><div class="section-title">Reporting & Analyse</div><div class="section-sub">Mission exercice 2024 — Tableau de bord analytique</div></div>
-        <button class="btn btn-secondary">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Exporter PDF
-        </button>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card blue"><div class="stat-label">Taux de réponse global</div><div class="stat-value">66<span style="font-size:16px;">.7%</span></div><div class="stat-change up">↑ +12% vs sem. passée</div></div>
-        <div class="stat-card green"><div class="stat-label">Délai moyen de réponse</div><div class="stat-value">4.2<span style="font-size:16px;">j</span></div><div class="stat-change up">↓ -1.3j vs mois passé</div></div>
-        <div class="stat-card orange"><div class="stat-label">Relances envoyées</div><div class="stat-value">8</div><div class="stat-sub">Ce mois · 3 demandes en retard</div></div>
-        <div class="stat-card red"><div class="stat-label">Risque mission</div><div class="stat-value">Moyen</div><div class="stat-sub">3 dossiers bloquants</div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Progression par client</div></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="font-weight:500;">TechFrance SA</span><span style="font-family:var(--mono);font-weight:600;color:#38A169;">100%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#38A169;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="font-weight:500;">BioPharm Labs</span><span style="font-family:var(--mono);font-weight:600;color:#38A169;">100%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#38A169;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="font-weight:500;">LuxGroup SARL</span><span style="font-family:var(--mono);font-weight:600;color:#DD6B20;">40%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:40%;background:#DD6B20;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="font-weight:500;">NordImmo SAS</span><span style="font-family:var(--mono);font-weight:600;color:#DD6B20;">50%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:50%;background:#DD6B20;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="font-weight:500;">ACME Corp</span><span style="font-family:var(--mono);font-weight:600;color:var(--red);">25%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:25%;background:var(--red);"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Répartition des statuts</div></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
-              <div style="display:flex;align-items:center;gap:12px;">
-                <div style="height:36px;background:#38A169;border-radius:4px;flex:2.8;" title="28 reçus"></div>
-                <div style="width:90px;font-size:13px;"><div style="font-weight:500;color:#276749;">28 reçus</div><div style="font-size:12px;color:var(--text-muted);">66.7%</div></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;">
-                <div style="height:36px;background:#DD6B20;border-radius:4px;flex:1.1;" title="11 en attente"></div>
-                <div style="width:90px;font-size:13px;"><div style="font-weight:500;color:#C05621;">11 en attente</div><div style="font-size:12px;color:var(--text-muted);">26.2%</div></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;">
-                <div style="height:36px;background:var(--red);border-radius:4px;flex:0.3;" title="3 en retard"></div>
-                <div style="width:90px;font-size:13px;"><div style="font-weight:500;color:var(--red);">3 en retard</div><div style="font-size:12px;color:var(--text-muted);">7.1%</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════
-         PAGE 8 : SETTINGS / CONFIG
-         ════════════════════════════════════ -->
+    <!-- SETTINGS -->
     <div class="page" id="page-settings">
       <div class="section-header">
-        <div><div class="section-title">Configuration</div><div class="section-sub">Paramètres de la mission et de l'application</div></div>
+        <div><div class="section-title">Configuration</div><div class="section-sub">Source de données et paramètres</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Structure Dataverse</div><div class="card-subtitle">Tables et colonnes configurées</div></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
-            <div style="padding:12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">📋 Table : Clients</div>
-              <div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);">Nom · Email · Société · Statut</div>
-              <div style="display:flex;gap:6px;margin-top:8px;"><span class="badge badge-green" style="padding:1px 7px;font-size:11px;">5 enregistrements</span></div>
-            </div>
-            <div style="padding:12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">📄 Table : Demandes</div>
-              <div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);">ID · NomDemande · Client (FK) · Description · DateDemande · DateLimite · Statut · Priorité</div>
-              <div style="display:flex;gap:6px;margin-top:8px;"><span class="badge badge-blue" style="padding:1px 7px;font-size:11px;">42 enregistrements</span></div>
-            </div>
-            <div style="padding:12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">📁 Table : Documents</div>
-              <div style="font-size:12px;color:var(--text-muted);font-family:var(--mono);">ID · NomFichier · Demande (FK) · DateDepot · DeposePar · LienDepot · TypeFichier</div>
-              <div style="display:flex;gap:6px;margin-top:8px;"><span class="badge badge-green" style="padding:1px 7px;font-size:11px;">28 enregistrements</span></div>
-            </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Source de données</div></div>
+        <div class="card-body">
+          <div style="padding:14px;background:var(--green-light);border-radius:var(--radius);border:1px solid var(--green-mid);margin-bottom:16px;">
+            <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:4px;">✅ Connecté à data.json</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Les données sont lues depuis le fichier <code>data.json</code> hébergé sur GitHub Pages.</div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Power Pages — Pages actives</div><div class="card-subtitle">Portail client et portail auditeur</div></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-                <div style="font-size:13px;font-weight:500;">Dashboard client</div>
-                <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge-green" style="padding:1px 8px;font-size:11px;">Publié</span><button class="btn btn-xs btn-secondary">Voir</button></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-                <div style="font-size:13px;font-weight:500;">Page upload fichiers</div>
-                <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge-green" style="padding:1px 8px;font-size:11px;">Publié</span><button class="btn btn-xs btn-secondary">Voir</button></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-                <div style="font-size:13px;font-weight:500;">Liste des demandes</div>
-                <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge-green" style="padding:1px 8px;font-size:11px;">Publié</span><button class="btn btn-xs btn-secondary">Voir</button></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">
-                <div style="font-size:13px;font-weight:500;">Page admin auditeur</div>
-                <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge-blue" style="padding:1px 8px;font-size:11px;">Restreint</span><button class="btn btn-xs btn-secondary">Voir</button></div>
-              </div>
-            </div>
-            <div style="margin-top:16px;padding:12px;background:var(--accent-light);border-radius:var(--radius);border:1px solid var(--accent-mid);">
-              <div style="font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:4px;">🔒 Sécurité des rôles</div>
-              <div style="font-size:12px;color:var(--text-secondary);">Clients : accès à leurs demandes uniquement (Dataverse Row-Level Security). Auditeurs : accès complet via rôle Azure AD.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Intégration SharePoint / OneDrive</div></div>
-          <div class="card-body">
-            <div style="display:flex;align-items:center;gap:10px;padding:12px;background:#F0FFF4;border-radius:var(--radius);border:1px solid var(--green-mid);margin-bottom:14px;">
-              <svg width="16" height="16" fill="none" stroke="#38A169" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span style="font-size:13px;font-weight:500;color:#276749;">Connecté à SharePoint Online</span>
-            </div>
-            <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">Structure des dossiers :<br><span style="font-family:var(--mono);font-size:12px;color:var(--text-muted);">AuditFlow / [NomClient] / [NomDemande] /</span></div>
-            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;font-size:13px;">
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Site SharePoint</span><span style="font-weight:500;">auditflow.sharepoint.com</span></div>
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Bibliothèque</span><span style="font-weight:500;">Documents Audit</span></div>
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Stockage utilisé</span><span style="font-weight:500;">4.2 Go / 1 To</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Notifications & Emails</div></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:12px;font-size:13px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div><div style="font-weight:500;">Notification création demande</div><div style="color:var(--text-muted);font-size:12px;">Email client + lien portail</div></div>
-                <div style="width:40px;height:22px;background:var(--accent);border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div><div style="font-weight:500;">Alerte dépôt de fichier</div><div style="color:var(--text-muted);font-size:12px;">Teams + email auditeurs</div></div>
-                <div style="width:40px;height:22px;background:var(--accent);border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div><div style="font-weight:500;">Relances automatiques</div><div style="color:var(--text-muted);font-size:12px;">Quotidien 09:00 — en retard</div></div>
-                <div style="width:40px;height:22px;background:var(--accent);border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div><div style="font-weight:500;">Rapport hebdomadaire</div><div style="color:var(--text-muted);font-size:12px;">Synthèse lundi 08:00</div></div>
-                <div style="width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
-              </div>
-            </div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+            <strong>Pour ajouter une demande :</strong><br>
+            Modifie le fichier <code>data.json</code> sur GitHub et ajoute un objet dans le tableau <code>"demandes"</code>.<br><br>
+            <strong>URL des données :</strong><br>
+            <code style="font-size:12px;color:var(--accent);">https://auditfloww.github.io/auditflow/data.json</code>
           </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
-</div><!-- /app -->
+  </div>
+</div>
+</div>
 
-<!-- ═══════════════════ MODALS ═══════════════════ -->
-
-<!-- Modal : Nouvelle demande -->
+<!-- MODALS -->
 <div class="modal-backdrop" id="modal-new-request" onclick="closeModalOnBg(event,'modal-new-request')">
   <div class="modal">
     <div class="modal-header">
       <div>
         <div class="modal-title">Créer une nouvelle demande</div>
-        <div class="modal-subtitle">La demande sera envoyée au client avec notification automatique</div>
+        <div class="modal-subtitle">Ajoutez ensuite cette demande dans data.json sur GitHub</div>
       </div>
       <button class="btn btn-ghost" onclick="closeModal('modal-new-request')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -1392,27 +465,20 @@ textarea.form-input { resize: vertical; min-height: 90px; }
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Nom de la demande <span>*</span></label>
-        <input class="form-input" placeholder="ex : Bilan comptable 2023" type="text">
+        <input class="form-input" id="new-nom" placeholder="ex : Bilan comptable 2023" type="text">
       </div>
       <div class="form-group">
         <label class="form-label">Client <span>*</span></label>
-        <select class="form-select">
-          <option value="">Sélectionner un client…</option>
-          <option>ACME Corp</option>
-          <option>TechFrance SA</option>
-          <option>LuxGroup SARL</option>
-          <option>BioPharm Labs</option>
-          <option>NordImmo SAS</option>
-        </select>
+        <input class="form-input" id="new-client" placeholder="Nom du client" type="text">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Date limite <span>*</span></label>
-          <input class="form-input" type="date">
+          <input class="form-input" id="new-date" type="date">
         </div>
         <div class="form-group">
           <label class="form-label">Priorité</label>
-          <select class="form-select">
+          <select class="form-select" id="new-priorite">
             <option>Normale</option>
             <option>Haute</option>
           </select>
@@ -1420,83 +486,25 @@ textarea.form-input { resize: vertical; min-height: 90px; }
       </div>
       <div class="form-group">
         <label class="form-label">Description</label>
-        <textarea class="form-input" placeholder="Décrivez les documents attendus, le contexte et les informations utiles pour le client…"></textarea>
-        <div class="form-hint">Ce texte sera inclus dans l'email de notification au client.</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Auditeur responsable</label>
-        <select class="form-select">
-          <option>Marie Aubert (vous)</option>
-          <option>Jean-Pierre Martin</option>
-          <option>Sophie Blanc</option>
-        </select>
+        <textarea class="form-input" id="new-description" placeholder="Décrivez les documents attendus…"></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-new-request')">Annuler</button>
-      <button class="btn btn-primary" onclick="submitNewRequest()">
-        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        Créer et envoyer
+      <button class="btn btn-primary" onclick="generateJSON()">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+        Générer le JSON
       </button>
     </div>
   </div>
 </div>
 
-<!-- Modal : Upload fichier -->
-<div class="modal-backdrop" id="modal-upload" onclick="closeModalOnBg(event,'modal-upload')">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title">Déposer un document</div>
-        <div class="modal-subtitle">Demande DEM-0024 — Bilan comptable 2023</div>
-      </div>
-      <button class="btn btn-ghost" onclick="closeModal('modal-upload')">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="upload-zone" id="upload-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()">
-        <input type="file" id="file-input" style="display:none;" multiple onchange="handleFileSelect(event)">
-        <div class="upload-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </div>
-        <div class="upload-title">Glisser-déposer vos fichiers ici</div>
-        <div class="upload-subtitle">ou <span style="color:var(--accent);font-weight:500;">cliquez pour sélectionner</span></div>
-        <div class="upload-formats">Formats acceptés : PDF, Excel (.xlsx), Word (.docx) · Taille max : 50 Mo par fichier</div>
-      </div>
-      <div id="file-list" style="margin-top:14px;display:none;">
-        <div style="font-size:12.5px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">Fichiers sélectionnés</div>
-        <div id="file-items"></div>
-      </div>
-      <div style="margin-top:16px;" class="form-group">
-        <label class="form-label">Document associé</label>
-        <select class="form-select">
-          <option>Bilan actif/passif 31/12/2023</option>
-          <option>Compte de résultat 2023</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Commentaire (optionnel)</label>
-        <textarea class="form-input" placeholder="Ajoutez une note pour l'auditeur…" style="min-height:70px;"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-upload')">Annuler</button>
-      <button class="btn btn-primary" onclick="submitUpload()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Déposer le fichier
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal : Nouveau client -->
 <div class="modal-backdrop" id="modal-new-client" onclick="closeModalOnBg(event,'modal-new-client')">
   <div class="modal">
     <div class="modal-header">
       <div>
         <div class="modal-title">Nouveau client</div>
-        <div class="modal-subtitle">Créer un accès sécurisé Power Pages pour ce client</div>
+        <div class="modal-subtitle">Le client sera ajouté dans data.json</div>
       </div>
       <button class="btn btn-ghost" onclick="closeModal('modal-new-client')">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -1505,77 +513,199 @@ textarea.form-input { resize: vertical; min-height: 90px; }
     <div class="modal-body">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Nom du contact <span>*</span></label>
-          <input class="form-input" placeholder="Jean Dupont" type="text">
+          <label class="form-label">Nom <span>*</span></label>
+          <input class="form-input" id="new-client-nom" placeholder="Jean Dupont" type="text">
         </div>
         <div class="form-group">
           <label class="form-label">Société <span>*</span></label>
-          <input class="form-input" placeholder="Nom de l'entreprise" type="text">
+          <input class="form-input" id="new-client-societe" placeholder="Nom de l'entreprise" type="text">
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Email <span>*</span></label>
-        <input class="form-input" placeholder="contact@entreprise.fr" type="email">
-        <div class="form-hint">Un email d'invitation sera envoyé pour accéder au portail client.</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Statut</label>
-        <select class="form-select"><option>Actif</option><option>Inactif</option></select>
+        <input class="form-input" id="new-client-email" placeholder="contact@entreprise.ci" type="email">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-new-client')">Annuler</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-new-client');showToast('Client créé. Invitation envoyée.')">
-        Créer le client
+      <button class="btn btn-primary" onclick="closeModal('modal-new-client');showToast('Client noté. Ajoutez-le dans data.json sur GitHub.')">
+        Enregistrer
       </button>
     </div>
   </div>
 </div>
 
-<!-- Toast notification -->
+<div class="modal-backdrop" id="modal-json" onclick="closeModalOnBg(event,'modal-json')">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">JSON à copier dans data.json</div>
+        <div class="modal-subtitle">Copiez ce bloc et ajoutez-le dans le tableau "demandes" sur GitHub</div>
+      </div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-json')">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <textarea class="form-input" id="json-output" rows="10" style="font-family:monospace;font-size:12px;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-json')">Fermer</button>
+      <button class="btn btn-primary" onclick="copyJSON()">Copier le JSON</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">
   <div class="toast-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
   <span id="toast-message">Action réalisée avec succès.</span>
 </div>
 
 <script>
-const pages = {
-  'dashboard-auditor': { title: 'Vue d\'ensemble', sub: 'Mission Exercice 2024 — Synthèse globale' },
-  'requests': { title: 'Demandes de documents', sub: '42 demandes actives' },
-  'detail': { title: 'DEM-0024 — Bilan comptable 2023', sub: 'ACME Corp · En retard · Haute priorité' },
-  'clients': { title: 'Clients', sub: '5 clients actifs' },
-  'documents': { title: 'Documents reçus', sub: '12 fichiers déposés' },
-  'automate': { title: 'Power Automate', sub: '3 flux automatisés actifs' },
-  'reporting': { title: 'Reporting & Analyse', sub: 'Mission Exercice 2024' },
-  'settings': { title: 'Configuration', sub: 'Dataverse · Power Pages · SharePoint' },
-};
-const API_URL = "https://2e98c96c5745ec04ba9044dc2bc1d9.51.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c32e6e7a16334c52a12cca0e7a2ab6f4/triggers/manual/paths/invoke?api-version=1";
+const DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
+let appData = { demandes: [], clients: [] };
 
-async function loadDemandes() {
+const pages = {
+  'dashboard': { title: 'Vue d\'ensemble', sub: 'Mission Exercice 2024 — Synthèse globale' },
+  'requests': { title: 'Demandes de documents', sub: '' },
+  'clients': { title: 'Clients', sub: '' },
+  'settings': { title: 'Configuration', sub: 'Source de données et paramètres' },
+};
+
+async function loadData() {
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({})
-    });
-    const data = await response.json();
-    console.log("Demandes Dataverse:", data);
-    return data.value || [];
-  } catch(err) {
-    console.error("Erreur API:", err);
-    return [];
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    appData = await r.json();
+    renderAll();
+  } catch(e) {
+    console.error('Erreur chargement data.json:', e);
+    showToast('Erreur de chargement des données.');
   }
 }
+
+function badgeHTML(statut) {
+  const map = {
+    'En retard': 'badge-red',
+    'Reçu': 'badge-green',
+    'En attente': 'badge-orange',
+    'Envoyé': 'badge-blue',
+  };
+  return `<span class="badge ${map[statut] || 'badge-gray'}">${statut}</span>`;
+}
+
+function prioriteHTML(p) {
+  return p === 'Haute'
+    ? '<span class="priority-high">Haute</span>'
+    : '<span class="priority-normal">Normale</span>';
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  if (parts.length !== 3) return d;
+  const mois = ['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
+  return `${parseInt(parts[2])} ${mois[parseInt(parts[1])-1]} ${parts[0]}`;
+}
+
+function renderAll() {
+  const d = appData.demandes || [];
+  const c = appData.clients || [];
+  const retard = d.filter(x => x.statut === 'En retard').length;
+  const attente = d.filter(x => x.statut === 'En attente').length;
+
+  // KPIs
+  document.getElementById('stat-total').textContent = d.length;
+  document.getElementById('stat-attente').textContent = attente;
+  document.getElementById('stat-clients').textContent = c.length;
+  document.getElementById('stat-retard').textContent = retard;
+  document.getElementById('kpi-total').textContent = d.length;
+  document.getElementById('kpi-clients').textContent = c.filter(x => x.statut === 'Actif').length;
+  document.getElementById('badge-retard').textContent = retard;
+  document.getElementById('hero-subtitle').textContent = retard > 0
+    ? `${retard} demande(s) en retard nécessitent votre attention`
+    : 'Toutes les demandes sont à jour ✓';
+
+  // Dashboard table
+  const dtb = document.getElementById('dashboard-table');
+  dtb.innerHTML = d.length === 0
+    ? '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Aucune demande</td></tr>'
+    : d.map(x => `<tr>
+        <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
+        <td>${x.client}</td>
+        <td>${badgeHTML(x.statut)}</td>
+        <td>${prioriteHTML(x.priorite)}</td>
+        <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${formatDate(x.datelimite)}</td>
+        <td><div class="table-actions"><button class="btn btn-xs btn-secondary">Détail</button></div></td>
+      </tr>`).join('');
+
+  // Requests table
+  document.getElementById('requests-sub').textContent = `${d.length} demandes — Mission exercice 2024`;
+  document.getElementById('requests-count').textContent = `${d.length} résultats`;
+  renderRequestsTable(d);
+
+  // Clients
+  document.getElementById('clients-sub').textContent = `${c.length} clients — Mission exercice 2024`;
+  const grid = document.getElementById('clients-grid');
+  grid.innerHTML = c.length === 0
+    ? '<div style="text-align:center;padding:40px;color:var(--text-muted);">Aucun client</div>'
+    : c.map(cl => {
+        const initiales = cl.nom.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+        const demClient = d.filter(x => x.client === cl.nom);
+        const retardClient = demClient.filter(x => x.statut === 'En retard').length;
+        return `<div class="client-card">
+          <div class="client-header">
+            <div class="client-avatar">${initiales}</div>
+            <div>
+              <div style="font-weight:600;">${cl.nom}</div>
+              <div style="font-size:12px;color:var(--text-muted);">${cl.email}</div>
+            </div>
+            <div style="margin-left:auto;"><span class="badge ${cl.statut==='Actif'?'badge-green':'badge-orange'}">${cl.statut}</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:14px;border-top:1px solid var(--border);">
+            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Société</div><div style="font-size:13px;font-weight:600;">${cl.societe}</div></div>
+            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Demandes</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);">${demClient.length}</div></div>
+            <div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">En retard</div><div style="font-size:18px;font-weight:700;font-family:var(--mono);color:${retardClient>0?'var(--red)':'var(--text-muted)'};">${retardClient}</div></div>
+          </div>
+        </div>`;
+      }).join('');
+}
+
+function renderRequestsTable(data) {
+  const tbody = document.getElementById('requests-table');
+  tbody.innerHTML = data.length === 0
+    ? '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Aucune demande</td></tr>'
+    : data.map(x => `<tr>
+        <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
+        <td>${x.client}</td>
+        <td>${x.societe || '—'}</td>
+        <td>${badgeHTML(x.statut)}</td>
+        <td>${prioriteHTML(x.priorite)}</td>
+        <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${formatDate(x.datelimite)}</td>
+      </tr>`).join('');
+}
+
+function filterRequests(val) {
+  const filtered = appData.demandes.filter(x =>
+    x.nom.toLowerCase().includes(val.toLowerCase()) ||
+    x.client.toLowerCase().includes(val.toLowerCase())
+  );
+  renderRequestsTable(filtered);
+  document.getElementById('requests-count').textContent = `${filtered.length} résultats`;
+}
+
+function filterByStatus(val) {
+  const filtered = val ? appData.demandes.filter(x => x.statut === val) : appData.demandes;
+  renderRequestsTable(filtered);
+  document.getElementById('requests-count').textContent = `${filtered.length} résultats`;
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
-  const navMap = {
-    'dashboard-auditor': 0, 'requests': 1, 'clients': 2,
-    'documents': 3, 'automate': 4, 'reporting': 5, 'settings': 6,
-  };
   const navItems = document.querySelectorAll('.nav-item');
+  const navMap = { 'dashboard': 0, 'requests': 1, 'clients': 2, 'settings': 3 };
   if (navMap[id] !== undefined) navItems[navMap[id]]?.classList.add('active');
   if (pages[id]) {
     document.getElementById('topbar-title').textContent = pages[id].title;
@@ -1583,15 +713,9 @@ function showPage(id) {
   }
 }
 
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-function closeModalOnBg(e, id) {
-  if (e.target === document.getElementById(id)) closeModal(id);
-}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalOnBg(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
 
 let toastTimer;
 function showToast(msg) {
@@ -1599,60 +723,31 @@ function showToast(msg) {
   document.getElementById('toast-message').textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-function submitNewRequest() {
+function generateJSON() {
+  const nom = document.getElementById('new-nom').value;
+  const client = document.getElementById('new-client').value;
+  const date = document.getElementById('new-date').value;
+  const priorite = document.getElementById('new-priorite').value;
+  const desc = document.getElementById('new-description').value;
+  if (!nom || !client || !date) { showToast('Remplissez tous les champs obligatoires.'); return; }
+  const id = 'DEM-' + String(Math.floor(Math.random()*9000)+1000);
+  const obj = { id, nom, client, societe: '', statut: 'En attente', priorite, datelimite: date, description: desc };
+  document.getElementById('json-output').value = JSON.stringify(obj, null, 2);
   closeModal('modal-new-request');
-  showToast('Demande créée. Notification envoyée au client via Power Automate.');
-}
-function submitUpload() {
-  closeModal('modal-upload');
-  showToast('Fichier déposé. Auditeurs notifiés. Dossier SharePoint mis à jour.');
-}
-function markReceived() {
-  showToast('Demande marquée comme reçue. Statut mis à jour dans Dataverse.');
+  openModal('modal-json');
 }
 
-function handleDragOver(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.add('dragover');
-}
-function handleDragLeave(e) {
-  document.getElementById('upload-zone').classList.remove('dragover');
-}
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.remove('dragover');
-  displayFiles(e.dataTransfer.files);
-}
-function handleFileSelect(e) {
-  displayFiles(e.target.files);
-}
-function displayFiles(files) {
-  if (!files.length) return;
-  const list = document.getElementById('file-list');
-  const items = document.getElementById('file-items');
-  list.style.display = 'block';
-  items.innerHTML = '';
-  Array.from(files).forEach(f => {
-    const size = f.size < 1048576 ? Math.round(f.size/1024) + ' Ko' : (f.size/1048576).toFixed(1) + ' Mo';
-    const ext = f.name.split('.').pop().toLowerCase();
-    const iconColor = ext === 'pdf' ? 'var(--red)' : ext === 'xlsx' ? '#38A169' : 'var(--accent)';
-    items.innerHTML += `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:6px;">
-      <svg width="20" height="20" fill="none" stroke="${iconColor}" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-      <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</div><div style="font-size:12px;color:var(--text-muted);">${size}</div></div>
-      <span style="font-size:11px;font-weight:600;color:${iconColor};text-transform:uppercase;">${ext}</span>
-    </div>`;
-  });
+function copyJSON() {
+  const txt = document.getElementById('json-output');
+  txt.select();
+  document.execCommand('copy');
+  showToast('JSON copié ! Collez-le dans data.json sur GitHub.');
 }
 
-function filterTable(val) {
-  const rows = document.querySelectorAll('#requests-table tbody tr');
-  rows.forEach(r => {
-    r.style.display = r.textContent.toLowerCase().includes(val.toLowerCase()) ? '' : 'none';
-  });
-}
+loadData();
 </script>
 </body>
 </html>
