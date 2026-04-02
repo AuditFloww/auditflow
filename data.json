@@ -1,0 +1,38 @@
+{
+  "demandes": [
+    {
+      "id": "DEM-0001",
+      "nom": "Bilan comptable 2023",
+      "client": "Jean Koné",
+      "societe": "ACME Corp",
+      "statut": "En retard",
+      "priorite": "Haute",
+      "datelimite": "2024-03-15",
+      "description": "Fournir le bilan au 31/12/2023"
+    },
+    {
+      "id": "DEM-0002",
+      "nom": "Grand Livre détaillé",
+      "client": "Marie Traoré",
+      "societe": "TechCI SARL",
+      "statut": "En attente",
+      "priorite": "Normale",
+      "datelimite": "2024-03-20",
+      "description": "Grand livre Q4 2023 complet"
+    }
+  ],
+  "clients": [
+    {
+      "nom": "Jean Koné",
+      "email": "jean.kone@acme.ci",
+      "societe": "ACME Corp",
+      "statut": "Actif"
+    },
+    {
+      "nom": "Marie Traoré",
+      "email": "marie.traore@techci.com",
+      "societe": "TechCI SARL",
+      "statut": "Actif"
+    }
+  ]
+}
