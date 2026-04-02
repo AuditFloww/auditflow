@@ -379,8 +379,22 @@ textarea.form-input { resize: vertical; min-height: 80px; }
           Nouveau client
         </button>
       </div>
-      <div id="clients-grid" class="client-grid">
-        <div class="loading"><div class="loading-spinner"></div></div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Société</th>
+              <th>Email</th>
+              <th>Statut</th>
+              <th>Demandes</th>
+              <th>En retard</th>
+            </tr>
+          </thead>
+          <tbody id="clients-grid">
+            <tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -541,26 +555,26 @@ function renderAll() {
     <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
   </tr>`).join('');
   renderRequestsTable(dem);
-  document.getElementById('clients-grid').innerHTML = cli.map(c=>{
-    const init = c.nom.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
-    const dCli = dem.filter(x=>x.client===c.nom);
-    const ret = dCli.filter(x=>x.statut==='En retard').length;
-    return `<div class="client-card">
-      <div class="client-header">
-        <div class="client-avatar">${init}</div>
-        <div>
-          <div style="font-weight:500;font-size:13px;">${c.nom}</div>
-          <div style="font-size:11px;color:var(--text-muted);">${c.email}</div>
-        </div>
-        <div style="margin-left:auto;"><span class="badge ${c.statut==='Actif'?'badge-green':'badge-gray'}">${c.statut}</span></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding-top:12px;border-top:0.5px solid var(--border);">
-        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Société</div><div style="font-size:12px;font-weight:500;">${c.societe}</div></div>
-        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Demandes</div><div style="font-size:18px;font-weight:500;font-family:var(--mono);">${dCli.length}</div></div>
-        <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">En retard</div><div style="font-size:18px;font-weight:500;font-family:var(--mono);color:${ret>0?'var(--red)':'var(--text-muted)'};">${ret}</div></div>
-      </div>
-    </div>`;
-  }).join('');
+  document.getElementById('clients-grid').innerHTML = cli.length === 0
+    ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client.</td></tr>'
+    : cli.map(c=>{
+        const init = c.nom.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+        const dCli = dem.filter(x=>x.client===c.nom);
+        const ret = dCli.filter(x=>x.statut==='En retard').length;
+        return `<tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:30px;height:30px;border-radius:6px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-secondary);flex-shrink:0;">${init}</div>
+              <div class="td-primary">${c.nom}</div>
+            </div>
+          </td>
+          <td>${c.societe}</td>
+          <td style="color:var(--text-secondary);font-size:12px;">${c.email}</td>
+          <td><span class="badge ${c.statut==='Actif'?'badge-green':'badge-gray'}">${c.statut}</span></td>
+          <td><span style="font-family:var(--mono);font-size:13px;font-weight:500;">${dCli.length}</span></td>
+          <td><span style="font-family:var(--mono);font-size:13px;font-weight:500;color:${ret>0?'var(--red)':'var(--text-muted)'};">${ret}</span></td>
+        </tr>`;
+      }).join('');
 }
 function renderRequestsTable(data) {
   document.getElementById('requests-table').innerHTML = data.length===0
