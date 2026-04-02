@@ -1,38 +1,148 @@
 {
-  "demandes": [
-    {
-      "id": "DEM-0001",
-      "nom": "Bilan comptable 2023",
-      "client": "Jean Koné",
-      "societe": "ACME Corp",
-      "statut": "En retard",
-      "priorite": "Haute",
-      "datelimite": "2024-03-15",
-      "description": "Fournir le bilan au 31/12/2023"
-    },
-    {
-      "id": "DEM-0002",
-      "nom": "Grand Livre détaillé",
-      "client": "Marie Traoré",
-      "societe": "TechCI SARL",
-      "statut": "En attente",
-      "priorite": "Normale",
-      "datelimite": "2024-03-20",
-      "description": "Grand livre Q4 2023 complet"
-    }
-  ],
+  "mission": {
+    "nom": "Mission Exercice 2024",
+    "cabinet": "Fidaexpert",
+    "responsable": "Marie Aubert",
+    "dateDebut": "2024-01-15",
+    "dateFin": "2024-04-30"
+  },
   "clients": [
     {
       "nom": "Jean Koné",
-      "email": "jean.kone@acme.ci",
-      "societe": "ACME Corp",
-      "statut": "Actif"
+      "email": "j.kone@acmeci.com",
+      "societe": "ACME Corp CI",
+      "statut": "Actif",
+      "telephone": "+225 07 01 02 03"
     },
     {
       "nom": "Marie Traoré",
-      "email": "marie.traore@techci.com",
+      "email": "m.traore@techci.com",
       "societe": "TechCI SARL",
-      "statut": "Actif"
+      "statut": "Actif",
+      "telephone": "+225 07 04 05 06"
+    },
+    {
+      "nom": "Paul Kouassi",
+      "email": "p.kouassi@luxgroup.ci",
+      "societe": "LuxGroup SARL",
+      "statut": "Actif",
+      "telephone": "+225 07 07 08 09"
+    },
+    {
+      "nom": "Aminata Diallo",
+      "email": "a.diallo@biopharm.ci",
+      "societe": "BioPharm Labs CI",
+      "statut": "Actif",
+      "telephone": "+225 07 10 11 12"
+    },
+    {
+      "nom": "Serge Yao",
+      "email": "s.yao@nordimmo.ci",
+      "societe": "NordImmo SAS",
+      "statut": "Inactif",
+      "telephone": "+225 07 13 14 15"
+    }
+  ],
+  "demandes": [
+    {
+      "id": "DEM-0024",
+      "nom": "Bilan comptable 2023",
+      "client": "Jean Koné",
+      "societe": "ACME Corp CI",
+      "description": "Fournir le bilan comptable complet au 31/12/2023 incluant actif, passif et compte de résultat certifiés.",
+      "datelimite": "2024-03-15",
+      "statut": "En retard",
+      "priorite": "Haute"
+    },
+    {
+      "id": "DEM-0023",
+      "nom": "Grand Livre détaillé Q4 2023",
+      "client": "Marie Traoré",
+      "societe": "TechCI SARL",
+      "description": "Grand livre détaillé du quatrième trimestre 2023 avec toutes les écritures comptables.",
+      "datelimite": "2024-03-20",
+      "statut": "En attente",
+      "priorite": "Normale"
+    },
+    {
+      "id": "DEM-0022",
+      "nom": "Contrats fournisseurs 2024",
+      "client": "Paul Kouassi",
+      "societe": "LuxGroup SARL",
+      "description": "Liste complète des contrats fournisseurs en cours avec montants et échéances.",
+      "datelimite": "2024-03-22",
+      "statut": "En attente",
+      "priorite": "Haute"
+    },
+    {
+      "id": "DEM-0021",
+      "nom": "Relevés bancaires Q4 2023",
+      "client": "Aminata Diallo",
+      "societe": "BioPharm Labs CI",
+      "description": "Relevés bancaires de tous les comptes pour la période octobre à décembre 2023.",
+      "datelimite": "2024-03-18",
+      "statut": "En attente",
+      "priorite": "Normale"
+    },
+    {
+      "id": "DEM-0020",
+      "nom": "Tableau des amortissements",
+      "client": "Serge Yao",
+      "societe": "NordImmo SAS",
+      "description": "Tableau des amortissements des immobilisations corporelles et incorporelles au 31/12/2023.",
+      "datelimite": "2024-03-10",
+      "statut": "En retard",
+      "priorite": "Haute"
+    },
+    {
+      "id": "DEM-0019",
+      "nom": "Détail des stocks 31/12/2023",
+      "client": "Jean Koné",
+      "societe": "ACME Corp CI",
+      "description": "Inventaire physique et valorisation des stocks au 31 décembre 2023.",
+      "datelimite": "2024-03-25",
+      "statut": "En attente",
+      "priorite": "Normale"
+    },
+    {
+      "id": "DEM-0018",
+      "nom": "Procès-verbaux AG 2023",
+      "client": "Marie Traoré",
+      "societe": "TechCI SARL",
+      "description": "Procès-verbaux de toutes les assemblées générales tenues en 2023.",
+      "datelimite": "2024-03-28",
+      "statut": "En attente",
+      "priorite": "Normale"
+    },
+    {
+      "id": "DEM-0017",
+      "nom": "Contrats de travail cadres",
+      "client": "Paul Kouassi",
+      "societe": "LuxGroup SARL",
+      "description": "Copies des contrats de travail des cadres dirigeants et managers.",
+      "datelimite": "2024-04-05",
+      "statut": "En attente",
+      "priorite": "Normale"
+    },
+    {
+      "id": "DEM-0016",
+      "nom": "Déclarations fiscales 2023",
+      "client": "Aminata Diallo",
+      "societe": "BioPharm Labs CI",
+      "description": "Toutes les déclarations fiscales déposées en 2023 (TVA, IS, patente).",
+      "datelimite": "2024-04-10",
+      "statut": "En attente",
+      "priorite": "Haute"
+    },
+    {
+      "id": "DEM-0015",
+      "nom": "Rapport de gestion 2023",
+      "client": "Jean Koné",
+      "societe": "ACME Corp CI",
+      "description": "Rapport de gestion annuel présenté aux actionnaires pour l'exercice 2023.",
+      "datelimite": "2024-04-15",
+      "statut": "En attente",
+      "priorite": "Haute"
     }
   ]
 }
