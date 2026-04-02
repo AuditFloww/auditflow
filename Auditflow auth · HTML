@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuditFlow — Fidaexpert</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F7F7; --bg-card: #FFFFFF;
+  --text-primary: #111111; --text-secondary: #555555; --text-muted: #999999;
+  --border: #E8E8E8; --border-strong: #CCCCCC;
+  --red: #C0392B; --red-light: #FDF0EE; --red-border: #F0C0BB;
+  --green: #1E6B3C; --green-light: #EEF7F2; --green-border: #85C4A0;
+  --orange: #B35A1F; --orange-light: #FDF3EC; --orange-border: #F0C090;
+  --radius: 8px; --radius-lg: 12px; --radius-xl: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07);
+  --sidebar-w: 210px;
+  --font: 'DM Sans', -apple-system, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
+
+/* LOGIN */
+.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); padding: 24px; }
+.login-card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-xl); width: 100%; max-width: 380px; padding: 36px; }
+.login-logo { margin-bottom: 28px; }
+.login-logo-text { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+.login-logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.login-title { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.role-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.role-btn { padding: 10px; border: 0.5px solid var(--border); border-radius: var(--radius); cursor: pointer; text-align: center; transition: all 0.15s; background: var(--bg); }
+.role-btn:hover { border-color: var(--border-strong); }
+.role-btn.active { border-color: var(--text-primary); background: var(--bg-card); border-width: 1.5px; }
+.role-btn-icon { font-size: 18px; margin-bottom: 4px; }
+.role-btn-label { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+.role-btn-sub { font-size: 11px; color: var(--text-muted); }
+.form-group { margin-bottom: 14px; }
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 5px; }
+.form-input { width: 100%; padding: 9px 12px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-card); outline: none; transition: border-color 0.15s; }
+.form-input:focus { border-color: var(--text-primary); }
+.btn-full { width: 100%; padding: 10px; border: none; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: all 0.15s; background: var(--text-primary); color: #fff; margin-top: 6px; }
+.btn-full:hover { background: #333; }
+.btn-full:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-full.secondary { background: transparent; color: var(--text-primary); border: 0.5px solid var(--border); margin-top: 6px; }
+.btn-full.secondary:hover { background: var(--bg); }
+.error-box { background: var(--red-light); border: 0.5px solid var(--red-border); color: var(--red); padding: 9px 12px; border-radius: var(--radius); font-size: 12px; margin-top: 10px; display: none; }
+.error-box.show { display: block; }
+.login-footer { text-align: center; margin-top: 18px; font-size: 12px; color: var(--text-muted); }
+.login-footer a { color: var(--text-primary); cursor: pointer; }
+.demo-box { margin-top: 18px; padding: 12px; background: var(--bg); border-radius: var(--radius); border: 0.5px solid var(--border); }
+.demo-label { font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.demo-item { font-size: 12px; color: var(--text-secondary); margin-bottom: 3px; }
+
+/* APP */
+.app { display: none; height: 100vh; overflow: hidden; }
+.app.visible { display: flex; }
+.sidebar { width: var(--sidebar-w); background: var(--bg-card); border-right: 0.5px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
+.main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.topbar { background: var(--bg-card); border-bottom: 0.5px solid var(--border); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.content { flex: 1; padding: 24px; }
+.sidebar-logo { padding: 22px 18px 18px; border-bottom: 0.5px solid var(--border); }
+.logo-text { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.sidebar-section { padding: 16px 10px 8px; }
+.sidebar-label { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px 8px; }
+.nav-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: var(--radius); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: var(--font); }
+.nav-item:hover { color: var(--text-primary); background: var(--bg); }
+.nav-item.active { color: var(--bg-card); background: var(--text-primary); font-weight: 500; }
+.nav-item svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 10px; }
+.sidebar-footer { margin-top: auto; padding: 14px 18px; border-top: 0.5px solid var(--border); }
+.user-pill { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--text-secondary); flex-shrink: 0; }
+.user-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+.user-role { font-size: 11px; color: var(--text-muted); }
+.btn-logout { width: 100%; padding: 7px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); color: var(--text-secondary); font-size: 12px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+.btn-logout:hover { background: var(--red-light); color: var(--red); border-color: var(--red-border); }
+.topbar-title { font-size: 14px; font-weight: 500; }
+.topbar-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: 0.5px solid transparent; transition: all 0.15s; font-family: var(--font); white-space: nowrap; }
+.btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+.btn-primary:hover { background: #333; }
+.btn-secondary { background: var(--bg-card); color: var(--text-primary); border-color: var(--border); }
+.btn-secondary:hover { background: var(--bg); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border-color: transparent; padding: 7px; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge-red { background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); }
+.badge-red::before { background: var(--red); }
+.badge-green { background: var(--green-light); color: var(--green); border: 0.5px solid var(--green-border); }
+.badge-green::before { background: var(--green); }
+.badge-orange { background: var(--orange-light); color: var(--orange); border: 0.5px solid var(--orange-border); }
+.badge-orange::before { background: var(--orange); }
+.badge-gray { background: var(--bg); color: var(--text-muted); border: 0.5px solid var(--border); }
+.badge-gray::before { background: var(--text-muted); }
+.priority-high { font-size: 11px; font-weight: 500; color: var(--red); }
+.priority-normal { font-size: 11px; color: var(--text-muted); }
+.card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); }
+.card-header { padding: 16px 18px 0; display: flex; align-items: center; justify-content: space-between; }
+.card-body { padding: 16px 18px 18px; }
+.card-title { font-size: 13px; font-weight: 500; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); border-top: 2px solid var(--text-primary); padding: 14px 16px; }
+.stat-card.green { border-top-color: var(--green); }
+.stat-card.gray { border-top-color: #888; }
+.stat-card.red { border-top-color: var(--red); }
+.stat-label { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.stat-value { font-size: 26px; font-weight: 500; font-family: var(--mono); color: var(--text-primary); line-height: 1; }
+.stat-value.red { color: var(--red); }
+.table-container { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.table-toolbar { padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--border); }
+.search-wrap { position: relative; }
+.search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; fill: none; stroke: var(--text-muted); stroke-width: 2; pointer-events: none; }
+.search-input { padding: 6px 10px 6px 30px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); background: var(--bg); color: var(--text-primary); outline: none; width: 220px; }
+.search-input:focus { border-color: var(--text-primary); background: #fff; }
+.filter-select { padding: 6px 10px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 12px; font-family: var(--font); background: var(--bg); color: var(--text-secondary); cursor: pointer; outline: none; }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; background: var(--bg); border-bottom: 0.5px solid var(--border); }
+thead th:first-child { padding-left: 18px; }
+thead th:last-child { padding-right: 18px; text-align: right; }
+tbody tr { border-bottom: 0.5px solid var(--border); transition: background 0.1s; cursor: pointer; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg); }
+tbody td { padding: 11px 14px; font-size: 13px; vertical-align: middle; color: var(--text-secondary); }
+tbody td:first-child { padding-left: 18px; }
+tbody td:last-child { padding-right: 18px; text-align: right; }
+.td-primary { font-weight: 500; color: var(--text-primary); }
+.td-mono { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+.table-actions { display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
+.progress-bar { height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--text-primary); border-radius: 2px; transition: width 0.4s; }
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.15s ease; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 16px; font-weight: 500; letter-spacing: -0.2px; }
+.section-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--bg-card); border-radius: var(--radius-xl); border: 0.5px solid var(--border); box-shadow: var(--shadow-md); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; transform: translateY(6px); transition: transform 0.2s; }
+.modal-backdrop.open .modal { transform: translateY(0); }
+.modal-header { padding: 20px 20px 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.modal-title { font-size: 15px; font-weight: 500; }
+.modal-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.modal-body { padding: 16px 20px; }
+.modal-footer { padding: 0 20px 16px; display: flex; gap: 8px; justify-content: flex-end; border-top: 0.5px solid var(--border); padding-top: 14px; }
+.form-group { margin-bottom: 14px; }
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 5px; }
+.form-label span { color: var(--red); margin-left: 2px; }
+.form-input2 { width: 100%; padding: 8px 11px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-card); outline: none; }
+.form-input2:focus { border-color: var(--text-primary); }
+.form-select { width: 100%; padding: 8px 11px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-card); outline: none; cursor: pointer; }
+textarea.form-input2 { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--text-primary); color: #fff; padding: 12px 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); z-index: 200; font-size: 13px; display: flex; align-items: center; gap: 10px; transform: translateY(70px); opacity: 0; transition: all 0.3s; max-width: 320px; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toast-icon svg { width: 12px; height: 12px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.role-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; background: var(--bg); border: 0.5px solid var(--border); color: var(--text-secondary); }
+.loading { text-align: center; padding: 36px; color: var(--text-muted); font-size: 13px; }
+.loading-spinner { width: 20px; height: 20px; border: 1.5px solid var(--border); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+@media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-page" id="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-text">AuditFlow</div>
+      <div class="login-logo-sub">Fidaexpert</div>
+    </div>
+    <div class="login-title">Bienvenue</div>
+    <div class="login-sub">Connectez-vous à votre espace</div>
+    <div class="role-selector">
+      <div class="role-btn active" id="role-auditeur" onclick="selectRole('auditeur')">
+        <div class="role-btn-icon">🔍</div>
+        <div class="role-btn-label">Auditeur</div>
+        <div class="role-btn-sub">Accès complet</div>
+      </div>
+      <div class="role-btn" id="role-client" onclick="selectRole('client')">
+        <div class="role-btn-icon">🏢</div>
+        <div class="role-btn-label">Client</div>
+        <div class="role-btn-sub">Mes demandes</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="login-email" type="email" placeholder="votre@email.com" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mot de passe</label>
+      <input class="form-input" id="login-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button class="btn-full" id="btn-login" onclick="login()">Se connecter</button>
+    <button class="btn-full secondary" id="btn-signup" onclick="signup()" style="display:none;">Créer mon compte</button>
+    <div class="error-box" id="login-error"></div>
+    <div class="login-footer">
+      <span id="toggle-text">Pas encore de compte ? </span>
+      <a onclick="toggleMode()" id="toggle-link">Créer un compte</a>
+    </div>
+    <div class="demo-box">
+      <div class="demo-label">Comptes démo</div>
+      <div class="demo-item">🔍 auditeur@fidaexpert.ci</div>
+      <div class="demo-item">🏢 client@acmeci.com</div>
+      <div class="demo-item" style="color:var(--text-muted);margin-top:4px;">Mot de passe : AuditFlow2024!</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">AuditFlow</div>
+      <div class="logo-sub">Fidaexpert</div>
+    </div>
+    <div id="menu-auditeur" style="display:none;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Principal</div>
+        <button class="nav-item active" onclick="showPage('dashboard')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Vue d'ensemble
+        </button>
+        <button class="nav-item" onclick="showPage('requests')">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          Demandes
+          <span class="nav-badge" id="badge-retard">0</span>
+        </button>
+        <button class="nav-item" onclick="showPage('clients')">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Clients
+        </button>
+      </div>
+    </div>
+    <div id="menu-client" style="display:none;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Mon espace</div>
+        <button class="nav-item active" onclick="showPage('client-dashboard')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Mes demandes
+        </button>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar" id="user-avatar">?</div>
+        <div>
+          <div class="user-name" id="user-name">—</div>
+          <div class="user-role" id="user-role-label">—</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Vue d'ensemble</div>
+        <div class="topbar-subtitle" id="topbar-subtitle">Mission Exercice 2024 — Fidaexpert</div>
+      </div>
+      <div class="topbar-actions">
+        <span class="role-tag" id="role-tag"></span>
+        <button class="btn btn-primary" id="btn-new-request" onclick="openModal('modal-new-request')" style="display:none;">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nouvelle demande
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD AUDITEUR -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total demandes</div><div class="stat-value" id="s-total">—</div></div>
+          <div class="stat-card green"><div class="stat-label">En attente</div><div class="stat-value" id="s-attente">—</div></div>
+          <div class="stat-card gray"><div class="stat-label">Clients actifs</div><div class="stat-value" id="s-clients">—</div></div>
+          <div class="stat-card red"><div class="stat-label">En retard</div><div class="stat-value red" id="s-retard">—</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 280px;gap:12px;">
+          <div>
+            <div class="section-header">
+              <div><div class="section-title">Demandes récentes</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="showPage('requests')">Voir tout</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead><tr><th>Demande</th><th>Client</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
+                <tbody id="dash-table"><tr><td colspan="5"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title" style="margin-bottom:12px;">Progression</div>
+                <div style="font-size:24px;font-weight:500;font-family:var(--mono);margin-bottom:8px;" id="taux">—%</div>
+                <div class="progress-bar" style="margin-bottom:12px;"><div class="progress-fill" id="prog-fill" style="width:0%;"></div></div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <div style="display:flex;justify-content:space-between;font-size:12px;">
+                    <span style="color:var(--text-secondary);display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>En attente</span>
+                    <span style="font-weight:500;" id="prog-attente">—</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;">
+                    <span style="color:var(--text-secondary);display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;"></span>En retard</span>
+                    <span style="font-weight:500;color:var(--red);" id="prog-retard">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">Fidaexpert</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Audit légal & Commissariat aux comptes</div>
+                <div style="margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border);font-size:12px;color:var(--text-muted);">
+                  Côte d'Ivoire<br>
+                  <a href="mailto:guy.dahouo@fidaexpert.com" style="color:var(--text-primary);text-decoration:none;">guy.dahouo@fidaexpert.com</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMANDES -->
+      <div class="page" id="page-requests">
+        <div class="section-header">
+          <div><div class="section-title">Demandes</div><div class="section-sub" id="req-sub">—</div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-request')">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouvelle demande
+          </button>
+        </div>
+        <div class="table-container">
+          <div class="table-toolbar">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input class="search-input" placeholder="Rechercher…" oninput="filterReq(this.value)">
+            </div>
+            <select class="filter-select" onchange="filterReqStatus(this.value)">
+              <option value="">Tous les statuts</option>
+              <option>En retard</option>
+              <option>En attente</option>
+            </select>
+            <div style="margin-left:auto;font-size:12px;color:var(--text-muted);" id="req-count">—</div>
+          </div>
+          <table>
+            <thead><tr><th>Demande</th><th>Client</th><th>Société</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
+            <tbody id="req-table"><tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="page" id="page-clients">
+        <div class="section-header">
+          <div><div class="section-title">Clients</div><div class="section-sub" id="cli-sub">—</div></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Client</th><th>Société</th><th>Email</th><th>Statut</th><th>Demandes</th><th>En retard</th></tr></thead>
+            <tbody id="cli-table"><tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DASHBOARD CLIENT -->
+      <div class="page" id="page-client-dashboard">
+        <div class="section-header">
+          <div><div class="section-title" id="client-hello">Mes demandes</div><div class="section-sub">Documents à fournir à Fidaexpert</div></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Demande</th><th>Société</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead>
+            <tbody id="client-table"><tr><td colspan="5"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modal-new-request" onclick="closeModalOnBg(event,'modal-new-request')">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title">Nouvelle demande</div><div class="modal-subtitle">Le JSON sera généré pour data.json</div></div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-request')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Nom <span>*</span></label><input class="form-input2" id="n-nom" placeholder="ex : Bilan comptable 2023" type="text"></div>
+      <div class="form-group"><label class="form-label">Client <span>*</span></label><input class="form-input2" id="n-client" placeholder="Nom du client" type="text"></div>
+      <div class="form-group"><label class="form-label">Société</label><input class="form-input2" id="n-societe" placeholder="Nom de la société" type="text"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date limite <span>*</span></label><input class="form-input2" id="n-date" type="date"></div>
+        <div class="form-group"><label class="form-label">Priorité</label><select class="form-select" id="n-priorite"><option>Normale</option><option>Haute</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-input2" id="n-desc" placeholder="Documents attendus…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-new-request')">Annuler</button>
+      <button class="btn btn-primary" onclick="generateJSON()">Générer JSON</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-json" onclick="closeModalOnBg(event,'modal-json')">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title">JSON à copier dans data.json</div></div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-json')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body"><textarea class="form-input2" id="json-out" rows="10" style="font-family:monospace;font-size:12px;"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-json')">Fermer</button>
+      <button class="btn btn-primary" onclick="copyJSON()">Copier</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <span id="toast-msg">Action réalisée.</span>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
+const DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null, currentRole = 'auditeur', appData = { demandes: [], clients: [] }, isSignup = false;
+
+function selectRole(r) {
+  currentRole = r;
+  document.getElementById('role-auditeur').classList.toggle('active', r==='auditeur');
+  document.getElementById('role-client').classList.toggle('active', r==='client');
+}
+function toggleMode() {
+  isSignup = !isSignup;
+  document.getElementById('btn-login').style.display = isSignup ? 'none' : 'block';
+  document.getElementById('btn-signup').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('toggle-text').textContent = isSignup ? 'Déjà un compte ? ' : 'Pas encore de compte ? ';
+  document.getElementById('toggle-link').textContent = isSignup ? 'Se connecter' : 'Créer un compte';
+}
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('btn-login');
+  if (!email||!password) { showError('Remplissez tous les champs.'); return; }
+  btn.disabled = true; btn.textContent = 'Connexion...';
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { showError('Email ou mot de passe incorrect.'); btn.disabled=false; btn.textContent='Se connecter'; return; }
+    currentUser = data.user;
+    currentRole = data.user.user_metadata?.role || currentRole;
+    showApp();
+  } catch(e) { showError('Erreur de connexion.'); btn.disabled=false; btn.textContent='Se connecter'; }
+}
+async function signup() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email||!password) { showError('Remplissez tous les champs.'); return; }
+  const btn = document.getElementById('btn-signup');
+  btn.disabled = true; btn.textContent = 'Création...';
+  const { error } = await sb.auth.signUp({ email, password, options: { data: { role: currentRole } } });
+  if (error) { showError(error.message); btn.disabled=false; btn.textContent='Créer mon compte'; return; }
+  showToast('Compte créé ! Connectez-vous maintenant.');
+  toggleMode(); btn.disabled=false; btn.textContent='Créer mon compte';
+}
+function showError(msg) { const el=document.getElementById('login-error'); el.textContent=msg; el.classList.add('show'); }
+async function showApp() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  const email = currentUser.email;
+  const init = email.substring(0,2).toUpperCase();
+  document.getElementById('user-avatar').textContent = init;
+  document.getElementById('user-name').textContent = email;
+  document.getElementById('user-role-label').textContent = currentRole==='auditeur' ? 'Auditeur' : 'Client';
+  if (currentRole==='auditeur') {
+    document.getElementById('menu-auditeur').style.display = 'block';
+    document.getElementById('btn-new-request').style.display = 'flex';
+    document.getElementById('role-tag').textContent = '🔍 Auditeur';
+    showPage('dashboard');
+  } else {
+    document.getElementById('menu-client').style.display = 'block';
+    document.getElementById('role-tag').textContent = '🏢 Client';
+    document.getElementById('client-hello').textContent = `Bonjour ${email.split('@')[0]} 👋`;
+    showPage('client-dashboard');
+  }
+  await loadData();
+}
+async function loadData() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    appData = await r.json();
+    renderAll();
+  } catch(e) { showToast('Erreur de chargement.'); }
+}
+async function logout() {
+  await sb.auth.signOut();
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('menu-auditeur').style.display = 'none';
+  document.getElementById('menu-client').style.display = 'none';
+  document.getElementById('btn-login').disabled = false;
+  document.getElementById('btn-login').textContent = 'Se connecter';
+  document.getElementById('login-error').classList.remove('show');
+  currentUser = null;
+}
+function badgeHTML(s) {
+  const map = { 'En retard':'badge-red','Reçu':'badge-green','En attente':'badge-orange','Envoyé':'badge-gray' };
+  return `<span class="badge ${map[s]||'badge-gray'}">${s}</span>`;
+}
+function prioHTML(p) { return p==='Haute'?'<span class="priority-high">▲ Haute</span>':'<span class="priority-normal">— Normale</span>'; }
+function fmtDate(d) {
+  if (!d) return '—';
+  const [y,m,j]=d.split('-');
+  const mois=['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
+  return `${parseInt(j)} ${mois[parseInt(m)-1]} ${y}`;
+}
+function renderAll() {
+  const dem = appData.demandes||[], cli = appData.clients||[];
+  const retard = dem.filter(x=>x.statut==='En retard').length;
+  const attente = dem.filter(x=>x.statut==='En attente').length;
+  const taux = dem.length>0 ? Math.round((attente/dem.length)*100) : 0;
+  if (currentRole==='auditeur') {
+    document.getElementById('s-total').textContent = dem.length;
+    document.getElementById('s-attente').textContent = attente;
+    document.getElementById('s-clients').textContent = cli.length;
+    document.getElementById('s-retard').textContent = retard;
+    document.getElementById('badge-retard').textContent = retard;
+    document.getElementById('taux').textContent = taux+'%';
+    document.getElementById('prog-fill').style.width = taux+'%';
+    document.getElementById('prog-attente').textContent = attente;
+    document.getElementById('prog-retard').textContent = retard;
+    document.getElementById('req-sub').textContent = `${dem.length} demandes`;
+    document.getElementById('req-count').textContent = `${dem.length} résultats`;
+    document.getElementById('cli-sub').textContent = `${cli.length} clients — Fidaexpert`;
+    document.getElementById('dash-table').innerHTML = dem.slice(0,5).map(x=>`<tr>
+      <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
+      <td>${x.client}</td>
+      <td>${badgeHTML(x.statut)}</td>
+      <td>${prioHTML(x.priorite)}</td>
+      <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
+    </tr>`).join('');
+    renderReqTable(dem);
+    document.getElementById('cli-table').innerHTML = cli.map(c=>{
+      const init = c.nom.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+      const dCli = dem.filter(x=>x.client===c.nom);
+      const ret = dCli.filter(x=>x.statut==='En retard').length;
+      return `<tr>
+        <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:6px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text-secondary);">${init}</div><div class="td-primary">${c.nom}</div></div></td>
+        <td>${c.societe}</td>
+        <td style="font-size:12px;">${c.email}</td>
+        <td><span class="badge ${c.statut==='Actif'?'badge-green':'badge-gray'}">${c.statut}</span></td>
+        <td style="font-family:var(--mono);font-size:13px;font-weight:500;">${dCli.length}</td>
+        <td style="font-family:var(--mono);font-size:13px;font-weight:500;color:${ret>0?'var(--red)':'var(--text-muted)'};">${ret}</td>
+      </tr>`;
+    }).join('');
+  } else {
+    document.getElementById('client-table').innerHTML = dem.map(x=>`<tr>
+      <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
+      <td>${x.societe||x.client}</td>
+      <td>${badgeHTML(x.statut)}</td>
+      <td>${prioHTML(x.priorite)}</td>
+      <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
+    </tr>`).join('');
+  }
+}
+function renderReqTable(data) {
+  document.getElementById('req-table').innerHTML = data.length===0
+    ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande.</td></tr>'
+    : data.map(x=>`<tr>
+        <td><div class="td-primary">${x.nom}</div><div class="td-mono">${x.id}</div></td>
+        <td>${x.client}</td>
+        <td>${x.societe||'—'}</td>
+        <td>${badgeHTML(x.statut)}</td>
+        <td>${prioHTML(x.priorite)}</td>
+        <td style="${x.statut==='En retard'?'color:var(--red);font-weight:500;':''}">${fmtDate(x.datelimite)}</td>
+      </tr>`).join('');
+}
+function filterReq(v) {
+  const f = appData.demandes.filter(x=>x.nom.toLowerCase().includes(v.toLowerCase())||x.client.toLowerCase().includes(v.toLowerCase()));
+  renderReqTable(f);
+  document.getElementById('req-count').textContent = `${f.length} résultats`;
+}
+function filterReqStatus(v) {
+  const f = v ? appData.demandes.filter(x=>x.statut===v) : appData.demandes;
+  renderReqTable(f);
+  document.getElementById('req-count').textContent = `${f.length} résultats`;
+}
+const pagesMeta = {
+  'dashboard': { title: 'Vue d\'ensemble', sub: 'Mission Exercice 2024 — Fidaexpert' },
+  'requests': { title: 'Demandes', sub: '' },
+  'clients': { title: 'Clients', sub: '' },
+  'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir à Fidaexpert' },
+};
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
+  const menu = currentRole==='auditeur' ? '#menu-auditeur' : '#menu-client';
+  const navMap = { dashboard:0, requests:1, clients:2, 'client-dashboard':0 };
+  const items = document.querySelectorAll(menu+' .nav-item');
+  if (navMap[id]!==undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
+  if (pagesMeta[id]) { document.getElementById('topbar-title').textContent=pagesMeta[id].title; document.getElementById('topbar-subtitle').textContent=pagesMeta[id].sub; }
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalOnBg(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+let toastTimer;
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),4000);
+}
+function generateJSON() {
+  const nom=document.getElementById('n-nom').value;
+  const client=document.getElementById('n-client').value;
+  const date=document.getElementById('n-date').value;
+  if (!nom||!client||!date) { showToast('Remplissez les champs obligatoires.'); return; }
+  const obj={id:'DEM-'+String(Math.floor(Math.random()*9000)+1000),nom,client,societe:document.getElementById('n-societe').value,description:document.getElementById('n-desc').value,datelimite:date,statut:'En attente',priorite:document.getElementById('n-priorite').value};
+  document.getElementById('json-out').value=JSON.stringify(obj,null,2);
+  closeModal('modal-new-request');
+  openModal('modal-json');
+}
+function copyJSON() {
+  const t=document.getElementById('json-out'); t.select(); document.execCommand('copy');
+  showToast('JSON copié ! Ajoutez-le dans data.json sur GitHub.');
+}
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) { currentUser=data.session.user; currentRole=data.session.user.user_metadata?.role||'auditeur'; showApp(); }
+});
+</script>
+</body>
+</html>
