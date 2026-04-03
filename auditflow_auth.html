@@ -433,7 +433,7 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
             </button>
             <div><div class="section-title" id="detail-nom">—</div><div class="section-sub" id="detail-id">—</div></div>
           </div>
-          <div id="detail-badge"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div id="detail-badge"></div><button class="btn btn-sm" onclick="deleteDemande()" style="background:var(--red-light);color:var(--red);border:0.5px solid var(--red-border);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>Supprimer</button></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
           <div class="card"><div class="card-body"><div class="card-title" style="margin-bottom:12px;">Informations</div><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Client</span><span style="font-weight:500;" id="detail-client">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Société</span><span style="font-weight:500;" id="detail-societe">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Date limite</span><span style="font-weight:500;" id="detail-date">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Priorité</span><span id="detail-prio">—</span></div></div></div></div>
@@ -456,6 +456,45 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
           </table>
         </div>
       </div>
+
+      <!-- DETAIL CLIENT AVEC UPLOAD -->
+      <div class="page" id="page-client-detail">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="showPage('client-dashboard')">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              Retour
+            </button>
+            <div><div class="section-title" id="cd-nom">—</div><div class="section-sub" id="cd-id">—</div></div>
+          </div>
+          <div id="cd-badge"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div class="card"><div class="card-body"><div class="card-title" style="margin-bottom:12px;">Informations</div><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Date limite</span><span style="font-weight:500;" id="cd-date">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Priorité</span><span id="cd-prio">—</span></div></div></div></div>
+          <div class="card"><div class="card-body"><div class="card-title" style="margin-bottom:8px;">Description</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.7;" id="cd-desc">—</div></div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-body">
+            <div class="card-title" style="margin-bottom:14px;">Déposer vos documents</div>
+            <div id="cd-upload-zone" style="border:1.5px dashed var(--border);border-radius:var(--radius-lg);padding:32px 24px;text-align:center;background:var(--bg);cursor:pointer;" ondragover="cdHandleDragOver(event)" ondragleave="cdHandleDragLeave(event)" ondrop="cdHandleDrop(event)" onclick="document.getElementById('cd-file-input').click()">
+              <input type="file" id="cd-file-input" style="display:none;" multiple onchange="cdHandleFileSelect(event)">
+              <div style="font-size:14px;font-weight:500;margin-bottom:4px;">Glisser-déposer vos fichiers</div>
+              <div style="font-size:13px;color:var(--text-muted);">ou <span style="color:var(--text-primary);font-weight:500;">cliquez pour sélectionner</span></div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">PDF, Excel, Word · Max 50 Mo</div>
+            </div>
+            <div id="cd-file-list" style="margin-top:14px;display:none;">
+              <div id="cd-file-items"></div>
+              <div id="cd-progress" style="display:none;margin-top:10px;"><div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;" id="cd-progress-text">Upload en cours...</div><div class="progress-bar"><div class="progress-fill" id="cd-progress-fill" style="width:0%"></div></div></div>
+              <div style="display:flex;gap:8px;margin-top:14px;"><button class="btn btn-primary" id="cd-btn-upload" onclick="cdUploadFiles()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Déposer</button><button class="btn btn-secondary" onclick="cdClearFiles()">Effacer</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <div style="padding:14px 18px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;"><div style="font-size:13px;font-weight:500;">Documents déposés</div><button class="btn btn-secondary btn-sm" onclick="cdReloadDocs()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.75"/></svg> Actualiser</button></div>
+          <table><thead><tr><th>Fichier</th><th>Date</th><th>Action</th></tr></thead><tbody id="cd-docs-table"><tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé.</td></tr></tbody></table>
+        </div>
+      </div>
+
 
     </div>
   </div>
