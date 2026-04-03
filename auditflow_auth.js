@@ -7,6 +7,8 @@ var currentRole = 'auditeur';
 var appData = { demandes: [], clients: [] };
 var isSignup = false;
 var currentDemande = null;
+var cdCurrentDemande = null;
+var cdSelectedFiles = [];
 
 function loadSupabase() {
   return new Promise(function(resolve, reject) {
@@ -19,17 +21,18 @@ function loadSupabase() {
   });
 }
 
-function selectRole(r) {
-
 function detectRole(email) {
-  var auditeurDomains = ["fidaexpert.ci", "fidaexpert.com"];
-  var domain = email.split("@")[1] || "";
+  var meta = currentUser && currentUser.user_metadata && currentUser.user_metadata.role;
+  if (meta) return meta;
+  var auditeurDomains = ['fidaexpert.ci', 'fidaexpert.com'];
+  var domain = (email || '').split('@')[1] || '';
   for (var i = 0; i < auditeurDomains.length; i++) {
-    if (domain === auditeurDomains[i]) return "auditeur";
+    if (domain === auditeurDomains[i]) return 'auditeur';
   }
-  return "client";
+  return 'client';
 }
 
+function selectRole(r) {
   currentRole = r;
   document.getElementById('role-auditeur').classList.toggle('active', r === 'auditeur');
   document.getElementById('role-client').classList.toggle('active', r === 'client');
@@ -60,7 +63,7 @@ function doLogin() {
   }).then(function(result) {
     if (result.error) { showError('Email ou mot de passe incorrect.'); btn.disabled = false; btn.textContent = 'Se connecter'; return; }
     currentUser = result.data.user;
-    currentRole = detectRole(result.data.user.email);
+    currentRole = detectRole(currentUser.email);
     showApp();
   }).catch(function() { showError('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Se connecter'; });
 }
@@ -112,7 +115,6 @@ function showApp() {
   loadData();
 }
 
-// Charger clients puis demandes séparément
 function loadData() {
   loadSupabase().then(function() {
     return sb.from('clients').select('*').order('id', { ascending: true });
@@ -142,18 +144,13 @@ function loadData() {
         };
       });
       if (currentRole === 'client') {
-        appData.demandes = allDem.filter(function(d) {
-          return d.email_client === currentUser.email;
-        });
+        appData.demandes = allDem.filter(function(d) { return d.email_client === currentUser.email; });
       } else {
         appData.demandes = allDem;
       }
     }
     renderAll();
-  }).catch(function(e) {
-    console.error('Erreur:', e);
-    showToast('Erreur de chargement.');
-  });
+  }).catch(function(e) { console.error('Erreur:', e); showToast('Erreur de chargement.'); });
 }
 
 function submitNewRequest() {
@@ -166,17 +163,10 @@ function submitNewRequest() {
   var btn = document.getElementById('btn-submit-request');
   btn.disabled = true; btn.textContent = 'Enregistrement...';
   loadSupabase().then(function() {
-    return sb.from('demandes').insert([{
-      nom: nom,
-      client_id: parseInt(clientId),
-      description: desc,
-      datelimite: date,
-      statut: 'En attente',
-      priorite: priorite
-    }]);
+    return sb.from('demandes').insert([{ nom: nom, client_id: parseInt(clientId), description: desc, datelimite: date, statut: 'En attente', priorite: priorite }]);
   }).then(function(result) {
     if (result.error) { showToast('Erreur : ' + result.error.message); btn.disabled = false; btn.textContent = 'Créer la demande'; return; }
-    showToast('Demande créée ! Le client peut la voir immédiatement.');
+    showToast('Demande créée !');
     closeModal('modal-new-request');
     btn.disabled = false; btn.textContent = 'Créer la demande';
     document.getElementById('n-nom').value = '';
@@ -256,7 +246,7 @@ function renderAll() {
     }).join('');
     renderReqTable(dem);
     document.getElementById('cli-table').innerHTML = cli.length === 0
-      ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client. Cliquez sur "+ Nouveau client" pour commencer.</td></tr>'
+      ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client.</td></tr>'
       : cli.map(function(c) {
           var init = c.nom.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
           var dCli = dem.filter(function(x) { return x.client_id === c.id; });
@@ -267,7 +257,7 @@ function renderAll() {
     document.getElementById('client-table').innerHTML = dem.length === 0
       ? '<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande pour le moment.</td></tr>'
       : dem.map(function(x) {
-          return '<tr onclick="openClientDetail('' + x.id + ''')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + (x.societe || x.client) + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
+          return '<tr onclick="openClientDetail(\'' + x.id + '\')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + (x.societe || x.client) + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
         }).join('');
   }
 }
@@ -325,6 +315,122 @@ function reloadDetailDocs() {
       var date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR') : '—';
       var cleanName = f.name.replace(/^\d+_/, '');
       return '<tr><td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div><div class="td-primary" style="font-size:13px;">' + cleanName + '</div></div></td><td style="font-size:12px;color:var(--text-muted);">' + date + '</td><td><a href="' + url + '" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td></tr>';
+    }).join('');
+  }).catch(function() {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur.</td></tr>';
+  });
+}
+
+function deleteDemande() {
+  if (!currentDemande) return;
+  if (!confirm('Supprimer "' + currentDemande.nom + '" ? Cette action est irréversible.')) return;
+  loadSupabase().then(function() {
+    return sb.from('demandes').delete().eq('id', currentDemande._supabase_id);
+  }).then(function(result) {
+    if (result.error) { showToast('Erreur : ' + result.error.message); return; }
+    showToast('Demande supprimée.');
+    showPage('requests');
+    currentDemande = null;
+    loadData();
+  }).catch(function() { showToast('Erreur de suppression.'); });
+}
+
+function openClientDetail(id) {
+  var dem = appData.demandes || [];
+  cdCurrentDemande = dem.find(function(d) { return d.id === id; });
+  if (!cdCurrentDemande) return;
+  document.getElementById('cd-nom').textContent = cdCurrentDemande.nom;
+  document.getElementById('cd-id').textContent = cdCurrentDemande.id;
+  document.getElementById('cd-date').textContent = fmtDate(cdCurrentDemande.datelimite);
+  document.getElementById('cd-prio').innerHTML = prioHTML(cdCurrentDemande.priorite);
+  document.getElementById('cd-desc').textContent = cdCurrentDemande.description || 'Aucune description.';
+  document.getElementById('cd-badge').innerHTML = badgeHTML(cdCurrentDemande.statut);
+  cdClearFiles();
+  showPage('client-detail');
+  cdReloadDocs();
+}
+
+function cdHandleDragOver(e) { e.preventDefault(); document.getElementById('cd-upload-zone').style.borderColor = 'var(--text-primary)'; }
+function cdHandleDragLeave() { document.getElementById('cd-upload-zone').style.borderColor = 'var(--border)'; }
+function cdHandleDrop(e) { e.preventDefault(); document.getElementById('cd-upload-zone').style.borderColor = 'var(--border)'; cdAddFiles(e.dataTransfer.files); }
+function cdHandleFileSelect(e) { cdAddFiles(e.target.files); }
+
+function cdAddFiles(files) {
+  Array.from(files).forEach(function(f) {
+    if (f.size > 50 * 1024 * 1024) { showToast(f.name + ' dépasse 50 Mo.'); return; }
+    if (!cdSelectedFiles.find(function(x) { return x.name === f.name; })) cdSelectedFiles.push(f);
+  });
+  cdRenderFileList();
+}
+
+function cdRenderFileList() {
+  var list = document.getElementById('cd-file-list');
+  var items = document.getElementById('cd-file-items');
+  if (cdSelectedFiles.length === 0) { list.style.display = 'none'; return; }
+  list.style.display = 'block';
+  items.innerHTML = cdSelectedFiles.map(function(f, i) {
+    var ext = f.name.split('.').pop().toLowerCase();
+    var colors = extStyle(ext);
+    var size = f.size < 1048576 ? Math.round(f.size / 1024) + ' Ko' : (f.size / 1048576).toFixed(1) + ' Mo';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border-radius:var(--radius);border:0.5px solid var(--border);margin-bottom:6px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div><div style="flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + f.name + '</div><div style="font-size:11px;color:var(--text-muted);white-space:nowrap;">' + size + '</div><button onclick="cdRemoveFile(' + i + ')" style="width:22px;height:22px;border:0.5px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-muted);">✕</button></div>';
+  }).join('');
+}
+
+function cdRemoveFile(i) { cdSelectedFiles.splice(i, 1); cdRenderFileList(); }
+function cdClearFiles() { cdSelectedFiles = []; cdRenderFileList(); var inp = document.getElementById('cd-file-input'); if (inp) inp.value = ''; }
+
+function cdUploadFiles() {
+  if (!cdCurrentDemande) { showToast('Aucune demande sélectionnée.'); return; }
+  if (cdSelectedFiles.length === 0) { showToast('Ajoutez au moins un fichier.'); return; }
+  var btn = document.getElementById('cd-btn-upload');
+  var progress = document.getElementById('cd-progress');
+  var progressFill = document.getElementById('cd-progress-fill');
+  var progressText = document.getElementById('cd-progress-text');
+  btn.disabled = true; progress.style.display = 'block';
+  var uploaded = 0; var total = cdSelectedFiles.length;
+  function uploadNext(index) {
+    if (index >= total) {
+      progressFill.style.width = '100%';
+      progressText.textContent = uploaded + ' fichier(s) déposé(s) !';
+      showToast(uploaded + ' fichier(s) déposé(s) avec succès !');
+      btn.disabled = false; cdSelectedFiles = []; cdRenderFileList();
+      document.getElementById('cd-file-input').value = '';
+      cdReloadDocs();
+      setTimeout(function() { progress.style.display = 'none'; progressFill.style.width = '0%'; }, 3000);
+      return;
+    }
+    var file = cdSelectedFiles[index];
+    progressText.textContent = 'Upload de ' + file.name + '...';
+    progressFill.style.width = Math.round((index / total) * 100) + '%';
+    var path = cdCurrentDemande.id + '/' + Date.now() + '_' + file.name;
+    loadSupabase().then(function() {
+      return sb.storage.from(BUCKET).upload(path, file, { upsert: true });
+    }).then(function(result) {
+      if (!result.error) uploaded++;
+      uploadNext(index + 1);
+    });
+  }
+  uploadNext(0);
+}
+
+function cdReloadDocs() {
+  if (!cdCurrentDemande) return;
+  var tbody = document.getElementById('cd-docs-table');
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>';
+  loadSupabase().then(function() {
+    return sb.storage.from(BUCKET).list(cdCurrentDemande.id, { limit: 50 });
+  }).then(function(result) {
+    if (result.error || !result.data || result.data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = result.data.map(function(f) {
+      var ext = f.name.split('.').pop().toLowerCase();
+      var colors = extStyle(ext);
+      var url = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + cdCurrentDemande.id + '/' + f.name;
+      var date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR') : '—';
+      var cleanName = f.name.replace(/^\d+_/, '');
+      return '<tr><td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div><span style="font-size:13px;font-weight:500;">' + cleanName + '</span></div></td><td style="font-size:12px;color:var(--text-muted);">' + date + '</td><td><a href="' + url + '" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td></tr>';
     }).join('');
   }).catch(function() {
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur.</td></tr>';
@@ -412,137 +518,7 @@ loadSupabase().then(function() {
 }).then(function(result) {
   if (result.data && result.data.session) {
     currentUser = result.data.session.user;
-    currentRole = detectRole(result.data.session.user.email);
+    currentRole = detectRole(currentUser.email);
     showApp();
   }
 }).catch(function() {});
-
-// ── CLIENT DETAIL + UPLOAD ──
-var cdCurrentDemande = null;
-var cdSelectedFiles = [];
-
-function openClientDetail(id) {
-  var dem = appData.demandes || [];
-  cdCurrentDemande = dem.find(function(d) { return d.id === id; });
-  if (!cdCurrentDemande) return;
-  document.getElementById('cd-nom').textContent = cdCurrentDemande.nom;
-  document.getElementById('cd-id').textContent = cdCurrentDemande.id;
-  document.getElementById('cd-date').textContent = fmtDate(cdCurrentDemande.datelimite);
-  document.getElementById('cd-prio').innerHTML = prioHTML(cdCurrentDemande.priorite);
-  document.getElementById('cd-desc').textContent = cdCurrentDemande.description || 'Aucune description.';
-  document.getElementById('cd-badge').innerHTML = badgeHTML(cdCurrentDemande.statut);
-  cdClearFiles();
-  showPage('client-detail');
-  cdReloadDocs();
-}
-
-function cdHandleDragOver(e) { e.preventDefault(); document.getElementById('cd-upload-zone').style.borderColor = 'var(--text-primary)'; }
-function cdHandleDragLeave() { document.getElementById('cd-upload-zone').style.borderColor = 'var(--border)'; }
-function cdHandleDrop(e) { e.preventDefault(); document.getElementById('cd-upload-zone').style.borderColor = 'var(--border)'; cdAddFiles(e.dataTransfer.files); }
-function cdHandleFileSelect(e) { cdAddFiles(e.target.files); }
-
-function cdAddFiles(files) {
-  Array.from(files).forEach(function(f) {
-    if (f.size > 50 * 1024 * 1024) { showToast(f.name + ' dépasse 50 Mo.'); return; }
-    if (!cdSelectedFiles.find(function(x) { return x.name === f.name; })) cdSelectedFiles.push(f);
-  });
-  cdRenderFileList();
-}
-
-function cdRenderFileList() {
-  var list = document.getElementById('cd-file-list');
-  var items = document.getElementById('cd-file-items');
-  if (cdSelectedFiles.length === 0) { list.style.display = 'none'; return; }
-  list.style.display = 'block';
-  items.innerHTML = cdSelectedFiles.map(function(f, i) {
-    var ext = f.name.split('.').pop().toLowerCase();
-    var colors = extStyle(ext);
-    var size = f.size < 1048576 ? Math.round(f.size / 1024) + ' Ko' : (f.size / 1048576).toFixed(1) + ' Mo';
-    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border-radius:var(--radius);border:0.5px solid var(--border);margin-bottom:6px;">' +
-      '<div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div>' +
-      '<div style="flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + f.name + '</div>' +
-      '<div style="font-size:11px;color:var(--text-muted);white-space:nowrap;">' + size + '</div>' +
-      '<button onclick="cdRemoveFile(' + i + ')" style="width:22px;height:22px;border:0.5px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-muted);">✕</button>' +
-      '</div>';
-  }).join('');
-}
-
-function cdRemoveFile(i) { cdSelectedFiles.splice(i, 1); cdRenderFileList(); }
-function cdClearFiles() { cdSelectedFiles = []; cdRenderFileList(); document.getElementById('cd-file-input').value = ''; }
-
-function cdUploadFiles() {
-  if (!cdCurrentDemande) { showToast('Aucune demande sélectionnée.'); return; }
-  if (cdSelectedFiles.length === 0) { showToast('Ajoutez au moins un fichier.'); return; }
-  var btn = document.getElementById('cd-btn-upload');
-  var progress = document.getElementById('cd-progress');
-  var progressFill = document.getElementById('cd-progress-fill');
-  var progressText = document.getElementById('cd-progress-text');
-  btn.disabled = true;
-  progress.style.display = 'block';
-  var uploaded = 0;
-  var total = cdSelectedFiles.length;
-  function uploadNext(index) {
-    if (index >= total) {
-      progressFill.style.width = '100%';
-      progressText.textContent = uploaded + ' fichier(s) déposé(s) !';
-      showToast(uploaded + ' fichier(s) déposé(s) avec succès !');
-      btn.disabled = false;
-      cdSelectedFiles = [];
-      cdRenderFileList();
-      document.getElementById('cd-file-input').value = '';
-      cdReloadDocs();
-      setTimeout(function() { progress.style.display = 'none'; progressFill.style.width = '0%'; }, 3000);
-      return;
-    }
-    var file = cdSelectedFiles[index];
-    progressText.textContent = 'Upload de ' + file.name + '...';
-    progressFill.style.width = Math.round((index / total) * 100) + '%';
-    var path = cdCurrentDemande.id + '/' + Date.now() + '_' + file.name;
-    loadSupabase().then(function() {
-      return sb.storage.from(BUCKET).upload(path, file, { upsert: true });
-    }).then(function(result) {
-      if (!result.error) uploaded++;
-      uploadNext(index + 1);
-    });
-  }
-  uploadNext(0);
-}
-
-function cdReloadDocs() {
-  if (!cdCurrentDemande) return;
-  var tbody = document.getElementById('cd-docs-table');
-  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>';
-  loadSupabase().then(function() {
-    return sb.storage.from(BUCKET).list(cdCurrentDemande.id, { limit: 50 });
-  }).then(function(result) {
-    if (result.error || !result.data || result.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = result.data.map(function(f) {
-      var ext = f.name.split('.').pop().toLowerCase();
-      var colors = extStyle(ext);
-      var url = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + cdCurrentDemande.id + '/' + f.name;
-      var date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR') : '—';
-      var cleanName = f.name.replace(/^\d+_/, '');
-      return '<tr><td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div><span style="font-size:13px;font-weight:500;">' + cleanName + '</span></div></td><td style="font-size:12px;color:var(--text-muted);">' + date + '</td><td><a href="' + url + '" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td></tr>';
-    }).join('');
-  }).catch(function() {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur.</td></tr>';
-  });
-}
-
-// ── SUPPRIMER UNE DEMANDE ──
-function deleteDemande() {
-  if (!currentDemande) return;
-  if (!confirm('Supprimer la demande "' + currentDemande.nom + '" ? Cette action est irréversible.')) return;
-  loadSupabase().then(function() {
-    return sb.from('demandes').delete().eq('id', currentDemande._supabase_id);
-  }).then(function(result) {
-    if (result.error) { showToast('Erreur : ' + result.error.message); return; }
-    showToast('Demande supprimée.');
-    showPage('requests');
-    currentDemande = null;
-    loadData();
-  }).catch(function() { showToast('Erreur de suppression.'); });
-}
