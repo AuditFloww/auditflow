@@ -103,10 +103,89 @@ function showApp() {
   loadData();
 }
 
+// ── CHARGEMENT DES DONNÉES ──
+// Essaie d'abord Supabase, fallback sur data.json
 function loadData() {
-  fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
+  loadSupabase().then(function() {
+    return sb.from('demandes').select('*').order('created_at', { ascending: false });
+  }).then(function(result) {
+    if (result.error || !result.data) { return loadDataFromJSON(); }
+    if (result.data.length > 0) {
+      appData.demandes = result.data.map(function(d) {
+        return {
+          id: d.id_demande || ('DEM-' + String(d.id).padStart(4, '0')),
+          nom: d.nom,
+          client: d.client,
+          societe: d.societe || '',
+          description: d.description || '',
+          datelimite: d.datelimite,
+          statut: d.statut || 'En attente',
+          priorite: d.priorite || 'Normale',
+          _supabase_id: d.id
+        };
+      });
+      return loadClientsFromJSON();
+    } else {
+      return loadDataFromJSON();
+    }
+  }).catch(function() { loadDataFromJSON(); });
+}
+
+function loadDataFromJSON() {
+  return fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
     appData = data; renderAll();
   }).catch(function() { showToast('Erreur de chargement.'); });
+}
+
+function loadClientsFromJSON() {
+  return fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
+    appData.clients = data.clients || [];
+    renderAll();
+  }).catch(function() { renderAll(); });
+}
+
+// ── CRÉER UNE DEMANDE DIRECTEMENT ──
+function submitNewRequest() {
+  var nom = document.getElementById('n-nom').value.trim();
+  var client = document.getElementById('n-client').value.trim();
+  var date = document.getElementById('n-date').value;
+  var societe = document.getElementById('n-societe').value.trim();
+  var desc = document.getElementById('n-desc').value.trim();
+  var priorite = document.getElementById('n-priorite').value;
+  if (!nom || !client || !date) { showToast('Remplissez les champs obligatoires.'); return; }
+  var btn = document.getElementById('btn-submit-request');
+  btn.disabled = true; btn.textContent = 'Enregistrement...';
+  loadSupabase().then(function() {
+    return sb.from('demandes').insert([{
+      nom: nom,
+      client: client,
+      societe: societe,
+      description: desc,
+      datelimite: date,
+      statut: 'En attente',
+      priorite: priorite
+    }]).select();
+  }).then(function(result) {
+    if (result.error) {
+      showToast('Erreur : ' + result.error.message);
+      btn.disabled = false; btn.textContent = 'Créer la demande';
+      return;
+    }
+    showToast('Demande créée ! Le client peut la voir immédiatement.');
+    closeModal('modal-new-request');
+    btn.disabled = false; btn.textContent = 'Créer la demande';
+    // Vider le formulaire
+    document.getElementById('n-nom').value = '';
+    document.getElementById('n-client').value = '';
+    document.getElementById('n-societe').value = '';
+    document.getElementById('n-date').value = '';
+    document.getElementById('n-desc').value = '';
+    // Recharger les données
+    loadData();
+  }).catch(function() {
+    showToast('Erreur de connexion.');
+    btn.disabled = false; btn.textContent = 'Créer la demande';
+  });
 }
 
 function badgeHTML(s) {
@@ -289,24 +368,6 @@ function showToast(msg) {
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 4000);
-}
-
-function generateJSON() {
-  var nom = document.getElementById('n-nom').value;
-  var client = document.getElementById('n-client').value;
-  var date = document.getElementById('n-date').value;
-  if (!nom || !client || !date) { showToast('Remplissez les champs obligatoires.'); return; }
-  var obj = { id: 'DEM-' + String(Math.floor(Math.random() * 9000) + 1000), nom: nom, client: client, societe: document.getElementById('n-societe').value, description: document.getElementById('n-desc').value, datelimite: date, statut: 'En attente', priorite: document.getElementById('n-priorite').value };
-  document.getElementById('json-out').value = JSON.stringify(obj, null, 2);
-  closeModal('modal-new-request');
-  openModal('modal-json');
-}
-
-function copyJSON() {
-  var t = document.getElementById('json-out');
-  t.select();
-  document.execCommand('copy');
-  showToast('JSON copié ! Ajoutez-le dans data.json sur GitHub.');
 }
 
 // Vérifier session existante au chargement
