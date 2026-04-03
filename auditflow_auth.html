@@ -232,8 +232,8 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
     </div>
     <div class="demo-box">
       <div class="demo-label">Comptes démo</div>
-      <div class="demo-item">🔍 auditeur@fidaexpert.ci</div>
-      <div class="demo-item">🏢 client@acmeci.com</div>
+      <div class="demo-item">🔍 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c0a1b5a4a9b4a5b5b280a6a9a4a1a5b8b0a5b2b4eea3a9">[email&#160;protected]</a></div>
+      <div class="demo-item">🏢 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="52313e3b373c261233313f37313b7c313d3f">[email&#160;protected]</a></div>
       <div class="demo-item" style="color:var(--text-muted);margin-top:4px;">Mot de passe : AuditFlow2024!</div>
     </div>
   </div>
@@ -420,6 +420,29 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
       </div>
 
       <!-- DASHBOARD CLIENT -->
+
+      <!-- DETAIL DEMANDE -->
+      <div class="page" id="page-detail">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="showPage('requests')">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Retour
+            </button>
+            <div><div class="section-title" id="detail-nom">—</div><div class="section-sub" id="detail-id">—</div></div>
+          </div>
+          <div id="detail-badge"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div class="card"><div class="card-body"><div class="card-title" style="margin-bottom:12px;">Informations</div><div style="display:flex;flex-direction:column;gap:8px;font-size:13px;"><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Client</span><span style="font-weight:500;" id="detail-client">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Société</span><span style="font-weight:500;" id="detail-societe">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Date limite</span><span style="font-weight:500;" id="detail-date">—</span></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">Priorité</span><span id="detail-prio">—</span></div></div></div></div>
+          <div class="card"><div class="card-body"><div class="card-title" style="margin-bottom:12px;">Description</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.7;" id="detail-desc">—</div></div></div>
+        </div>
+        <div class="table-container">
+          <div style="padding:14px 18px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;"><div style="font-size:13px;font-weight:500;">Documents déposés</div><button class="btn btn-secondary btn-sm" onclick="reloadDetailDocs()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.75"/></svg> Actualiser</button></div>
+          <table><thead><tr><th>Fichier</th><th>Date</th><th>Action</th></tr></thead><tbody id="detail-docs"><tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Sélectionnez une demande.</td></tr></tbody></table>
+        </div>
+      </div>
+
       <div class="page" id="page-client-dashboard">
         <div class="section-header">
           <div><div class="section-title" id="client-hello">Mes demandes</div><div class="section-sub">Documents à fournir à Fidaexpert</div></div>
@@ -479,7 +502,7 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
   <span id="toast-msg">Action réalisée.</span>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
 var DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
@@ -705,7 +728,8 @@ var pagesMeta = {
   'requests': { title: 'Demandes', sub: '' },
   'clients': { title: 'Clients', sub: '' },
   'documents': { title: 'Documents reçus', sub: 'Fichiers déposés par les clients' },
-  'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir à Fidaexpert' }
+  'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir à Fidaexpert' },
+  'detail': { title: 'Détail de la demande', sub: 'Documents déposés' }
 };
 
 function showPage(id) {
@@ -714,7 +738,7 @@ function showPage(id) {
   var page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   var menu = currentRole === 'auditeur' ? '#menu-auditeur' : '#menu-client';
-  var navMap = { dashboard: 0, requests: 1, clients: 2, documents: 3, 'client-dashboard': 0 };
+  var navMap = { dashboard: 0, requests: 1, clients: 2, documents: 3, 'client-dashboard': 0, 'detail': 1 };
   var items = document.querySelectorAll(menu + ' .nav-item');
   if (navMap[id] !== undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
   if (pagesMeta[id]) {
@@ -736,6 +760,49 @@ function showToast(msg) {
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 4000);
 }
 
+
+var currentDemande = null;
+
+function openDetail(id) {
+  var dem = appData.demandes || [];
+  currentDemande = dem.find(function(d) { return d.id === id; });
+  if (!currentDemande) return;
+  document.getElementById("detail-nom").textContent = currentDemande.nom;
+  document.getElementById("detail-id").textContent = currentDemande.id;
+  document.getElementById("detail-client").textContent = currentDemande.client || "—";
+  document.getElementById("detail-societe").textContent = currentDemande.societe || "—";
+  document.getElementById("detail-date").textContent = fmtDate(currentDemande.datelimite);
+  document.getElementById("detail-prio").innerHTML = prioHTML(currentDemande.priorite);
+  document.getElementById("detail-desc").textContent = currentDemande.description || "Aucune description.";
+  document.getElementById("detail-badge").innerHTML = badgeHTML(currentDemande.statut);
+  showPage("detail");
+  reloadDetailDocs();
+}
+
+function reloadDetailDocs() {
+  if (!currentDemande) return;
+  var tbody = document.getElementById("detail-docs");
+  tbody.innerHTML = "<tr><td colspan="3" style="text-align:center;padding:28px;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>";
+  loadSupabase().then(function() {
+    return sb.storage.from(BUCKET).list(currentDemande.id, { limit: 50 });
+  }).then(function(result) {
+    if (result.error || !result.data || result.data.length === 0) {
+      tbody.innerHTML = "<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé pour cette demande.</td></tr>";
+      return;
+    }
+    tbody.innerHTML = result.data.map(function(f) {
+      var ext = f.name.split(".").pop().toLowerCase();
+      var colors = extStyle(ext);
+      var url = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + currentDemande.id + "/" + f.name;
+      var date = f.created_at ? new Date(f.created_at).toLocaleDateString("fr-FR") : "—";
+      var cleanName = f.name.replace(/^\d+_/, "");
+      return "<tr><td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:" + colors[0] + ";color:" + colors[1] + ";display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">" + ext.toUpperCase().substring(0,4) + "</div><div class="td-primary" style="font-size:13px;">" + cleanName + "</div></div></td><td style="font-size:12px;color:var(--text-muted);">" + date + "</td><td><a href="" + url + "" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td></tr>";
+    }).join("");
+  }).catch(function() {
+    tbody.innerHTML = "<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur de chargement.</td></tr>";
+  });
+}
+
 function generateJSON() {
   var nom = document.getElementById('n-nom').value;
   var client = document.getElementById('n-client').value;
@@ -755,15 +822,4 @@ function copyJSON() {
 }
 
 // Vérifier session existante
-loadSupabase().then(function() {
-  return sb.auth.getSession();
-}).then(function(result) {
-  if (result.data && result.data.session) {
-    currentUser = result.data.session.user;
-    currentRole = (result.data.session.user.user_metadata && result.data.session.user.user_metadata.role) || 'auditeur';
-    showApp();
-  }
-}).catch(function() {});
-</script>
-</body>
-</html>
+loadSupabase().th
