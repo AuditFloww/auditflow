@@ -1,6 +1,5 @@
 var SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
-var DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
 var BUCKET = 'documents';
 var sb = null;
 var currentUser = null;
@@ -104,87 +103,126 @@ function showApp() {
 }
 
 // ── CHARGEMENT DES DONNÉES ──
-// Essaie d'abord Supabase, fallback sur data.json
 function loadData() {
   loadSupabase().then(function() {
-    return sb.from('demandes').select('*').order('id', { ascending: false });
-  }).then(function(result) {
-    if (result.error || !result.data) { return loadDataFromJSON(); }
-    if (result.data.length > 0) {
-      appData.demandes = result.data.map(function(d) {
+    // Charger demandes et clients en parallèle
+    return Promise.all([
+      sb.from('demandes').select('*, clients(nom, societe, email_client, statut)').order('id', { ascending: false }),
+      sb.from('clients').select('*').order('id', { ascending: false })
+    ]);
+  }).then(function(results) {
+    var demandesResult = results[0];
+    var clientsResult = results[1];
+
+    // Mapper les demandes
+    if (!demandesResult.error && demandesResult.data) {
+      if (currentRole === 'client') {
+        // Filtrer par email du client connecté
+        appData.demandes = demandesResult.data.filter(function(d) {
+          return d.clients && d.clients.email_client === currentUser.email;
+        }).map(mapDemande);
+      } else {
+        appData.demandes = demandesResult.data.map(mapDemande);
+      }
+    }
+
+    // Mapper les clients
+    if (!clientsResult.error && clientsResult.data) {
+      appData.clients = clientsResult.data.map(function(c) {
         return {
-          id: 'DEM-' + String(d.id).padStart(4, '0'),
-          nom: d.nom,
-          client: d.client,
-          societe: d.societe || '',
-          description: d.description || '',
-          datelimite: d.datelimite,
-          statut: d.statut || 'En attente',
-          priorite: d.priorite || 'Normale',
-          _supabase_id: d.id
+          id: c.id,
+          nom: c.nom,
+          societe: c.societe || '',
+          email: c.email_client || '',
+          statut: c.statut || 'Actif'
         };
       });
-      return loadClientsFromJSON();
-    } else {
-      return loadDataFromJSON();
     }
-  }).catch(function() { loadDataFromJSON(); });
-}
 
-function loadDataFromJSON() {
-  return fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
-    appData = data; renderAll();
-  }).catch(function() { showToast('Erreur de chargement.'); });
-}
-
-function loadClientsFromJSON() {
-  return fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
-    appData.clients = data.clients || [];
     renderAll();
-  }).catch(function() { renderAll(); });
+  }).catch(function(e) {
+    console.error('Erreur chargement:', e);
+    showToast('Erreur de chargement des données.');
+  });
 }
 
-// ── CRÉER UNE DEMANDE DIRECTEMENT ──
+function mapDemande(d) {
+  return {
+    id: 'DEM-' + String(d.id).padStart(4, '0'),
+    _supabase_id: d.id,
+    nom: d.nom,
+    client: d.clients ? d.clients.nom : (d.client || '—'),
+    societe: d.clients ? d.clients.societe : (d.societe || ''),
+    email_client: d.clients ? d.clients.email_client : '',
+    description: d.description || '',
+    datelimite: d.datelimite,
+    statut: d.statut || 'En attente',
+    priorite: d.priorite || 'Normale',
+    client_id: d.client_id
+  };
+}
+
+// ── CRÉER UNE DEMANDE ──
 function submitNewRequest() {
   var nom = document.getElementById('n-nom').value.trim();
-  var client = document.getElementById('n-client').value.trim();
+  var clientId = document.getElementById('n-client-id').value;
   var date = document.getElementById('n-date').value;
-  var societe = document.getElementById('n-societe').value.trim();
   var desc = document.getElementById('n-desc').value.trim();
   var priorite = document.getElementById('n-priorite').value;
-  if (!nom || !client || !date) { showToast('Remplissez les champs obligatoires.'); return; }
+  if (!nom || !clientId || !date) { showToast('Remplissez tous les champs obligatoires.'); return; }
   var btn = document.getElementById('btn-submit-request');
   btn.disabled = true; btn.textContent = 'Enregistrement...';
   loadSupabase().then(function() {
     return sb.from('demandes').insert([{
       nom: nom,
-      client: client,
-      societe: societe,
+      client_id: parseInt(clientId),
       description: desc,
       datelimite: date,
       statut: 'En attente',
       priorite: priorite
     }]).select();
   }).then(function(result) {
-    if (result.error) {
-      showToast('Erreur : ' + result.error.message);
-      btn.disabled = false; btn.textContent = 'Créer la demande';
-      return;
-    }
+    if (result.error) { showToast('Erreur : ' + result.error.message); btn.disabled = false; btn.textContent = 'Créer la demande'; return; }
     showToast('Demande créée ! Le client peut la voir immédiatement.');
     closeModal('modal-new-request');
     btn.disabled = false; btn.textContent = 'Créer la demande';
-    // Vider le formulaire
     document.getElementById('n-nom').value = '';
-    document.getElementById('n-client').value = '';
-    document.getElementById('n-societe').value = '';
+    document.getElementById('n-client-id').value = '';
     document.getElementById('n-date').value = '';
     document.getElementById('n-desc').value = '';
-    // Recharger les données
     loadData();
-  }).catch(function() {
-    showToast('Erreur de connexion.');
-    btn.disabled = false; btn.textContent = 'Créer la demande';
+  }).catch(function() { showToast('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Créer la demande'; });
+}
+
+// ── CRÉER UN CLIENT ──
+function submitNewClient() {
+  var nom = document.getElementById('nc-nom').value.trim();
+  var societe = document.getElementById('nc-societe').value.trim();
+  var email = document.getElementById('nc-email').value.trim();
+  var statut = document.getElementById('nc-statut').value;
+  if (!nom || !email) { showToast('Remplissez les champs obligatoires.'); return; }
+  var btn = document.getElementById('btn-submit-client');
+  btn.disabled = true; btn.textContent = 'Enregistrement...';
+  loadSupabase().then(function() {
+    return sb.from('clients').insert([{ nom: nom, societe: societe, email_client: email, statut: statut }]).select();
+  }).then(function(result) {
+    if (result.error) { showToast('Erreur : ' + result.error.message); btn.disabled = false; btn.textContent = 'Créer le client'; return; }
+    showToast('Client créé avec succès !');
+    closeModal('modal-new-client');
+    btn.disabled = false; btn.textContent = 'Créer le client';
+    document.getElementById('nc-nom').value = '';
+    document.getElementById('nc-societe').value = '';
+    document.getElementById('nc-email').value = '';
+    loadData();
+  }).catch(function() { showToast('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Créer le client'; });
+}
+
+// ── REMPLIR LE SELECT CLIENT DANS LE MODAL ──
+function populateClientSelect() {
+  var select = document.getElementById('n-client-id');
+  select.innerHTML = '<option value="">Sélectionner un client...</option>';
+  appData.clients.forEach(function(c) {
+    select.innerHTML += '<option value="' + c.id + '">' + c.nom + ' — ' + c.societe + '</option>';
   });
 }
 
@@ -226,16 +264,21 @@ function renderAll() {
       return '<tr onclick="openDetail(\'' + x.id + '\')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + x.client + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
     }).join('');
     renderReqTable(dem);
-    document.getElementById('cli-table').innerHTML = cli.map(function(c) {
-      var init = c.nom.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
-      var dCli = dem.filter(function(x) { return x.client === c.nom; });
-      var ret = dCli.filter(function(x) { return x.statut === 'En retard'; }).length;
-      return '<tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:6px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text-secondary);">' + init + '</div><div class="td-primary">' + c.nom + '</div></div></td><td>' + c.societe + '</td><td style="font-size:12px;">' + c.email + '</td><td>' + (c.statut === 'Actif' ? '<span class="badge badge-green">Actif</span>' : '<span class="badge badge-gray">Inactif</span>') + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;">' + dCli.length + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;color:' + (ret > 0 ? 'var(--red)' : 'var(--text-muted)') + ';">' + ret + '</td></tr>';
-    }).join('');
+    document.getElementById('cli-table').innerHTML = cli.length === 0
+      ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client. Créez votre premier client !</td></tr>'
+      : cli.map(function(c) {
+          var init = c.nom.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
+          var dCli = dem.filter(function(x) { return x.client_id === c.id || x.client === c.nom; });
+          var ret = dCli.filter(function(x) { return x.statut === 'En retard'; }).length;
+          return '<tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:6px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text-secondary);">' + init + '</div><div class="td-primary">' + c.nom + '</div></div></td><td>' + c.societe + '</td><td style="font-size:12px;">' + c.email + '</td><td>' + (c.statut === 'Actif' ? '<span class="badge badge-green">Actif</span>' : '<span class="badge badge-gray">Inactif</span>') + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;">' + dCli.length + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;color:' + (ret > 0 ? 'var(--red)' : 'var(--text-muted)') + ';">' + ret + '</td></tr>';
+        }).join('');
+    populateClientSelect();
   } else {
-    document.getElementById('client-table').innerHTML = dem.map(function(x) {
-      return '<tr><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + (x.societe || x.client) + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
-    }).join('');
+    document.getElementById('client-table').innerHTML = dem.length === 0
+      ? '<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande pour le moment.</td></tr>'
+      : dem.map(function(x) {
+          return '<tr><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + (x.societe || x.client) + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
+        }).join('');
   }
 }
 
@@ -357,7 +400,10 @@ function showPage(id) {
   }
 }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id) {
+  if (id === 'modal-new-request') populateClientSelect();
+  document.getElementById(id).classList.add('open');
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function closeModalOnBg(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
 
@@ -370,7 +416,6 @@ function showToast(msg) {
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 4000);
 }
 
-// Vérifier session existante au chargement
 loadSupabase().then(function() {
   return sb.auth.getSession();
 }).then(function(result) {
