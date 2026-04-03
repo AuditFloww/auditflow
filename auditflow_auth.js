@@ -107,13 +107,13 @@ function showApp() {
 // Essaie d'abord Supabase, fallback sur data.json
 function loadData() {
   loadSupabase().then(function() {
-    return sb.from('demandes').select('*').order('created_at', { ascending: false });
+    return sb.from('demandes').select('*').order('id', { ascending: false });
   }).then(function(result) {
     if (result.error || !result.data) { return loadDataFromJSON(); }
     if (result.data.length > 0) {
       appData.demandes = result.data.map(function(d) {
         return {
-          id: d.id_demande || ('DEM-' + String(d.id).padStart(4, '0')),
+          id: 'DEM-' + String(d.id).padStart(4, '0'),
           nom: d.nom,
           client: d.client,
           societe: d.societe || '',
