@@ -21,9 +21,11 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.6; }
+
+/* LOGIN */
 .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .login-card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-xl); width: 100%; max-width: 380px; padding: 36px; }
-.login-logo-text { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+.login-logo-text { font-size: 18px; font-weight: 500; }
 .login-logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; margin-bottom: 28px; }
 .login-title { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
 .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
@@ -49,12 +51,16 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .demo-box { margin-top: 18px; padding: 12px; background: var(--bg); border-radius: var(--radius); border: 0.5px solid var(--border); }
 .demo-label { font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
 .demo-item { font-size: 12px; color: var(--text-secondary); margin-bottom: 3px; }
+
+/* APP */
 .app { display: none; height: 100vh; overflow: hidden; }
 .app.visible { display: flex; }
 .sidebar { width: var(--sidebar-w); background: var(--bg-card); border-right: 0.5px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
 .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 .topbar { background: var(--bg-card); border-bottom: 0.5px solid var(--border); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .content { flex: 1; padding: 24px; }
+
+/* SIDEBAR */
 .sidebar-logo { padding: 22px 18px 18px; border-bottom: 0.5px solid var(--border); }
 .logo-text { font-size: 15px; font-weight: 500; }
 .logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
@@ -72,9 +78,13 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .user-role { font-size: 11px; color: var(--text-muted); }
 .btn-logout { width: 100%; padding: 7px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); color: var(--text-secondary); font-size: 12px; cursor: pointer; font-family: var(--font); }
 .btn-logout:hover { background: var(--red-light); color: var(--red); border-color: var(--red-border); }
+
+/* TOPBAR */
 .topbar-title { font-size: 14px; font-weight: 500; }
 .topbar-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+/* BUTTONS */
 .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: 0.5px solid transparent; transition: all 0.15s; font-family: var(--font); white-space: nowrap; }
 .btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .btn-primary { background: var(--text-primary); color: #fff; }
@@ -83,6 +93,9 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .btn-secondary:hover { background: var(--bg); }
 .btn-ghost { background: transparent; color: var(--text-secondary); border-color: transparent; padding: 7px; }
 .btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; }
+
+/* BADGES */
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
 .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .badge-red { background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); }
@@ -95,9 +108,13 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .badge-gray::before { background: var(--text-muted); }
 .priority-high { font-size: 11px; font-weight: 500; color: var(--red); }
 .priority-normal { font-size: 11px; color: var(--text-muted); }
+
+/* CARDS */
 .card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); }
 .card-body { padding: 16px 18px 18px; }
 .card-title { font-size: 13px; font-weight: 500; }
+
+/* STATS */
 .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
 .stat-card { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); border-top: 2px solid var(--text-primary); padding: 14px 16px; }
 .stat-card.green { border-top-color: var(--green); }
@@ -106,11 +123,14 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .stat-label { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
 .stat-value { font-size: 26px; font-weight: 500; font-family: var(--mono); line-height: 1; }
 .stat-value.red { color: var(--red); }
+
+/* TABLE */
 .table-container { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .table-toolbar { padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--border); }
 .search-wrap { position: relative; }
 .search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; fill: none; stroke: var(--text-muted); stroke-width: 2; pointer-events: none; }
 .search-input { padding: 6px 10px 6px 30px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); background: var(--bg); color: var(--text-primary); outline: none; width: 220px; }
+.search-input:focus { border-color: var(--text-primary); background: #fff; }
 .filter-select { padding: 6px 10px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 12px; font-family: var(--font); background: var(--bg); color: var(--text-secondary); cursor: pointer; outline: none; }
 table { width: 100%; border-collapse: collapse; }
 thead th { padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; background: var(--bg); border-bottom: 0.5px solid var(--border); }
@@ -124,13 +144,12 @@ tbody td:first-child { padding-left: 18px; }
 tbody td:last-child { padding-right: 18px; text-align: right; }
 .td-primary { font-weight: 500; color: var(--text-primary); }
 .td-mono { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+
+/* PROGRESS */
 .progress-bar { height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--text-primary); border-radius: 2px; transition: width 0.4s; }
-.page { display: none; }
-.page.active { display: block; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.section-title { font-size: 16px; font-weight: 500; }
-.section-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* MODAL */
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
 .modal-backdrop.open { opacity: 1; pointer-events: all; }
 .modal { background: var(--bg-card); border-radius: var(--radius-xl); border: 0.5px solid var(--border); box-shadow: var(--shadow-md); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; transform: translateY(6px); transition: transform 0.2s; }
@@ -148,15 +167,27 @@ tbody td:last-child { padding-right: 18px; text-align: right; }
 .mform-select { width: 100%; padding: 8px 11px; border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-card); outline: none; cursor: pointer; }
 textarea.mform-input { resize: vertical; min-height: 80px; }
 .mform-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.15s ease; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 16px; font-weight: 500; }
+.section-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* TOAST */
 .toast { position: fixed; bottom: 20px; right: 20px; background: var(--text-primary); color: #fff; padding: 12px 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); z-index: 200; font-size: 13px; display: flex; align-items: center; gap: 10px; transform: translateY(70px); opacity: 0; transition: all 0.3s; max-width: 320px; }
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .toast-icon svg { width: 12px; height: 12px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* LOADING */
 .loading { text-align: center; padding: 36px; color: var(--text-muted); font-size: 13px; }
 .loading-spinner { width: 20px; height: 20px; border: 1.5px solid var(--border); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+.spinner-inline { width: 16px; height: 16px; border: 1.5px solid var(--border); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; }
+
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-.page.active { animation: fadeIn 0.15s ease; }
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
@@ -165,7 +196,7 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ═══ LOGIN ═══ -->
 <div class="login-page" id="login-page">
   <div class="login-card">
     <div class="login-logo-text">AuditFlow</div>
@@ -208,13 +239,15 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
   </div>
 </div>
 
-<!-- APP -->
+<!-- ═══ APP ═══ -->
 <div class="app" id="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-text">AuditFlow</div>
       <div class="logo-sub">Fidaexpert</div>
     </div>
+
+    <!-- Menu Auditeur -->
     <div id="menu-auditeur" style="display:none;">
       <div class="sidebar-section">
         <div class="sidebar-label">Principal</div>
@@ -231,8 +264,14 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
           Clients
         </button>
+        <button class="nav-item" onclick="showPage('documents');loadDocuments()">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          Documents reçus
+        </button>
       </div>
     </div>
+
+    <!-- Menu Client -->
     <div id="menu-client" style="display:none;">
       <div class="sidebar-section">
         <div class="sidebar-label">Mon espace</div>
@@ -242,6 +281,7 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
         </button>
       </div>
     </div>
+
     <div class="sidebar-footer">
       <div class="user-pill">
         <div class="avatar" id="user-avatar">?</div>
@@ -270,7 +310,7 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
 
     <div class="content">
 
-      <!-- DASHBOARD -->
+      <!-- DASHBOARD AUDITEUR -->
       <div class="page active" id="page-dashboard">
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Total demandes</div><div class="stat-value" id="s-total">—</div></div>
@@ -362,7 +402,24 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
         </div>
       </div>
 
-      <!-- CLIENT DASHBOARD -->
+      <!-- DOCUMENTS REÇUS -->
+      <div class="page" id="page-documents">
+        <div class="section-header">
+          <div><div class="section-title">Documents reçus</div><div class="section-sub" id="docs-sub">Fichiers déposés par les clients</div></div>
+          <button class="btn btn-secondary btn-sm" onclick="loadDocuments()">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.75"/></svg>
+            Actualiser
+          </button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Fichier</th><th>Demande</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody id="docs-table"><tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Chargement en cours...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DASHBOARD CLIENT -->
       <div class="page" id="page-client-dashboard">
         <div class="section-header">
           <div><div class="section-title" id="client-hello">Mes demandes</div><div class="section-sub">Documents à fournir à Fidaexpert</div></div>
@@ -423,26 +480,22 @@ textarea.mform-input { resize: vertical; min-height: 80px; }
 </div>
 
 <script>
-// Config
 var SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
 var DATA_URL = 'https://auditfloww.github.io/auditflow/data.json';
+var BUCKET = 'documents';
 var sb = null;
 var currentUser = null;
 var currentRole = 'auditeur';
 var appData = { demandes: [], clients: [] };
 var isSignup = false;
 
-// Charger Supabase dynamiquement
 function loadSupabase() {
   return new Promise(function(resolve, reject) {
-    if (window.supabase) { resolve(); return; }
+    if (sb) { resolve(); return; }
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
-    s.onload = function() {
-      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      resolve();
-    };
+    s.onload = function() { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); resolve(); };
     s.onerror = reject;
     document.head.appendChild(s);
   });
@@ -473,25 +526,15 @@ function doLogin() {
   var password = document.getElementById('login-password').value;
   var btn = document.getElementById('btn-login');
   if (!email || !password) { showError('Remplissez tous les champs.'); return; }
-  btn.disabled = true;
-  btn.textContent = 'Connexion...';
+  btn.disabled = true; btn.textContent = 'Connexion...';
   loadSupabase().then(function() {
     return sb.auth.signInWithPassword({ email: email, password: password });
   }).then(function(result) {
-    if (result.error) {
-      showError('Email ou mot de passe incorrect.');
-      btn.disabled = false;
-      btn.textContent = 'Se connecter';
-      return;
-    }
+    if (result.error) { showError('Email ou mot de passe incorrect.'); btn.disabled = false; btn.textContent = 'Se connecter'; return; }
     currentUser = result.data.user;
     currentRole = (result.data.user.user_metadata && result.data.user.user_metadata.role) || currentRole;
     showApp();
-  }).catch(function() {
-    showError('Erreur de connexion.');
-    btn.disabled = false;
-    btn.textContent = 'Se connecter';
-  });
+  }).catch(function() { showError('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Se connecter'; });
 }
 
 function doSignup() {
@@ -499,23 +542,18 @@ function doSignup() {
   var password = document.getElementById('login-password').value;
   var btn = document.getElementById('btn-signup');
   if (!email || !password) { showError('Remplissez tous les champs.'); return; }
-  btn.disabled = true;
-  btn.textContent = 'Création...';
+  btn.disabled = true; btn.textContent = 'Création...';
   loadSupabase().then(function() {
     return sb.auth.signUp({ email: email, password: password, options: { data: { role: currentRole } } });
   }).then(function(result) {
     if (result.error) { showError(result.error.message); btn.disabled = false; btn.textContent = 'Créer mon compte'; return; }
     showToast('Compte créé ! Connectez-vous maintenant.');
-    toggleMode();
-    btn.disabled = false;
-    btn.textContent = 'Créer mon compte';
+    toggleMode(); btn.disabled = false; btn.textContent = 'Créer mon compte';
   });
 }
 
 function doLogout() {
-  loadSupabase().then(function() {
-    return sb.auth.signOut();
-  }).then(function() {
+  loadSupabase().then(function() { return sb.auth.signOut(); }).then(function() {
     document.getElementById('app').classList.remove('visible');
     document.getElementById('login-page').style.display = 'flex';
     document.getElementById('menu-auditeur').style.display = 'none';
@@ -531,8 +569,7 @@ function showApp() {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').classList.add('visible');
   var email = currentUser.email;
-  var init = email.substring(0, 2).toUpperCase();
-  document.getElementById('user-avatar').textContent = init;
+  document.getElementById('user-avatar').textContent = email.substring(0, 2).toUpperCase();
   document.getElementById('user-name').textContent = email;
   document.getElementById('user-role-label').textContent = currentRole === 'auditeur' ? 'Auditeur' : 'Client';
   if (currentRole === 'auditeur') {
@@ -548,33 +585,29 @@ function showApp() {
 }
 
 function loadData() {
-  fetch(DATA_URL + '?t=' + Date.now()).then(function(r) {
-    return r.json();
-  }).then(function(data) {
-    appData = data;
-    renderAll();
-  }).catch(function() {
-    showToast('Erreur de chargement.');
-  });
+  fetch(DATA_URL + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(data) {
+    appData = data; renderAll();
+  }).catch(function() { showToast('Erreur de chargement.'); });
 }
 
 function badgeHTML(s) {
   var map = { 'En retard': 'badge-red', 'Recu': 'badge-green', 'En attente': 'badge-orange', 'Envoye': 'badge-gray' };
   return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
 }
-function prioHTML(p) {
-  return p === 'Haute' ? '<span class="priority-high">▲ Haute</span>' : '<span class="priority-normal">— Normale</span>';
-}
+function prioHTML(p) { return p === 'Haute' ? '<span class="priority-high">▲ Haute</span>' : '<span class="priority-normal">— Normale</span>'; }
 function fmtDate(d) {
   if (!d) return '—';
   var parts = d.split('-');
   var mois = ['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
   return parseInt(parts[2]) + ' ' + mois[parseInt(parts[1]) - 1] + ' ' + parts[0];
 }
+function extStyle(ext) {
+  var map = { pdf: ['#FDF0EE','#C0392B'], xlsx: ['#EEF7F2','#1E6B3C'], xls: ['#EEF7F2','#1E6B3C'], docx: ['#EEF3F8','#1A3A5C'], doc: ['#EEF3F8','#1A3A5C'] };
+  return map[ext] || ['#F7F7F7','#555'];
+}
 
 function renderAll() {
-  var dem = appData.demandes || [];
-  var cli = appData.clients || [];
+  var dem = appData.demandes || [], cli = appData.clients || [];
   var retard = dem.filter(function(x) { return x.statut === 'En retard'; }).length;
   var attente = dem.filter(function(x) { return x.statut === 'En attente'; }).length;
   var taux = dem.length > 0 ? Math.round((attente / dem.length) * 100) : 0;
@@ -627,10 +660,51 @@ function filterReqStatus(v) {
   document.getElementById('req-count').textContent = f.length + ' résultats';
 }
 
+function loadDocuments() {
+  var table = document.getElementById('docs-table');
+  table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;"><div class="loading-spinner" style="margin:0 auto;"></div></td></tr>';
+  loadSupabase().then(function() {
+    return sb.storage.from(BUCKET).list('', { limit: 100 });
+  }).then(function(result) {
+    if (result.error || !result.data || result.data.length === 0) {
+      table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun fichier reçu.</td></tr>';
+      return;
+    }
+    var folders = result.data.filter(function(f) { return !f.name.includes('.'); });
+    var rows = [];
+    var promises = folders.map(function(folder) {
+      return sb.storage.from(BUCKET).list(folder.name, { limit: 50 }).then(function(res) {
+        if (res.data) {
+          res.data.forEach(function(f) {
+            var ext = f.name.split('.').pop().toLowerCase();
+            var colors = extStyle(ext);
+            var url = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + folder.name + '/' + f.name;
+            var date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR') : '—';
+            var cleanName = f.name.replace(/^\d+_/, '');
+            rows.push('<tr>' +
+              '<td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0, 4) + '</div><div class="td-primary" style="font-size:13px;">' + cleanName + '</div></div></td>' +
+              '<td style="font-size:12px;color:var(--text-muted);">' + folder.name + '</td>' +
+              '<td style="font-size:12px;color:var(--text-muted);">' + date + '</td>' +
+              '<td><a href="' + url + '" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td>' +
+              '</tr>');
+          });
+        }
+      });
+    });
+    return Promise.all(promises).then(function() {
+      table.innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun fichier reçu.</td></tr>';
+      document.getElementById('docs-sub').textContent = rows.length + ' fichier(s) reçu(s)';
+    });
+  }).catch(function() {
+    table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur de chargement.</td></tr>';
+  });
+}
+
 var pagesMeta = {
   'dashboard': { title: 'Vue d\'ensemble', sub: 'Mission Exercice 2024 — Fidaexpert' },
   'requests': { title: 'Demandes', sub: '' },
   'clients': { title: 'Clients', sub: '' },
+  'documents': { title: 'Documents reçus', sub: 'Fichiers déposés par les clients' },
   'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir à Fidaexpert' }
 };
 
@@ -640,7 +714,7 @@ function showPage(id) {
   var page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   var menu = currentRole === 'auditeur' ? '#menu-auditeur' : '#menu-client';
-  var navMap = { dashboard: 0, requests: 1, clients: 2, 'client-dashboard': 0 };
+  var navMap = { dashboard: 0, requests: 1, clients: 2, documents: 3, 'client-dashboard': 0 };
   var items = document.querySelectorAll(menu + ' .nav-item');
   if (navMap[id] !== undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
   if (pagesMeta[id]) {
