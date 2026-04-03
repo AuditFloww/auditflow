@@ -102,67 +102,50 @@ function showApp() {
   loadData();
 }
 
-// ── CHARGEMENT DES DONNÉES ──
+// Charger clients puis demandes séparément
 function loadData() {
   loadSupabase().then(function() {
-    // Charger demandes et clients en parallèle
-    return Promise.all([
-      sb.from('demandes').select('*, clients(nom, societe, email_client, statut)').order('id', { ascending: false }),
-      sb.from('clients').select('*').order('id', { ascending: false })
-    ]);
-  }).then(function(results) {
-    var demandesResult = results[0];
-    var clientsResult = results[1];
-
-    // Mapper les demandes
-    if (!demandesResult.error && demandesResult.data) {
-      if (currentRole === 'client') {
-        // Filtrer par email du client connecté
-        appData.demandes = demandesResult.data.filter(function(d) {
-          return d.clients && d.clients.email_client === currentUser.email;
-        }).map(mapDemande);
-      } else {
-        appData.demandes = demandesResult.data.map(mapDemande);
-      }
-    }
-
-    // Mapper les clients
-    if (!clientsResult.error && clientsResult.data) {
-      appData.clients = clientsResult.data.map(function(c) {
-        return {
-          id: c.id,
-          nom: c.nom,
-          societe: c.societe || '',
-          email: c.email_client || '',
-          statut: c.statut || 'Actif'
-        };
+    return sb.from('clients').select('*').order('id', { ascending: true });
+  }).then(function(cliResult) {
+    if (!cliResult.error && cliResult.data) {
+      appData.clients = cliResult.data.map(function(c) {
+        return { id: c.id, nom: c.nom, societe: c.societe || '', email: c.email_client || '', statut: c.statut || 'Actif' };
       });
     }
-
+    return sb.from('demandes').select('*').order('id', { ascending: false });
+  }).then(function(demResult) {
+    if (!demResult.error && demResult.data) {
+      var allDem = demResult.data.map(function(d) {
+        var cli = appData.clients.find(function(c) { return c.id === d.client_id; });
+        return {
+          id: 'DEM-' + String(d.id).padStart(4, '0'),
+          _supabase_id: d.id,
+          nom: d.nom || '—',
+          client: cli ? cli.nom : (d.client || '—'),
+          societe: cli ? cli.societe : (d.societe || ''),
+          email_client: cli ? cli.email : '',
+          description: d.description || '',
+          datelimite: d.datelimite,
+          statut: d.statut || 'En attente',
+          priorite: d.priorite || 'Normale',
+          client_id: d.client_id
+        };
+      });
+      if (currentRole === 'client') {
+        appData.demandes = allDem.filter(function(d) {
+          return d.email_client === currentUser.email;
+        });
+      } else {
+        appData.demandes = allDem;
+      }
+    }
     renderAll();
   }).catch(function(e) {
-    console.error('Erreur chargement:', e);
-    showToast('Erreur de chargement des données.');
+    console.error('Erreur:', e);
+    showToast('Erreur de chargement.');
   });
 }
 
-function mapDemande(d) {
-  return {
-    id: 'DEM-' + String(d.id).padStart(4, '0'),
-    _supabase_id: d.id,
-    nom: d.nom,
-    client: d.clients ? d.clients.nom : (d.client || '—'),
-    societe: d.clients ? d.clients.societe : (d.societe || ''),
-    email_client: d.clients ? d.clients.email_client : '',
-    description: d.description || '',
-    datelimite: d.datelimite,
-    statut: d.statut || 'En attente',
-    priorite: d.priorite || 'Normale',
-    client_id: d.client_id
-  };
-}
-
-// ── CRÉER UNE DEMANDE ──
 function submitNewRequest() {
   var nom = document.getElementById('n-nom').value.trim();
   var clientId = document.getElementById('n-client-id').value;
@@ -180,7 +163,7 @@ function submitNewRequest() {
       datelimite: date,
       statut: 'En attente',
       priorite: priorite
-    }]).select();
+    }]);
   }).then(function(result) {
     if (result.error) { showToast('Erreur : ' + result.error.message); btn.disabled = false; btn.textContent = 'Créer la demande'; return; }
     showToast('Demande créée ! Le client peut la voir immédiatement.');
@@ -191,10 +174,9 @@ function submitNewRequest() {
     document.getElementById('n-date').value = '';
     document.getElementById('n-desc').value = '';
     loadData();
-  }).catch(function() { showToast('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Créer la demande'; });
+  }).catch(function() { showToast('Erreur.'); btn.disabled = false; btn.textContent = 'Créer la demande'; });
 }
 
-// ── CRÉER UN CLIENT ──
 function submitNewClient() {
   var nom = document.getElementById('nc-nom').value.trim();
   var societe = document.getElementById('nc-societe').value.trim();
@@ -204,25 +186,24 @@ function submitNewClient() {
   var btn = document.getElementById('btn-submit-client');
   btn.disabled = true; btn.textContent = 'Enregistrement...';
   loadSupabase().then(function() {
-    return sb.from('clients').insert([{ nom: nom, societe: societe, email_client: email, statut: statut }]).select();
+    return sb.from('clients').insert([{ nom: nom, societe: societe, email_client: email, statut: statut }]);
   }).then(function(result) {
     if (result.error) { showToast('Erreur : ' + result.error.message); btn.disabled = false; btn.textContent = 'Créer le client'; return; }
-    showToast('Client créé avec succès !');
+    showToast('Client créé !');
     closeModal('modal-new-client');
     btn.disabled = false; btn.textContent = 'Créer le client';
     document.getElementById('nc-nom').value = '';
     document.getElementById('nc-societe').value = '';
     document.getElementById('nc-email').value = '';
     loadData();
-  }).catch(function() { showToast('Erreur de connexion.'); btn.disabled = false; btn.textContent = 'Créer le client'; });
+  }).catch(function() { showToast('Erreur.'); btn.disabled = false; btn.textContent = 'Créer le client'; });
 }
 
-// ── REMPLIR LE SELECT CLIENT DANS LE MODAL ──
 function populateClientSelect() {
   var select = document.getElementById('n-client-id');
   select.innerHTML = '<option value="">Sélectionner un client...</option>';
   appData.clients.forEach(function(c) {
-    select.innerHTML += '<option value="' + c.id + '">' + c.nom + ' — ' + c.societe + '</option>';
+    select.innerHTML += '<option value="' + c.id + '">' + c.nom + (c.societe ? ' — ' + c.societe : '') + '</option>';
   });
 }
 
@@ -259,20 +240,19 @@ function renderAll() {
     document.getElementById('prog-retard').textContent = retard;
     document.getElementById('req-sub').textContent = dem.length + ' demandes';
     document.getElementById('req-count').textContent = dem.length + ' résultats';
-    document.getElementById('cli-sub').textContent = cli.length + ' clients — Fidaexpert';
+    document.getElementById('cli-sub').textContent = cli.length + ' client(s) — Fidaexpert';
     document.getElementById('dash-table').innerHTML = dem.slice(0, 5).map(function(x) {
       return '<tr onclick="openDetail(\'' + x.id + '\')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + x.client + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
     }).join('');
     renderReqTable(dem);
     document.getElementById('cli-table').innerHTML = cli.length === 0
-      ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client. Créez votre premier client !</td></tr>'
+      ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client. Cliquez sur "+ Nouveau client" pour commencer.</td></tr>'
       : cli.map(function(c) {
           var init = c.nom.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
-          var dCli = dem.filter(function(x) { return x.client_id === c.id || x.client === c.nom; });
+          var dCli = dem.filter(function(x) { return x.client_id === c.id; });
           var ret = dCli.filter(function(x) { return x.statut === 'En retard'; }).length;
           return '<tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:6px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text-secondary);">' + init + '</div><div class="td-primary">' + c.nom + '</div></div></td><td>' + c.societe + '</td><td style="font-size:12px;">' + c.email + '</td><td>' + (c.statut === 'Actif' ? '<span class="badge badge-green">Actif</span>' : '<span class="badge badge-gray">Inactif</span>') + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;">' + dCli.length + '</td><td style="font-family:var(--mono);font-size:13px;font-weight:500;color:' + (ret > 0 ? 'var(--red)' : 'var(--text-muted)') + ';">' + ret + '</td></tr>';
         }).join('');
-    populateClientSelect();
   } else {
     document.getElementById('client-table').innerHTML = dem.length === 0
       ? '<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande pour le moment.</td></tr>'
@@ -325,7 +305,7 @@ function reloadDetailDocs() {
     return sb.storage.from(BUCKET).list(currentDemande.id, { limit: 50 });
   }).then(function(result) {
     if (result.error || !result.data || result.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé pour cette demande.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun document déposé.</td></tr>';
       return;
     }
     tbody.innerHTML = result.data.map(function(f) {
@@ -337,7 +317,7 @@ function reloadDetailDocs() {
       return '<tr><td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:5px;background:' + colors[0] + ';color:' + colors[1] + ';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;">' + ext.toUpperCase().substring(0,4) + '</div><div class="td-primary" style="font-size:13px;">' + cleanName + '</div></div></td><td style="font-size:12px;color:var(--text-muted);">' + date + '</td><td><a href="' + url + '" target="_blank" style="padding:3px 9px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--text-primary);text-decoration:none;">Télécharger</a></td></tr>';
     }).join('');
   }).catch(function() {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur de chargement.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur.</td></tr>';
   });
 }
 
@@ -372,7 +352,7 @@ function loadDocuments() {
       document.getElementById('docs-sub').textContent = rows.length + ' fichier(s) reçu(s)';
     });
   }).catch(function() {
-    table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur de chargement.</td></tr>';
+    table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);">Erreur.</td></tr>';
   });
 }
 
