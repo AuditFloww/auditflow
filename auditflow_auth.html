@@ -175,8 +175,8 @@ textarea.mform-input{resize:vertical;min-height:80px}
     <div class="login-footer"><span id="toggle-text">Pas encore de compte ? </span><a onclick="toggleMode()" id="toggle-link">Creer un compte</a></div>
     <div class="demo-box">
       <div class="demo-label">Comptes demo</div>
-      <div class="demo-item">Auditeur : auditeur@fidaexpert.ci</div>
-      <div class="demo-item">Client : client@acmeci.com</div>
+      <div class="demo-item">Auditeur : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9c8dccdc0ddccdcdbe9cfc0cdc8ccd1d9ccdbdd87cac0">[email&#160;protected]</a></div>
+      <div class="demo-item">Client : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a7c4cbcec2c9d3e7c6c4cac2c4ce89c4c8ca">[email&#160;protected]</a></div>
       <div class="demo-item" style="color:var(--text-muted);margin-top:4px">Mot de passe : AuditFlow2024!</div>
     </div>
   </div>
@@ -374,9 +374,9 @@ textarea.mform-input{resize:vertical;min-height:80px}
   <span id="toast-msg">Action realisee.</span>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var SB_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
-var SB_KEY = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5wdGVuZHZlR0ZyZEdkc1pXWjVZMlptZW5Kd2VDSXNJbkpsYkc5aVpTSTZJbUZ1YjI0aUxDSnBZWFFpT2pFM056VXhNemM0TWpNc0luVjBhU0k2TWpBNU1EY3hNekF5TTMwLnFRMFFLaDhNX0dITU4tVkZjaEhQMGthRFdaclctMEl2SS1nZmVlcGRtazA=');
+var SB_KEY = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5wdGVuZHZlR0ZyZEdkc1pXWjVZMlo2Y25CNElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpVeE16YzRNak1zSW1WNGNDSTZNakE1TURjeE16Z3lNMzAucVEwUUtoOE1fR0hNTi1WRmNoSFAwa2FEV1pyRy0wSXZJLWdmZWVwZG1rMA==');
 var BUCKET = 'documents';
 var EDGE_URL = SB_URL + '/functions/v1/send-email';
 var sb = null;
@@ -937,18 +937,4 @@ function showToast(msg) {
   document.getElementById('toast-msg').textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 4000);
-}
-
-loadSupabase().then(function() {
-  return sb.auth.getSession();
-}).then(function(r) {
-  if (r.data && r.data.session) {
-    currentUser = r.data.session.user;
-    currentRole = detectRole(currentUser.email);
-    showApp();
-  }
-}).catch(function() {});
-</script>
-</body>
-</html>
+  toa
