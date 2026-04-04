@@ -570,9 +570,24 @@ function submitNewRequest() {
       var dateFmt = dl.length === 3 ? parseInt(dl[2]) + ' ' + mois[parseInt(dl[1])-1] + ' ' + dl[0] : date;
       fetch('https://zmzwoxaktglefycfzrpx.supabase.co/functions/v1/send-email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY },
-        body: JSON.stringify({ demande_nom: nom, client_email: cli.email, client_nom: cli.nom, date_limite: dateFmt })
-      }).catch(function() {});
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        body: JSON.stringify({ 
+          demande_nom: nom, 
+          client_email: cli.email, 
+          client_nom: cli.nom, 
+          date_limite: dateFmt 
+        })
+      }).then(function(r) { 
+        return r.json(); 
+      }).then(function(d) { 
+        console.log('Email result:', JSON.stringify(d)); 
+        if (d.id) showToast('Email envoyé au client !');
+      }).catch(function(e) { 
+        console.error('Email error:', e); 
+      });
     }
     loadData();
   }).catch(function() { showToast('Erreur.'); btn.disabled = false; btn.textContent = 'Créer la demande'; });
@@ -609,7 +624,7 @@ function populateClientSelect() {
 }
 
 function badgeHTML(s) {
-  var map = { 'En retard': 'badge-red', 'Recu': 'badge-green', 'En attente': 'badge-orange', 'Envoye': 'badge-gray' };
+  var map = { 'En retard': 'badge-red', 'Déposé': 'badge-green', 'En attente': 'badge-orange', 'Envoye': 'badge-gray' };
   return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
 }
 function prioHTML(p) { return p === 'Haute' ? '<span class="priority-high">▲ Haute</span>' : '<span class="priority-normal">— Normale</span>'; }
@@ -798,10 +813,10 @@ function cdUploadFiles() {
       cdReloadDocs();
       setTimeout(function() { progress.style.display = 'none'; progressFill.style.width = '0%'; }, 3000);
       if (uploaded > 0) {
-        sb.from('demandes').update({ statut: 'Recu' }).eq('id', cdCurrentDemande._supabase_id).then(function() {
-          cdCurrentDemande.statut = 'Recu';
-          document.getElementById('cd-badge').innerHTML = badgeHTML('Recu');
-          showToast(uploaded + ' fichier(s) déposé(s) ! Statut mis à jour : Reçu.');
+        sb.from('demandes').update({ statut: 'Déposé' }).eq('id', cdCurrentDemande._supabase_id).then(function() {
+          cdCurrentDemande.statut = 'Déposé';
+          document.getElementById('cd-badge').innerHTML = badgeHTML('Déposé');
+          showToast(uploaded + ' fichier(s) déposé(s) ! Statut mis à jour : Déposé.');
           loadData();
         });
       } else {
