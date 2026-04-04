@@ -562,6 +562,18 @@ function submitNewRequest() {
     document.getElementById('n-client-id').value = '';
     document.getElementById('n-date').value = '';
     document.getElementById('n-desc').value = '';
+    // Envoyer email au client
+    var cli = appData.clients.find(function(c) { return c.id === parseInt(clientId); });
+    if (cli && cli.email) {
+      var dl = date ? date.split('-') : [];
+      var mois = ['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
+      var dateFmt = dl.length === 3 ? parseInt(dl[2]) + ' ' + mois[parseInt(dl[1])-1] + ' ' + dl[0] : date;
+      fetch('https://zmzwoxaktglefycfzrpx.supabase.co/functions/v1/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        body: JSON.stringify({ demande_nom: nom, client_email: cli.email, client_nom: cli.nom, date_limite: dateFmt })
+      }).catch(function() {});
+    }
     loadData();
   }).catch(function() { showToast('Erreur.'); btn.disabled = false; btn.textContent = 'Créer la demande'; });
 }
