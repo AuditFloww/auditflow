@@ -501,7 +501,7 @@ var cli = appData.clients || [];
 var container = document.getElementById('req-clients-list');
 if (!container) return;
 if (cli.length === 0) {
-container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-muted);font-size:13px;">Aucun client. Créez d'abord un client.</div>';
+container.innerHTML = "<div style=\"text-align:center;padding:48px;color:var(--text-muted);font-size:13px;\">Aucun client.</div>";
 return;
 }
 container.innerHTML = cli.map(function(c) {
