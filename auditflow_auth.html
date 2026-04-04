@@ -220,7 +220,7 @@
 <span id="toast-msg">Action réalisée.</span>
 </div>
 <script>
-var SUPABASE_URL = 'https:
+var SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 var SUPABASE_KEY = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5wdGVuZHZlR0ZyZEdkc1pXWjVZMlo2Y25CNElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpVeE16YzRNak1zSW1WNGNDSTZNakE1TURjeE16Z3lNMzAucVEwUUtoOE1fR0hNTi1WRmNoSFAwa2FEV1pyRy0wSXZJLWdmZWVwZG1rMA==');
 var BUCKET = 'documents';
 var sb = null;
@@ -235,7 +235,7 @@ function loadSupabase() {
 return new Promise(function(resolve, reject) {
 if (sb) { resolve(); return; }
 var s = document.createElement('script');
-s.src = 'https:
+s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
 s.onload = function() { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); resolve(); };
 s.onerror = reject;
 document.head.appendChild(s);
@@ -389,7 +389,7 @@ if (cli && cli.email) {
 var dl = date ? date.split('-') : [];
 var mois = ['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
 var dateFmt = dl.length === 3 ? parseInt(dl[2]) + ' ' + mois[parseInt(dl[1])-1] + ' ' + dl[0] : date;
-fetch('https:
+fetch('https://zmzwoxaktglefycfzrpx.supabase.co/functions/v1/send-email', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json',
