@@ -154,6 +154,9 @@ textarea.mform-input{resize:vertical;min-height:80px;}
 ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px;}
 @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
+<script>
+
+</script>
 </head>
 <body>
 
@@ -383,7 +386,7 @@ textarea.mform-input{resize:vertical;min-height:80px;}
   <span id="toast-msg">Action réalisée.</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var SUPABASE_URL = 'https://zmzwoxaktglefycfzrpx.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptendveGFrdGdsZWZ5Y2Z6cnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzc4MjMsImV4cCI6MjA5MDcxMzgyM30.qQ0QKh8M_GHMN-VFchHP0kaDWZrG-0IvI-gfeepdmk0';
 var BUCKET = 'documents';
@@ -905,4 +908,18 @@ function showToast(msg) {
   document.getElementById('toast-msg').textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 4000);
+}
+
+loadSupabase().then(function() {
+  return sb.auth.getSession();
+}).then(function(result) {
+  if (result.data && result.data.session) {
+    currentUser = result.data.session.user;
+    currentRole = detectRole(currentUser.email);
+    showApp();
+  }
+}).catch(function() {});
+</script>
+</body>
+</html>
