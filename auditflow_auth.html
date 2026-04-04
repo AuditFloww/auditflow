@@ -256,13 +256,20 @@ textarea.mform-input{resize:vertical;min-height:80px;}
           <div><div class="section-title">Demandes</div><div class="section-sub" id="req-sub">—</div></div>
           <button class="btn btn-primary" onclick="openModal('modal-new-request')"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvelle demande</button>
         </div>
-        <div class="table-container">
-          <div class="table-toolbar">
-            <div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input class="search-input" placeholder="Rechercher…" oninput="filterReq(this.value)"></div>
-            <select class="filter-select" onchange="filterReqStatus(this.value)"><option value="">Tous les statuts</option><option>En retard</option><option>En attente</option></select>
-            <div style="margin-left:auto;font-size:12px;color:var(--text-muted);" id="req-count">—</div>
+        <div id="req-clients-list"></div>
+      </div>
+
+      <!-- DEMANDES D'UN CLIENT -->
+      <div class="page" id="page-client-requests">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="showPage('requests')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Retour</button>
+            <div><div class="section-title" id="cr-client-nom">—</div><div class="section-sub" id="cr-client-sub">—</div></div>
           </div>
-          <table><thead><tr><th>Demande</th><th>Client</th><th>Société</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead><tbody id="req-table"><tr><td colspan="6"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody></table>
+          <button class="btn btn-primary" onclick="openModal('modal-new-request')"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvelle demande</button>
+        </div>
+        <div class="table-container">
+          <table><thead><tr><th>N°</th><th>Demande</th><th>Statut</th><th>Priorité</th><th>Date limite</th></tr></thead><tbody id="cr-table"><tr><td colspan="5"><div class="loading"><div class="loading-spinner"></div></div></td></tr></tbody></table>
         </div>
       </div>
 
@@ -661,6 +668,7 @@ function renderAll() {
       return '<tr onclick="openDetail(\'' + x.id + '\')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + x.client + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
     }).join('');
     renderReqTable(dem);
+    renderReqByClient();
     document.getElementById('cli-table').innerHTML = cli.length === 0
       ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucun client.</td></tr>'
       : cli.map(function(c) {
@@ -678,23 +686,59 @@ function renderAll() {
   }
 }
 
-function renderReqTable(data) {
-  document.getElementById('req-table').innerHTML = data.length === 0
-    ? '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande.</td></tr>'
-    : data.map(function(x) {
-        return '<tr onclick="openDetail(\'' + x.id + '\')" style="cursor:pointer;"><td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td><td>' + x.client + '</td><td>' + (x.societe || '—') + '</td><td>' + badgeHTML(x.statut) + '</td><td>' + prioHTML(x.priorite) + '</td><td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td></tr>';
-      }).join('');
+function renderReqByClient() {
+  var dem = appData.demandes || [];
+  var cli = appData.clients || [];
+  var container = document.getElementById('req-clients-list');
+  if (!container) return;
+  if (cli.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text-muted);font-size:13px;">Aucun client. Créez d'abord un client.</div>';
+    return;
+  }
+  container.innerHTML = cli.map(function(c) {
+    var dCli = dem.filter(function(x) { return x.client_id === c.id; });
+    var retard = dCli.filter(function(x) { return x.statut === 'En retard'; }).length;
+    var init = c.nom.split(' ').map(function(n) { return n[0]; }).join('').substring(0,2).toUpperCase();
+    return '<div onclick="openClientRequests(' + c.id + ')" style="background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .15s;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">' +
+      '<div style="width:40px;height:40px;border-radius:10px;background:var(--bg);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--text-secondary);flex-shrink:0;">' + init + '</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-weight:500;font-size:14px;color:var(--text-primary);">' + c.nom + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + (c.societe || '') + ' · ' + c.email + '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<div style="text-align:center;">' +
+          '<div style="font-size:20px;font-weight:500;font-family:var(--mono);color:var(--text-primary);">' + dCli.length + '</div>' +
+          '<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">demandes</div>' +
+        '</div>' +
+        (retard > 0 ? '<div style="text-align:center;"><div style="font-size:20px;font-weight:500;font-family:var(--mono);color:var(--red);">' + retard + '</div><div style="font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.05em;">en retard</div></div>' : '') +
+        '<svg width="16" height="16" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
-function filterReq(v) {
-  var f = appData.demandes.filter(function(x) { return x.nom.toLowerCase().includes(v.toLowerCase()) || x.client.toLowerCase().includes(v.toLowerCase()); });
-  renderReqTable(f);
-  document.getElementById('req-count').textContent = f.length + ' résultats';
-}
-function filterReqStatus(v) {
-  var f = v ? appData.demandes.filter(function(x) { return x.statut === v; }) : appData.demandes;
-  renderReqTable(f);
-  document.getElementById('req-count').textContent = f.length + ' résultats';
+function openClientRequests(clientId) {
+  var dem = appData.demandes || [];
+  var cli = appData.clients || [];
+  var client = cli.find(function(c) { return c.id === clientId; });
+  if (!client) return;
+  var dCli = dem.filter(function(x) { return x.client_id === clientId; });
+  document.getElementById('cr-client-nom').textContent = client.nom;
+  document.getElementById('cr-client-sub').textContent = (client.societe || '') + ' · ' + dCli.length + ' demande(s)';
+  document.getElementById('cr-table').innerHTML = dCli.length === 0
+    ? '<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--text-muted);font-size:13px;">Aucune demande pour ce client.</td></tr>'
+    : dCli.map(function(x, i) {
+        return '<tr onclick="openDetail(\'' + x.id + '\')" style="cursor:pointer;">' +
+          '<td><span style="font-family:var(--mono);font-size:12px;font-weight:500;background:var(--bg);border:0.5px solid var(--border);padding:2px 8px;border-radius:20px;">#' + (i+1) + '</span></td>' +
+          '<td><div class="td-primary">' + x.nom + '</div><div class="td-mono">' + x.id + '</div></td>' +
+          '<td>' + badgeHTML(x.statut) + '</td>' +
+          '<td>' + prioHTML(x.priorite) + '</td>' +
+          '<td style="' + (x.statut === 'En retard' ? 'color:var(--red);font-weight:500;' : '') + '">' + fmtDate(x.datelimite) + '</td>' +
+        '</tr>';
+      }).join('');
+  // Pré-sélectionner le client dans le modal nouvelle demande
+  document.getElementById('n-client-id').value = clientId;
+  showPage('client-requests');
 }
 
 function openDetail(id) {
@@ -903,6 +947,7 @@ var pagesMeta = {
   'clients': { title: 'Clients', sub: '' },
   'documents': { title: 'Documents reçus', sub: 'Fichiers déposés par les clients' },
   'detail': { title: 'Détail de la demande', sub: 'Documents déposés' },
+  'client-requests': { title: 'Demandes', sub: '' },
   'client-dashboard': { title: 'Mes demandes', sub: 'Documents à fournir à Fidaexpert' },
   'client-detail': { title: 'Détail de la demande', sub: 'Déposer vos documents' }
 };
@@ -913,7 +958,7 @@ function showPage(id) {
   var page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   var menu = currentRole === 'auditeur' ? '#menu-auditeur' : '#menu-client';
-  var navMap = { dashboard: 0, requests: 1, clients: 2, documents: 3, detail: 1, 'client-dashboard': 0, 'client-detail': 0 };
+  var navMap = { dashboard: 0, requests: 1, clients: 2, documents: 3, detail: 1, 'client-requests': 1, 'client-dashboard': 0, 'client-detail': 0 };
   var items = document.querySelectorAll(menu + ' .nav-item');
   if (navMap[id] !== undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
   if (pagesMeta[id]) {
